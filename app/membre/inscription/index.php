@@ -126,46 +126,7 @@ if(check_if_user_conneted()){
                                         ?>
                                     </span>                  
                       </div>
-
-                      <div class="col-12 mt-3">
-                      <label for="incription_prenom" class="form-label">Adresse
-                        <span class="text-danger"> (*)</span>
-                      </label>
-                      <input type="text"  class="form-control <?= isset($_SESSION['errors']['adresse']) ? 'is-invalid' : ''?>" name="adresse" id="adresse" value="<?php if (isset($data["adresse"]) && !empty($data["adresse"])) {echo $data["adresse"]; }else{ echo '';}?>" 
-                                    placeholder="Veuillez enter votre adresse">
-                                    <?php
-                                    if(isset($_SESSION['errors']['adresse'])){ 
-                                    ?>
-                                    <div class="invalid-feedback">
-                                        <?=$_SESSION['errors']['adresse']?>
-                                    </div>
-                                    <?php
-                                    }
-                                    ?>
-                      <!------<div class="invalid-feedback">Entrer votre adresse s'il vous plaît!</div>---->
-                    </div>
-
-                    <div class="col-12 mt-3">
-                      <label for="incription_prenom" class="form-label">Telephone
-                        <span class="text-danger"> (*)</span>
-                      </label>
-                      <input type="text"  class="form-control <?= isset($_SESSION['errors']['telephone']) ? 'is-invalid' : ''?>" name="adresse" id="telephone" value="<?php if (isset($data["telephone"]) && !empty($data["telephone"])) {echo $data["telephone"]; }else{ echo '';}?>" 
-                                    placeholder="Veuillez enter votre adresse">
-                                    <?php
-                                    if(isset($_SESSION['errors']['telephone'])){ 
-                                    ?>
-                                    <div class="invalid-feedback">
-                                        <?=$_SESSION['errors']['telephone']?>
-                                    </div>
-                                    <?php
-                                    }
-                                    ?>
-                      <!------<div class="invalid-feedback">Entrer votre numéro de telephone s'il vous plaît!</div>---->
-                    </div>
-                    
-                          
-
-
+                                                                   
                       <div class="col-12 mt-3">
                         <label for="incription_nom_utilisateur" class="form-label">Nom d'utilisateur
                           <span class="text-danger">(*)</span>

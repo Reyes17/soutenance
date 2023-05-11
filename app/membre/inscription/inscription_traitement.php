@@ -37,20 +37,6 @@ if (isset($_POST["nom_utilisateur"]) && !empty($_POST["nom_utilisateur"])) {
     $errors["nom_utilisateur"] = "Le champs nom utilisateur est requis. Veuillez le renseigner.";
 }
 
-if(verifier_info($_POST['telephone'])){
-    $data['telephone']= trim(htmlentities($_POST['telephone']))  ;
-}
-else{
-        $errors['telephone']= '<p > Le champs téléphone est requis. Veuillez le renseigner!</p>';
-}
-
-if(verifier_info($_POST['adresse'])){
-    $data['adresse']= trim(htmlentities($_POST['adresse'])) ;
-}
-else{
-        $errors['adresse']= '<p > Le champs adresse est requis. Veuillez le renseigner!</p>';
-}
-
 if (isset($_POST["date_naissance"]) && !empty($_POST["date_naissance"])) {
     $data["date_naissance"] = trim(htmlentities($_POST['date_naissance']));
 } else {
