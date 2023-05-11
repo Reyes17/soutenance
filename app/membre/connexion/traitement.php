@@ -7,7 +7,7 @@ $errors=[];
 $danger=[];
 $_SESSION['data']= [];
 if (isset($_POST["nom_utilisateur"]) && !empty($_POST["nom_utilisateur"])) {
-    $data["nom_utilisateur"] = trim(htmlentities($_POST['nom_utilisateur']));
+    $data["nom_utilisateur"] = $_POST['nom_utilisateur'];
 } else {
     $errors["nom_utilisateur"] = "Le champs nom utilisateur est requis. Veuillez le renseigner.";
 }

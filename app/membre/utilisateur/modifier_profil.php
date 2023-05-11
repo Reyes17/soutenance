@@ -37,7 +37,7 @@ if (isset($_POST['sauvegarder'])) {
         }
 
         if (isset($_POST['nom_utilisateur']) && !empty($_POST['nom_utilisateur']) && $_POST['nom_utilisateur'] != $data[0]['nom_utilisateur']) {
-            $new_data['nom_utilisateur'] =trim(htmlentities($_POST['nom_utillisateur']));
+            $new_data['nom_utilisateur'] =$_POST['nom_utillisateur'];
         } else {
             $new_data['nom_utilisateur'] = $data[0]['nom_utilisateur'];
         }

@@ -12,14 +12,14 @@ $_SESSION['data']= [];
 
 
 if (verifier_info($_POST['nom'])){
-    $data['nom']=trim(htmlentities($_POST['nom'])) ;
+    $data['nom']=htmlentities($_POST['nom']) ;
 }
 else{
        $errors['nom'] = '<p> Le champs nom est requis. Veuillez le renseigner! </p>';
 }
 
 if(verifier_info($_POST['prenom'])){
-    $data['prenom']= trim(htmlentities($_POST['prenom'])) ;
+    $data['prenom']= htmlentities($_POST['prenom']) ;
 }
 else{
         $errors['prenom']= '<p > Le champs prénom est requis. Veuillez le renseigner!</p>';
@@ -32,19 +32,20 @@ if (isset($_POST["sexe"]) && !empty($_POST["sexe"])) {
 }
 
 if (isset($_POST["nom_utilisateur"]) && !empty($_POST["nom_utilisateur"])) {
-    $data["nom_utilisateur"] = trim(htmlentities($_POST['nom_utilisateur']));
+    $data["nom_utilisateur"] = $_POST["nom_utilisateur"];
 } else {
     $errors["nom_utilisateur"] = "Le champs nom utilisateur est requis. Veuillez le renseigner.";
 }
 
+
 if (isset($_POST["date_naissance"]) && !empty($_POST["date_naissance"])) {
-    $data["date_naissance"] = trim(htmlentities($_POST['date_naissance']));
+    $data["date_naissance"] = $_POST["date_naissance"];
 } else {
     $errors["date_naissance"] = "Le champs date de naissance est requis. Veuillez le renseigner.";
 }
 
 if (isset($_POST["email"]) && !empty($_POST["email"]) && filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
-    $data["email"] = trim(htmlentities($_POST['email']));
+    $data["email"] = $_POST["email"];
 } 
 else{
         $errors['email'] = '<p>Le champs email est requis ou est déjà utlisé. Veuillez le renseigner!</p>';
@@ -122,7 +123,7 @@ if (empty($errors)) {
         
     ]); 
 
-
+    //die(var_dump($resultat));
      
 
     if($resultat){
