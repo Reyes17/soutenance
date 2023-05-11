@@ -1,5 +1,5 @@
 <?php
-include '../soutenance/app/commun/fonction/fonction.php';
+include 'app/commun/fonction/fonction.php';
 //session_start();
 //die (var_dump($_SESSION["utilisateur_connecter"]));
 include("haut.php");
@@ -14,7 +14,7 @@ if(isset($_SESSION['passe']) && !empty($_SESSION['passe'])){
 $user_connected = check_if_user_conneted();
 
 if (!$user_connected) {
-    header("location: /soutenance/membre/connexion");
+    header("location:' . PROJECT_DIR .'membre/connexion");
    }
 ?>
 
@@ -62,7 +62,7 @@ if (!$user_connected) {
                     <div class="row mb-3" style="display: contents; text-align:center;">
                     
                       <div class="col-md-8 col-lg-9">
-                        <form action="/soutenance/membre/utilisateur/desactivation" method="post">
+                        <form action="<?= PROJECT_DIR;?>membre/utilisateur/desactivation" method="post">
                           <div class="row mb-3" >
                             <div class="col-md-8 col-lg-12">
                               <button type="button" name="desactiver-compte" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#desactiver"> <i class="bi bi-x-octagon-fill"> Désactiver le compte</i></button>
@@ -101,7 +101,7 @@ if (!$user_connected) {
                         
                         
                         
-                        <form action="/soutenance/membre/utilisateur/supprimer" method="post">
+                        <form action="<?= PROJECT_DIR;?>membre/utilisateur/supprimer" method="post">
                           <div class="row mb-3" >
                             <div class="col-md-6 col-lg-12">
                               <button type="button" name="supprimer-compte" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#supprimer"> <i class="bi bi-trash-fill"> Supprimer le compte</i></button>
@@ -219,14 +219,14 @@ if (!$user_connected) {
                         <div class="row mb-3">
                           <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profil Image</label>
                           <div class="col-md-8 col-lg-9">
-                            <img src="/soutenance/public/image/bliotheque.jpg" alt="Profile">
+                            <img src="<?= PROJECT_DIR;?>public/image/bliotheque.jpg" alt="Profile">
                             <div class="pt-2">
                               <a href="#" class="btn btn-primary btn-sm" title="Upload new profile image"><i class="bi bi-upload"></i></a>
                               <a href="#" class="btn btn-danger btn-sm" title="Remove my profile image"><i class="bi bi-trash"></i></a>
                             </div>                        
                           </div>
                         </div>
-                      <form action="/soutenance/membre/utilisateur/modifier_profil" method="post">
+                      <form action="<?= PROJECT_DIR;?>membre/utilisateur/modifier_profil" method="post">
                         <div class="row mb-3">
                           <label for="nom" class="col-md-4 col-lg-3 col-form-label">Nom</label>
                           <div class="col-md-8 col-lg-9">
@@ -300,7 +300,7 @@ if (!$user_connected) {
                 <div class="profile-change-password">
                       <!-- Change Password Form -->
                       <h3 class="card-title">Changer votre mot de passe</h3>
-                      <form action="/soutenance/membre/utilisateur/changer_mot_de_passe" method="post">
+                      <form action="<?= PROJECT_DIR;?>membre/utilisateur/changer_mot_de_passe" method="post">
 
                         <div class="row mb-3">
                           <label for="changer_mot_de_passe" class="col-md-4 col-lg-3 col-form-label">Mot de passe actuel</label>

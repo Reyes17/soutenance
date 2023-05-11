@@ -1,5 +1,5 @@
 <?php
-$url = 'localhost/soutenance/membre/inscription/confirmation/{id_utilisateur}/{token}';
+$url = 'localhost<?= PROJECT_DIR;?>membre/inscription/confirmation/{id_utilisateur}/{token}';
 
 if (isset($_SESSION['validation_compte']) && !empty($_SESSION['validation_compte'])) {
     $id_utlilisateur = $_SESSION['validation_compte']['id_utilisateur'];

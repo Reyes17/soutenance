@@ -15,16 +15,16 @@
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
   <!-- Vendor CSS Files -->
-  <link href="/soutenance/public/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="/soutenance/public/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="/soutenance/public/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-  <link href="/soutenance/public/vendor/quill/quill.snow.css" rel="stylesheet">
-  <link href="/soutenance/public/vendor/quill/quill.bubble.css" rel="stylesheet">
-  <link href="/soutenance/public/vendor/remixicon/remixicon.css" rel="stylesheet">
-  <link href="/soutenance/public/vendor/simple-datatables/style.css" rel="stylesheet">
+  <link href="<?= PROJECT_DIR; ?>public/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="<?= PROJECT_DIR; ?>public/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="<?= PROJECT_DIR; ?>public/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="<?= PROJECT_DIR; ?>public/vendor/quill/quill.snow.css" rel="stylesheet">
+  <link href="<?= PROJECT_DIR; ?>public/vendor/quill/quill.bubble.css" rel="stylesheet">
+  <link href="<?= PROJECT_DIR; ?>public/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="<?= PROJECT_DIR; ?>public/vendor/simple-datatables/style.css" rel="stylesheet">
 
   <!-- Template Main CSS File -->
-  <link href= "/soutenance/public/css/style.css" rel="stylesheet">
+  <link href= "<?= PROJECT_DIR; ?>public/css/style.css" rel="stylesheet">
  <!---- ======================================================== -->
  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
@@ -38,17 +38,17 @@
 
  
 <!-- Vendor JS Files -->
-<script src="/soutenance/public/vendor/apexcharts/apexcharts.min.js"></script>
-<script src="/soutenance/public/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="/soutenance/public/vendor/chart.js/chart.umd.js"></script>
-<script src="/soutenance/public/vendor/echarts/echarts.min.js"></script>
-<script src="/soutenance/public/vendor/quill/quill.min.js"></script>
-<script src="/soutenance/public/vendor/simple-datatables/simple-datatables.js"></script>
-<script src="/soutenance/public/vendor/tinymce/tinymce.min.js"></script>
-<script src="/soutenance/public/vendor/php-email-form/validate.js"></script>
+<script src="<?= PROJECT_DIR; ?>public/vendor/apexcharts/apexcharts.min.js"></script>
+<script src="<?= PROJECT_DIR; ?>public/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="<?= PROJECT_DIR; ?>public/vendor/chart.js/chart.umd.js"></script>
+<script src="<?= PROJECT_DIR; ?>public/vendor/echarts/echarts.min.js"></script>
+<script src="<?= PROJECT_DIR; ?>public/vendor/quill/quill.min.js"></script>
+<script src="<?= PROJECT_DIR; ?>public/vendor/simple-datatables/simple-datatables.js"></script>
+<script src="<?= PROJECT_DIR; ?>public/vendor/tinymce/tinymce.min.js"></script>
+<script src="<?= PROJECT_DIR; ?>public/vendor/php-email-form/validate.js"></script>
 
 <!-- Template Main JS File -->
-<script src="/soutenance/public/js/main.js"></script>
+<script src="<?= PROJECT_DIR; ?>public/js/main.js"></script>
 
 </body>
 

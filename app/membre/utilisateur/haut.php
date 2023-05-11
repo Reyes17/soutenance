@@ -18,16 +18,16 @@ session_start();
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
   <!-- Vendor CSS Files -->
-  <link href="/soutenance/public/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="/soutenance/public/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="/soutenance/public/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-  <link href="/soutenance/public/vendor/quill/quill.snow.css" rel="stylesheet">
-  <link href="/soutenance/public/vendor/quill/quill.bubble.css" rel="stylesheet">
-  <link href="/soutenance/public/vendor/remixicon/remixicon.css" rel="stylesheet">
-  <link href="/soutenance/public/vendor/simple-datatables/style.css" rel="stylesheet">
+  <link href="<?= PROJECT_DIR;?>public/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="<?= PROJECT_DIR;?>public/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="<?= PROJECT_DIR;?>public/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="<?= PROJECT_DIR;?>public/vendor/quill/quill.snow.css" rel="stylesheet">
+  <link href="<?= PROJECT_DIR;?>public/vendor/quill/quill.bubble.css" rel="stylesheet">
+  <link href="<?= PROJECT_DIR;?>public/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="<?= PROJECT_DIR;?>public/vendor/simple-datatables/style.css" rel="stylesheet">
 
   <!-- Template Main CSS File -->
-  <link href="/soutenance/public/css/style.css" rel="stylesheet">
+  <link href="<?= PROJECT_DIR;?>public/css/style.css" rel="stylesheet">
 
   <!-- =======================================================
   ======================================================== -->
@@ -39,7 +39,7 @@ session_start();
 
     <div class="d-flex align-items-center justify-content-between">
       <a href="#" class="logo d-flex align-items-center">
-        <img src="/soutenance/public/image/bliotheque.jpg" alt="bliotheque.jpg">
+        <img src="<?= PROJECT_DIR;?>public/image/bliotheque.jpg" alt="bliotheque.jpg">
         <span class="d-none d-lg-block">Bibliothèque AKAITSUKI</span>
       </a>
     </div><!-- End Logo -->
@@ -80,7 +80,7 @@ session_start();
             </li>
   
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="/soutenance/membre/utilisateur/mon-profil">
+              <a class="dropdown-item d-flex align-items-center" href="<?= PROJECT_DIR;?>membre/utilisateur/mon-profil">
                 <i class="bi bi-person"></i>
                 <span>Mon Profil</span>
               </a>
@@ -90,7 +90,7 @@ session_start();
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="/soutenance/membre/utilisateur/historique_emprunt">
+              <a class="dropdown-item d-flex align-items-center" href="<?= PROJECT_DIR;?>membre/utilisateur/historique_emprunt">
                 <i class="bi bi-h-circle"></i>
                 <span>Historique des emprunts</span>
               </a>
@@ -100,7 +100,7 @@ session_start();
             </li>
   
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="/soutenance/membre/utilisateur/mon-profil">
+              <a class="dropdown-item d-flex align-items-center" href="<?= PROJECT_DIR;?>membre/utilisateur/mon-profil">
                 <i class="bi bi-gear"></i>
                 <span>Paramètres du compte</span>
               </a>
@@ -110,7 +110,7 @@ session_start();
             </li>
   
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="/soutenance/membre/utilisateur/aide">
+              <a class="dropdown-item d-flex align-items-center" href="<?= PROJECT_DIR;?>membre/utilisateur/aide">
                 <i class="bi bi-question-circle"></i>
                 <span>Besoin d'aide?</span>
               </a>
@@ -120,7 +120,7 @@ session_start();
             </li>
   
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="/soutenance/membre/utilisateur/deconnexion">
+              <a class="dropdown-item d-flex align-items-center" href="<?= PROJECT_DIR;?>membre/utilisateur/deconnexion">
                 <i class="ri-logout-box-line"></i>
                 <span>Se déconnecter</span>
               </a>

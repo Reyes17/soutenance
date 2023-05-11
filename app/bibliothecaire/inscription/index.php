@@ -32,7 +32,7 @@
                     <h3 class="text-center small">Entrer vos informations personnelles pour créer un compte</h3>
                   </div>
 
-                  <form action="/soutenance/bibliothecaire/inscription/inscription_traitement" method="post" novalidate class="row g-3 needs-validation" novalidate>
+                  <form action="<?= PROJECT_DIR;?>bibliothecaire/inscription/inscription_traitement" method="post" novalidate class="row g-3 needs-validation" novalidate>
                     <div class="col-12 mb-3">
                       <label for="incription_nom" class="form-label">Nom
                         <span class="text-danger"> (*)</span>

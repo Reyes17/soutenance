@@ -1,7 +1,7 @@
 <?php
 session_start();
-include './app/commun/index.php';
-include '../soutenance/app/commun/fonction/fonction.php';
+include 'app/commun/index.php';
+include 'app/commun/fonction/fonction.php';
 $user_connected = check_if_user_conneted();
 
 
@@ -12,9 +12,9 @@ if (isset($_SESSION['data']) && !empty($_SESSION['data'])) {
 if (isset($_COOKIE['data_users']) and !empty($_COOKIE['data_users'])) {
   $users_utilisateur = json_decode($_COOKIE['data_users']);
 }
-//if ($user_connected) {
-// header("location: /soutenance/membre/utilisateur/acceuil");
-//}else{
+// if ($user_connected) {
+// header("location: PROJECT_DIR . 'membre/utilisateur/acceuil';");
+// }else{
 
 
 ?>
@@ -28,7 +28,7 @@ if (isset($_COOKIE['data_users']) and !empty($_COOKIE['data_users'])) {
 
           <div class="d-flex justify-content-center py-4">
             <a href="" class="logo d-flex align-items-center w-auto">
-              <img src="/soutenance/public/image/bliotheque.jpg" alt="bliotheque.jpg">
+              <img src="<?= PROJECT_DIR;?>public/image/bliotheque.jpg" alt="bliotheque.jpg">
               <span class="d-none d-lg-block">Bibliothèque AKAITSUKI</span>
             </a>
           </div><!-- End Logo -->
@@ -73,7 +73,7 @@ if (isset($_COOKIE['data_users']) and !empty($_COOKIE['data_users'])) {
                 <p class="text-center small">Entrez votre nom d'utilisateur et votre mot de passe pour vous connecter</p>
               </div>
 
-              <form class="row g-3 needs-validation" action="/soutenance/membre/connexion/traitement" method="post">
+              <form class="row g-3 needs-validation" action="<?= PROJECT_DIR;?>membre/connexion/traitement" method="post">
 
                 <div class="col-12 mt-3">
                   <label for="incription_nom_utilisateur" class="form-label">Nom d'utilisateur
@@ -134,10 +134,10 @@ if (isset($_COOKIE['data_users']) and !empty($_COOKIE['data_users'])) {
                   <button class="btn btn-primary w-100" type="submit">Connexion</button>
                 </div>
                 <div class="col-6">
-                  <p> <a href="/soutenance/membre/inscription">Créer un compte</a></p>
+                  <p> <a href="<?= PROJECT_DIR;?>membre/inscription">Créer un compte</a></p>
                 </div>
                 <div class="col-6">
-                  <p> <a href="/soutenance/membre/mot_de_passe_oublie"> Mot de passe oublié</a> </p>
+                  <p> <a href="<?= PROJECT_DIR;?>membre/mot_de_passe_oublie"> Mot de passe oublié</a> </p>
                 </div>
                 <?php
                 session_destroy()

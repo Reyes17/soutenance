@@ -1,6 +1,6 @@
 <?php
 
-include '../soutenance/app/commun/fonction/fonction.php';
+include 'app/commun/fonction/fonction.php';
 session_start();
 $data=[];
 $errors=[];
@@ -24,14 +24,14 @@ if (empty($errors)) {
 
     $user = check_if_user_exist($data["nom_utilisateur"], $data["mot_de_passe"], "membre", 1, 0);
     if($user){       
-        header('location: /soutenance/membre/utilisateur/acceuil');
+        header('location:' . PROJECT_DIR .'membre/utilisateur/acceuil');
     }
     else {$_SESSION['danger'] = "Mot de passe ou nom d'utilisateur incorrect. Veuillez vérifier";  
-        header('location: /soutenance/membre/connexion') ;
+        header('location:' . PROJECT_DIR .'membre/connexion') ;
     }
                     
     } else {
         $_SESSION['errors']= $errors;
-        header('location: /soutenance/membre/connexion/index');
+        header('location:' . PROJECT_DIR .'membre/connexion/index');
 
     }

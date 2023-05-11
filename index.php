@@ -1,13 +1,15 @@
 <?php
 require 'vendor/autoload.php';
 
-define( 'PROJECT_DIR', '/stage/gestion-bibliotheque/' );
-define( 'DATABASE_HOST', 'localhost:8889' );
-define( 'DATABASE_NAME', 'gestion-bibliotheque' );
-define( 'DATABASE_USERNAME', 'root');
-define( 'DATABASE_PASSWORD', 'root' );
-define( 'MAIL_ADDRESS', '' );
-define( 'MAIL_PASSWORD', '' );
+define('PROJECT_DIR', '/stage/gestion-bibliotheque/');
+
+define('DATABASE_HOST', 'localhost:8889');
+define('DATABASE_NAME', 'gestion-bibliotheque');
+define('DATABASE_USERNAME', 'root');
+define('DATABASE_PASSWORD', 'root');
+
+define('MAIL_ADDRESS', 'akaisukibibliotheque@gmail.com');
+define('MAIL_PASSWORD', 'vwjposuraetwxstd');
 
 $default_profile = "membre";
 $default_profile_folder = "app/membre/index.php";

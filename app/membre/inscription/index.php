@@ -5,10 +5,10 @@
     $data = $_SESSION['data'];
 }
   include './app/commun/index.php';
-  include '../soutenance/app/commun/fonction/fonction.php';
+  include 'app/commun/fonction/fonction.php';
 if(check_if_user_conneted()){
   
-  header('location:/soutenance/membre/utilisateur/acceuil');
+  header('location:' . PROJECT_DIR .'membre/utilisateur/acceuil');
 }
 ?>
 
@@ -37,7 +37,7 @@ if(check_if_user_conneted()){
                     <h3 class="text-center small">Entrer vos informations personnelles pour créer un compte</h3>
                   </div>
 
-                  <form action="/soutenance/membre/inscription/inscription_traitement" method="post" novalidate class="row g-3 needs-validation" novalidate>
+                  <form action="<?= PROJECT_DIR;?>membre/inscription/inscription_traitement" method="post" novalidate class="row g-3 needs-validation" novalidate>
                     <div class="col-12 mb-3">
                       <label for="incription_nom" class="form-label">Nom
                         <span class="text-danger"> (*)</span>

@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-include '../soutenance/app/commun/fonction/fonction.php';
+include 'app/commun/fonction/fonction.php';
 
 $_SESSION['passe'] = "";
 
@@ -69,16 +69,16 @@ if (isset($_POST['sauvegarder'])) {
                 $data[0]['id']
             )) {
                 $_SESSION['success'] = "Modification(s) effectuée(s) avec succès";
-                header('location:/soutenance/membre/utilisateur/mon-profil');
+                header('location:' . PROJECT_DIR .'membre/utilisateur/mon-profil');
             } else {
                 $_SESSION['passe'] = "La modification à echouer. Vérifier votre mot de passe et réessayer.";
 
-                header('location:/soutenance/membre/utilisateur/mon-profil');
+                header('location:' . PROJECT_DIR .'membre/utilisateur/mon-profil');
             }
         }
     } else {
         $_SESSION['errors'] = "La modification à echouer. Vérifier votre mot de passe et réessayer.";
 
-        header('location:/soutenance/membre/utilisateur/mon-profil');
+        header('location:' . PROJECT_DIR .'membre/utilisateur/mon-profil');
     }
 }

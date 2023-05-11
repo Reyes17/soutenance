@@ -1,6 +1,6 @@
 <?php
 session_start();
-include '../soutenance/app/commun/fonction/fonction.php';
+include 'app/commun/fonction/fonction.php';
 if(check_if_user_conneted()){
 include("haut.php");
 ?>
@@ -32,7 +32,7 @@ include("haut.php");
                     </div>
                     <div class="ps-3">
                       <h6>145</h6>
-                      <button type="button" class="btn btn-outline-primary"><a href="/soutenance/bibliothecaire/dossier/liste_des_auteurs"> Voir plus</a></button>
+                      <button type="button" class="btn btn-outline-primary"><a href="<?= PROJECT_DIR;?>bibliothecaire/dossier/liste_des_auteurs"> Voir plus</a></button>
                     </div>
                   </div>
                 </div>
@@ -50,7 +50,7 @@ include("haut.php");
                     </div>
                     <div class="ps-3">
                       <h6>145</h6>
-                      <button type="button" class="btn btn-outline-primary"><a href="/soutenance/bibliothecaire/dossier/liste_des_langues"> Voir plus</a></button>
+                      <button type="button" class="btn btn-outline-primary"><a href="<?= PROJECT_DIR;?>bibliothecaire/dossier/liste_des_langues"> Voir plus</a></button>
                     </div>
                   </div>
                 </div>
@@ -68,7 +68,7 @@ include("haut.php");
                     </div>
                     <div class="ps-3">
                       <h6>145</h6>
-                      <button type="button" class="btn btn-outline-primary"><a href="/soutenance/bibliothecaire/dossier/liste_des_domaines"> Voir plus</a></button>
+                      <button type="button" class="btn btn-outline-primary"><a href="<?= PROJECT_DIR;?>bibliothecaire/dossier/liste_des_domaines"> Voir plus</a></button>
                     </div>
                   </div>
                 </div>
@@ -86,7 +86,7 @@ include("haut.php");
                     </div>
                     <div class="ps-3">
                       <h6>145</h6>
-                      <button type="button" class="btn btn-outline-primary"><a href="/soutenance/bibliothecaire/dossier/liste_des_membres"> Voir plus</a></button>
+                      <button type="button" class="btn btn-outline-primary"><a href="<?= PROJECT_DIR;?>bibliothecaire/dossier/liste_des_membres"> Voir plus</a></button>
                     </div>
                   </div>
                 </div>
@@ -104,7 +104,7 @@ include("haut.php");
                     </div>
                     <div class="ps-3">
                       <h6>145</h6>
-                      <button type="button" class="btn btn-outline-primary"><a href="/soutenance/bibliothecaire/dossier/liste_des_membres_indelicats"> Voir plus</a></button>
+                      <button type="button" class="btn btn-outline-primary"><a href="<?= PROJECT_DIR;?>bibliothecaire/dossier/liste_des_membres_indelicats"> Voir plus</a></button>
                     </div>
                   </div>
                 </div>
@@ -122,7 +122,7 @@ include("haut.php");
                     </div>
                     <div class="ps-3">
                       <h6>145</h6>
-                      <button type="button" class="btn btn-outline-primary"><a href="/soutenance/bibliothecaire/dossier/liste_des_emprunts"> Voir plus</a></button>
+                      <button type="button" class="btn btn-outline-primary"><a href="<?= PROJECT_DIR;?>bibliothecaire/dossier/liste_des_emprunts"> Voir plus</a></button>
                     </div>
                   </div>
                 </div>
@@ -140,7 +140,7 @@ include("haut.php");
                     </div>
                     <div class="ps-3">
                       <h6>145</h6>
-                      <button type="button" class="btn btn-outline-primary"><a href="/soutenance/bibliothecaire/dossier/liste_des_ouvrages"> Voir plus</a></button>
+                      <button type="button" class="btn btn-outline-primary"><a href="<?= PROJECT_DIR;?>bibliothecaire/dossier/liste_des_ouvrages"> Voir plus</a></button>
                     </div>
                   </div>
                 </div>
@@ -158,7 +158,7 @@ include("haut.php");
                     </div>
                     <div class="ps-3">
                       <h6>145</h6>
-                      <button type="button" class="btn btn-outline-primary"><a href="/soutenance/bibliothecaire/dossier/liste_des_domaines_ouvrages"> Voir plus</a></button>
+                      <button type="button" class="btn btn-outline-primary"><a href="<?= PROJECT_DIR;?>bibliothecaire/dossier/liste_des_domaines_ouvrages"> Voir plus</a></button>
                     </div>
                   </div>
                 </div>
@@ -176,7 +176,7 @@ include("haut.php");
                     </div>
                     <div class="ps-3">
                       <h6>145</h6>
-                      <button type="button" class="btn btn-outline-primary"><a href="/soutenance/bibliothecaire/dossier/liste_des_dates_parutions"> Voir plus</a></button>
+                      <button type="button" class="btn btn-outline-primary"><a href="<?= PROJECT_DIR;?>bibliothecaire/dossier/liste_des_dates_parutions"> Voir plus</a></button>
                     </div>
                   </div>
                 </div>
@@ -194,7 +194,7 @@ include("haut.php");
                     </div>
                     <div class="ps-3">
                       <h6>145</h6>
-                      <button type="button" class="btn btn-outline-primary"><a href="/soutenance/bibliothecaire/dossier/liste_des_auteurs_secondaires"> Voir plus</a></button>
+                      <button type="button" class="btn btn-outline-primary"><a href="<?= PROJECT_DIR;?>bibliothecaire/dossier/liste_des_auteurs_secondaires"> Voir plus</a></button>
                     </div>
                   </div>
                 </div>
@@ -206,6 +206,6 @@ include("haut.php");
 <?php
 include("bas.php");
 }else{
-  header('location: /soutenance/bibliothecaire/connexion/index');
+  header('location:' . PROJECT_DIR .'bibliothecaire/connexion/index');
 }
 ?>

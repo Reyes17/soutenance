@@ -15,16 +15,16 @@
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
   <!-- Vendor CSS Files -->
-  <link href="/soutenance/public/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="/soutenance/public/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="/soutenance/public/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-  <link href="/soutenance/public/vendor/quill/quill.snow.css" rel="stylesheet">
-  <link href="/soutenance/public/vendor/quill/quill.bubble.css" rel="stylesheet">
-  <link href="/soutenance/public/vendor/remixicon/remixicon.css" rel="stylesheet">
-  <link href="/soutenance/public/vendor/simple-datatables/style.css" rel="stylesheet">
+  <link href="<?= PROJECT_DIR;?>public/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="<?= PROJECT_DIR;?>public/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="<?= PROJECT_DIR;?>public/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="<?= PROJECT_DIR;?>public/vendor/quill/quill.snow.css" rel="stylesheet">
+  <link href="<?= PROJECT_DIR;?>public/vendor/quill/quill.bubble.css" rel="stylesheet">
+  <link href="<?= PROJECT_DIR;?>public/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="<?= PROJECT_DIR;?>public/vendor/simple-datatables/style.css" rel="stylesheet">
 
   <!-- Template Main CSS File -->
-  <link href="/soutenance/public/css/style.css" rel="stylesheet">
+  <link href="<?= PROJECT_DIR;?>public/css/style.css" rel="stylesheet">
 
   <!-- =======================================================
   ======================================================== -->
@@ -37,7 +37,7 @@
 
   <div class="d-flex align-items-center justify-content-between">
     <a href="dashboard" class="logo d-flex align-items-center">
-    <img src="/soutenance/public/image/bliotheque.jpg" alt="bliotheque.jpg">
+    <img src="<?= PROJECT_DIR;?>public/image/bliotheque.jpg" alt="bliotheque.jpg">
         <span class="d-none d-lg-block">Bibliothèque AKAITSUKI</span>
     </a>
     <i class="bi bi-list toggle-sidebar-btn"></i>
@@ -78,7 +78,7 @@
           </li>
 
           <li>
-            <a class="dropdown-item d-flex align-items-center" href="/soutenance/bibliothecaire/dossier/mon-profil">
+            <a class="dropdown-item d-flex align-items-center" href="<?= PROJECT_DIR;?>bibliothecaire/dossier/mon-profil">
               <i class="bi bi-person"></i>
               <span>Mon Profil</span>
             </a>
@@ -88,7 +88,7 @@
           </li>
 
           <li>
-            <a class="dropdown-item d-flex align-items-center" href="/soutenance/bibliothecaire/dossier/mon-profil">
+            <a class="dropdown-item d-flex align-items-center" href="<?= PROJECT_DIR;?>bibliothecaire/dossier/mon-profil">
               <i class="bi bi-gear"></i>
               <span>Paramètres du compte</span>
             </a>
@@ -98,7 +98,7 @@
           </li>
 
           <li>
-            <a class="dropdown-item d-flex align-items-center" href="/soutenance/bibliothecaire/dossier/aide">
+            <a class="dropdown-item d-flex align-items-center" href="<?= PROJECT_DIR;?>bibliothecaire/dossier/aide">
               <i class="bi bi-question-circle"></i>
               <span>Besoin d'aide?</span>
             </a>
@@ -134,12 +134,12 @@
       </a>
       <ul id="auteurs-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
         <li>
-          <a href="/soutenance/bibliothecaire/dossier/liste_des_auteurs">
+          <a href="<?= PROJECT_DIR;?>bibliothecaire/dossier/liste_des_auteurs">
             <i class="bi bi-circle"></i><span>Liste des auteurs</span>
           </a>
         </li>
         <li>
-          <a href="/soutenance/bibliothecaire/dossier/ajouter_auteurs">
+          <a href="<?= PROJECT_DIR;?>bibliothecaire/dossier/ajouter_auteurs">
             <i class="bi bi-circle"></i><span>Ajouter un auteur</span>
           </a>
         </li>
@@ -154,12 +154,12 @@
         </a>
         <ul id="ouvrages-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="/soutenance/bibliothecaire/dossier/liste_des_ouvrages">
+            <a href="<?= PROJECT_DIR;?>bibliothecaire/dossier/liste_des_ouvrages">
               <i class="bi bi-circle"></i><span>Liste des ouvrages</span>
             </a>
           </li>
           <li>
-            <a href="/soutenance/bibliothecaire/dossier/ajouter_ouvrage">
+            <a href="<?= PROJECT_DIR;?>bibliothecaire/dossier/ajouter_ouvrage">
               <i class="bi bi-circle"></i><span>Ajouter un ouvrage </span>
             </a>
           </li>
@@ -173,12 +173,12 @@
       </a>
       <ul id="langues-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
         <li>
-          <a href="/soutenance/bibliothecaire/dossier/liste_des_langues">
+          <a href="<?= PROJECT_DIR;?>bibliothecaire/dossier/liste_des_langues">
             <i class="bi bi-circle"></i><span>Liste des langues</span>
           </a>
         </li>
         <li>
-          <a href="/soutenance/bibliothecaire/dossier/ajouter_langue">
+          <a href="<?= PROJECT_DIR;?>bibliothecaire/dossier/ajouter_langue">
             <i class="bi bi-circle"></i><span>Ajouter une langue</span>
           </a>
         </li>
@@ -192,12 +192,12 @@
       </a>
       <ul id="emprunts-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
         <li>
-          <a href="/soutenance/bibliothecaire/dossier/liste_des_emprunts">
+          <a href="<?= PROJECT_DIR;?>bibliothecaire/dossier/liste_des_emprunts">
             <i class="bi bi-circle"></i><span>Liste des emprunts</span>
           </a>
         </li>
         <li>
-          <a href="/soutenance/bibliothecaire/dossier/ajouter_emprunt">
+          <a href="<?= PROJECT_DIR;?>bibliothecaire/dossier/ajouter_emprunt">
             <i class="bi bi-circle"></i><span>Ajouter un emprunt</span>
           </a>
         </li>
@@ -210,12 +210,12 @@
       </a>
       <ul id="membres-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
         <li>
-          <a href="/soutenance/bibliothecaire/dossier/liste_des_membres">
+          <a href="<?= PROJECT_DIR;?>bibliothecaire/dossier/liste_des_membres">
             <i class="bi bi-circle"></i><span>Liste des membres</span>
           </a>
         </li>
         <li>
-          <a href="/soutenance/bibliothecaire/dossier/ajouter_membre">
+          <a href="<?= PROJECT_DIR;?>bibliothecaire/dossier/ajouter_membre">
             <i class="bi bi-circle"></i><span>Ajouter un membre</span>
           </a>
         </li>
@@ -228,12 +228,12 @@
         </a>
         <ul id="membres_indelicats-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="/soutenance/bibliothecaire/dossier/liste_des_membres_indelicats">
+            <a href="<?= PROJECT_DIR;?>bibliothecaire/dossier/liste_des_membres_indelicats">
               <i class="bi bi-circle"></i><span>Liste des membres indélicats</span>
             </a>
           </li>
           <li>
-            <a href="/soutenance/bibliothecaire/dossier/ajouter_membre_indelicat">
+            <a href="<?= PROJECT_DIR;?>bibliothecaire/dossier/ajouter_membre_indelicat">
               <i class="bi bi-circle"></i><span>Ajouter un membre indélicat</span>
             </a>
           </li>
@@ -246,12 +246,12 @@
       </a>
       <ul id="domaines-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
         <li>
-          <a href="/soutenance/bibliothecaire/dossier/liste_des_domaines">
+          <a href="<?= PROJECT_DIR;?>bibliothecaire/dossier/liste_des_domaines">
             <i class="bi bi-circle"></i><span>Liste des domaines</span>
           </a>
         </li>
         <li>
-          <a href="/soutenance/bibliothecaire/dossier/ajouter_domaine">
+          <a href="<?= PROJECT_DIR;?>bibliothecaire/dossier/ajouter_domaine">
             <i class="bi bi-circle"></i><span>Ajouter un domaine</span>
           </a>
         </li>
@@ -264,12 +264,12 @@
       </a>
       <ul id="domaines_ouvrages-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
         <li>
-          <a href="/soutenance/bibliothecaire/dossier/liste_des_domaines_ouvrages">
+          <a href="<?= PROJECT_DIR;?>bibliothecaire/dossier/liste_des_domaines_ouvrages">
             <i class="bi bi-circle"></i><span>Liste des domaines ouvrages</span>
           </a>
         </li>
         <li>
-          <a href="/soutenance/bibliothecaire/dossier/ajouter_domaine_ouvrage">
+          <a href="<?= PROJECT_DIR;?>bibliothecaire/dossier/ajouter_domaine_ouvrage">
             <i class="bi bi-circle"></i><span>Ajouter un domaine ouvrage</span>
           </a>
         </li>
@@ -282,12 +282,12 @@
       </a>
       <ul id="date_parution-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
         <li>
-          <a href="/soutenance/bibliothecaire/dossier/liste_des_dates_parutions">
+          <a href="<?= PROJECT_DIR;?>bibliothecaire/dossier/liste_des_dates_parutions">
             <i class="bi bi-circle"></i><span>Liste des dates parutions</span>
           </a>
         </li>
         <li>
-          <a href="/soutenance/bibliothecaire/dossier/ajouter_date_parution">
+          <a href="<?= PROJECT_DIR;?>bibliothecaire/dossier/ajouter_date_parution">
             <i class="bi bi-circle"></i><span>Ajouter une date parution</span>
           </a>
         </li>
@@ -300,12 +300,12 @@
       </a>
       <ul id="auteurs_secondaires-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
         <li>
-          <a href="/soutenance/bibliothecaire/dossier/liste_des_auteurs_secondaires">
+          <a href="<?= PROJECT_DIR;?>bibliothecaire/dossier/liste_des_auteurs_secondaires">
             <i class="bi bi-circle"></i><span>Liste des auteurs secondaire</span>
           </a>
         </li>
         <li>
-          <a href="/soutenance/bibliothecaire/dossier/ajouter_auteur_secondaire">
+          <a href="<?= PROJECT_DIR;?>bibliothecaire/dossier/ajouter_auteur_secondaire">
             <i class="bi bi-circle"></i><span>Ajouter un auteur secondaire </span>
           </a>
         </li>
@@ -315,28 +315,28 @@
     <li class="nav-heading">Pages</li>
   
     <li class="nav-item">
-      <a class="nav-link collapsed" href="/soutenance/bibliothecaire/dossier/mon-profil">
+      <a class="nav-link collapsed" href="<?= PROJECT_DIR;?>bibliothecaire/dossier/mon-profil">
         <i class="bi bi-person"></i>
         <span>Profile</span>
       </a>
     </li><!-- End Profile Page Nav -->
   
     <li class="nav-item">
-      <a class="nav-link " href="/soutenance/bibliothecaire/dossier/aide">
+      <a class="nav-link " href="<?= PROJECT_DIR;?>bibliothecaire/dossier/aide">
         <i class="bi bi-question-circle"></i>
         <span>Aide</span>
       </a>
     </li><!-- End F.A.Q Page Nav -->
   
     <li class="nav-item">
-      <a class="nav-link collapsed" href="/soutenance/bibliothecaire/dossier/contact">
+      <a class="nav-link collapsed" href="<?= PROJECT_DIR;?>bibliothecaire/dossier/contact">
         <i class="bi bi-envelope"></i>
         <span>Contact</span>
       </a>
     </li><!-- End Contact Page Nav -->
   
     <li class="nav-item">
-      <a class="nav-link collapsed" href="/soutenance/bibliothecaire/dossier/pages-error-404">
+      <a class="nav-link collapsed" href="<?= PROJECT_DIR;?>bibliothecaire/dossier/pages-error-404">
         <i class="bi bi-dash-circle"></i>
         <span>Error 404</span>
       </a>

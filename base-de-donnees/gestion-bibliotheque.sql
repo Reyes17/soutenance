@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : mer. 08 fév. 2023 à 15:19
+-- Généré le : jeu. 11 mai 2023 à 13:19
 -- Version du serveur :  5.7.31
 -- Version de PHP : 7.3.21
 
@@ -31,6 +31,10 @@ DROP TABLE IF EXISTS `auteur`;
 CREATE TABLE IF NOT EXISTS `auteur` (
   `num_aut` int(11) NOT NULL AUTO_INCREMENT,
   `nom_aut` varchar(255) NOT NULL,
+  `creer_le` int(11) NOT NULL,
+  `est_actif` int(11) NOT NULL,
+  `est_supprimer` int(11) NOT NULL,
+  `maj_le` timestamp NOT NULL,
   PRIMARY KEY (`num_aut`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -45,6 +49,10 @@ CREATE TABLE IF NOT EXISTS `auteur_secondaire` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `cod_ouv` int(11) NOT NULL,
   `num_aut` int(11) NOT NULL,
+  `creer_le` int(11) NOT NULL,
+  `est_actif` int(11) NOT NULL,
+  `est_supprimer_` int(11) NOT NULL,
+  `maj_le` timestamp NOT NULL,
   PRIMARY KEY (`id`),
   KEY `num_aut` (`num_aut`),
   KEY `cod_ouv` (`cod_ouv`)
@@ -62,6 +70,10 @@ CREATE TABLE IF NOT EXISTS `date_parution` (
   `cod_ouv` int(11) NOT NULL,
   `cod_lang` int(11) NOT NULL,
   `dat_par` date NOT NULL,
+  `creer_le` int(11) NOT NULL,
+  `est_actif` int(11) NOT NULL,
+  `est_supprimer` int(11) NOT NULL,
+  `maj_le` timestamp NOT NULL,
   PRIMARY KEY (`id`),
   KEY `cod_ouv` (`cod_ouv`),
   KEY `cod_lang` (`cod_lang`)
@@ -77,6 +89,10 @@ DROP TABLE IF EXISTS `domaine`;
 CREATE TABLE IF NOT EXISTS `domaine` (
   `cod_dom` int(11) NOT NULL AUTO_INCREMENT,
   `lib_dom` varchar(255) NOT NULL,
+  `creer_le` int(11) NOT NULL,
+  `est_actif` int(11) NOT NULL,
+  `est_supprimer` int(11) NOT NULL,
+  `maj_le` timestamp NOT NULL,
   PRIMARY KEY (`cod_dom`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -91,6 +107,10 @@ CREATE TABLE IF NOT EXISTS `domaine_ouvrage` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `cod_ouv` int(11) NOT NULL,
   `cod_dom` int(11) NOT NULL,
+  `creer_le` int(11) NOT NULL,
+  `est_actif` int(11) NOT NULL,
+  `est_supprimer` int(11) NOT NULL,
+  `maj_le` timestamp NOT NULL,
   PRIMARY KEY (`id`),
   KEY `cod_ouv` (`cod_ouv`),
   KEY `cod_dom` (`cod_dom`)
@@ -107,6 +127,10 @@ CREATE TABLE IF NOT EXISTS `emprumt` (
   `num_emp` int(11) NOT NULL AUTO_INCREMENT,
   `dat_emp` datetime NOT NULL,
   `id` int(11) NOT NULL,
+  `creer_le` int(11) NOT NULL,
+  `est_actif` int(11) NOT NULL,
+  `est_supprimer` int(11) NOT NULL,
+  `maj_le` timestamp NOT NULL,
   PRIMARY KEY (`num_emp`),
   KEY `num_mem` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -121,6 +145,10 @@ DROP TABLE IF EXISTS `langue`;
 CREATE TABLE IF NOT EXISTS `langue` (
   `cod_lang` int(11) NOT NULL AUTO_INCREMENT,
   `lib_lang` varchar(255) NOT NULL,
+  `creer_le` int(11) NOT NULL,
+  `est_actif` int(11) NOT NULL,
+  `est_supprimer` int(11) NOT NULL,
+  `maj_le` timestamp NOT NULL,
   PRIMARY KEY (`cod_lang`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -139,6 +167,8 @@ CREATE TABLE IF NOT EXISTS `membre` (
   `email` varchar(255) NOT NULL,
   `est _actif` int(1) NOT NULL,
   `est_supprimer` int(1) NOT NULL,
+  `creer_le` int(11) NOT NULL,
+  `maj_le` timestamp NOT NULL,
   `mot_de_passe` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -157,6 +187,10 @@ CREATE TABLE IF NOT EXISTS `membre_indelicat` (
   `dat_ret` datetime NOT NULL,
   `numero_compte` varchar(255) NOT NULL,
   `banque` varchar(255) NOT NULL,
+  `creer_le` int(11) NOT NULL,
+  `est_actif` int(11) NOT NULL,
+  `est_supprimer` int(11) NOT NULL,
+  `maj_le` timestamp NOT NULL,
   PRIMARY KEY (`id`),
   KEY `num_emp` (`num_emp`),
   KEY `cod_ouv` (`cod_ouv`)
@@ -175,9 +209,61 @@ CREATE TABLE IF NOT EXISTS `ouvrage` (
   `nb_ex` int(11) NOT NULL,
   `periodicite` varchar(255) NOT NULL,
   `num_aut` int(11) NOT NULL,
+  `creer_le` int(11) NOT NULL,
+  `est_actif` int(11) NOT NULL,
+  `est_supprimer` int(11) NOT NULL,
+  `maj_le` timestamp NOT NULL,
   PRIMARY KEY (`cod_ouv`),
   KEY `num_aut` (`num_aut`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `token`
+--
+
+DROP TABLE IF EXISTS `token`;
+CREATE TABLE IF NOT EXISTS `token` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `type` varchar(255) NOT NULL,
+  `token` varchar(255) NOT NULL,
+  `est_actif` tinyint(4) NOT NULL DEFAULT '1',
+  `est_supprimer` tinyint(11) NOT NULL DEFAULT '0',
+  `creer_le` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `maj_le` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `utilisateur`
+--
+
+DROP TABLE IF EXISTS `utilisateur`;
+CREATE TABLE IF NOT EXISTS `utilisateur` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nom` varchar(255) NOT NULL,
+  `prenom` varchar(255) NOT NULL,
+  `sexe` varchar(1) NOT NULL,
+  `date_naissance` date NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `telephone` int(11) DEFAULT NULL,
+  `mot_de_passe` varchar(255) NOT NULL,
+  `profil` varchar(255) DEFAULT NULL,
+  `avatar` varchar(255) DEFAULT 'Non defini',
+  `est_actif` int(11) DEFAULT NULL,
+  `est_supprimer` int(11) DEFAULT NULL,
+  `creer_le` timestamp NULL DEFAULT NULL,
+  `maj_le` timestamp NULL DEFAULT NULL,
+  `email_valide` int(11) DEFAULT NULL,
+  `telephone_valide` int(255) DEFAULT NULL,
+  `nom_utilisateur` varchar(255) NOT NULL,
+  `adresse` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Contraintes pour les tables déchargées

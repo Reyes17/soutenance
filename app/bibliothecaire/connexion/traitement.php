@@ -1,5 +1,5 @@
 <?php
-include '../soutenance/app/commun/fonction/fonction.php';
+include 'app/commun/fonction/fonction.php';
 session_start();
 $data=[];
 $errors=[];
@@ -21,13 +21,13 @@ if (empty($errors)) {
 
     $user = check_if_user_exist($data["nom_utilisateur"], $data["mot_de_passe"], "membre", 1, 0);
     if($user){
-        header('location: /soutenance/bibliothecaire/utilisateur/acceuil');
+        header('location:' . PROJECT_DIR .'bibliothecaire/utilisateur/acceuil');
     }
     else {die ('echec');    
     }
                     
     } else {
         $_SESSION['errors']= $errors;
-        header('location: /soutenance/bibliothecaire/connexion/index');
+        header('location:' . PROJECT_DIR .'bibliothecaire/connexion/index');
 
     }

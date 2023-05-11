@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-include '../soutenance/app/commun/fonction/fonction.php';
+include 'app/commun/fonction/fonction.php';
 
 $_SESSION['changement-erreurs'] = [];
 
@@ -49,7 +49,7 @@ if (empty($errors)) {
 
         if (update_password_in_db($_SESSION['utilisateur_connecter']['id'], $data["nouveau_mot_de_passe"])) {
             session_destroy();
-            header("location:/soutenance/membre/connexion");
+            header("location:' . PROJECT_DIR .'membre/connexion");
         } else {
             die('no good at all');
         }
@@ -76,5 +76,5 @@ if (empty($errors)) {
     
     
     '] = $errors;
-    header("location:/soutenance/membre/utilisateur/mon-profil");
+    header("location:' . PROJECT_DIR .'membre/utilisateur/mon-profil");
 }

@@ -1,5 +1,5 @@
 <?php
-include '../soutenance/app/commun/fonction/fonction.php';
+include 'app/commun/fonction/fonction.php';
 if(check_if_user_conneted()){
 include("haut.php");
 ?>
@@ -238,7 +238,7 @@ include("haut.php");
 <?php
   include('bas.php');
 } else{
-  header('location: /soutenance/bibliothecaire/connexion/index');
+  header('location:' . PROJECT_DIR .'bibliothecaire/connexion/index');
 }
 ?>
 

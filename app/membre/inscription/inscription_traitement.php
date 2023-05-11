@@ -1,28 +1,26 @@
 <?php
 
-include '../soutenance/app/commun/fonction/fonction.php';
+include 'app/commun/fonction/fonction.php';
 
 session_start();
-$data=[];
-$errors=[];
-$success="";
-$null=null;
-$_SESSION['data']= [];
+$data = [];
+$errors = [];
+$success = "";
+$null = null;
+$_SESSION['data'] = [];
 //Je vérifie si les informations envoyés par le visiteur sont corrrects.
 
 
-if (verifier_info($_POST['nom'])){
-    $data['nom']=htmlentities($_POST['nom']) ;
-}
-else{
-       $errors['nom'] = '<p> Le champs nom est requis. Veuillez le renseigner! </p>';
+if (verifier_info($_POST['nom'])) {
+    $data['nom'] = htmlentities($_POST['nom']);
+} else {
+    $errors['nom'] = '<p> Le champs nom est requis. Veuillez le renseigner! </p>';
 }
 
-if(verifier_info($_POST['prenom'])){
-    $data['prenom']= htmlentities($_POST['prenom']) ;
-}
-else{
-        $errors['prenom']= '<p > Le champs prénom est requis. Veuillez le renseigner!</p>';
+if (verifier_info($_POST['prenom'])) {
+    $data['prenom'] = htmlentities($_POST['prenom']);
+} else {
+    $errors['prenom'] = '<p > Le champs prénom est requis. Veuillez le renseigner!</p>';
 }
 
 if (isset($_POST["sexe"]) && !empty($_POST["sexe"])) {
@@ -46,9 +44,8 @@ if (isset($_POST["date_naissance"]) && !empty($_POST["date_naissance"])) {
 
 if (isset($_POST["email"]) && !empty($_POST["email"]) && filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
     $data["email"] = $_POST["email"];
-} 
-else{
-        $errors['email'] = '<p>Le champs email est requis ou est déjà utlisé. Veuillez le renseigner!</p>';
+} else {
+    $errors['email'] = '<p>Le champs email est requis ou est déjà utlisé. Veuillez le renseigner!</p>';
 }
 
 if (!isset($_POST["mot_de_passe"]) || empty($_POST["mot_de_passe"])) {
@@ -92,7 +89,7 @@ if ($check_user_name_exist_in_db) {
 
 
 
-$_SESSION ['data']= $data;
+$_SESSION['data'] = $data;
 
 $_SESSION['success'] = "";
 
@@ -100,10 +97,11 @@ $_SESSION['success'] = "";
 
 if (empty($errors)) {
     $db = connect_db();
-    
+
 
     // Ecriture de la requête
-    $requette = 'INSERT INTO utilisateur (nom, prenom, sexe, date_naissance, email, nom_utilisateur, telephone, adresse, mot_de_passe, profil) VALUES (:nom, :prenom, :sexe, :date_naissance, :email, :nom_utilisateur, :telephone, :adresse, :mot_de_passe, :profil)';
+    //$requette = 'INSERT INTO utilisateur (nom, prenom, sexe, date_naissance, email, nom_utilisateur, telephone, adresse, mot_de_passe, profil) VALUES (:nom, :prenom, :sexe, :date_naissance, :email, :nom_utilisateur, :telephone, :adresse, :mot_de_passe, :profil)';
+    $requette = 'INSERT INTO utilisateur (nom, prenom, sexe, date_naissance, email, nom_utilisateur, mot_de_passe, profil) VALUES (:nom, :prenom, :sexe, :date_naissance, :email, :nom_utilisateur, :mot_de_passe, :profil)';
 
     // Préparation
     $inserer_utilisateur = $db->prepare($requette);
@@ -116,57 +114,43 @@ if (empty($errors)) {
         'date_naissance' => $data["date_naissance"],
         'email' => $data["email"],
         'nom_utilisateur' => $data["nom_utilisateur"],
-        'telephone' => $data["telephone"],
-        'adresse'=> $data["adresse"],
+        //'telephone' => $data["telephone"],
+        //'adresse'=> $data["adresse"],
         'mot_de_passe' => sha1($data["mot_de_passe"]),
         'profil' => 'membre',
-        
-    ]); 
+
+    ]);
 
     //die(var_dump($resultat));
-     
 
-    if($resultat){
+
+    if ($resultat) {
         $_token = uniqid("");
         $id_utilisateur = select_user_id($data['email'])[0]['id'];
-        if (insertion_token($id_utilisateur, 'VALIDATION_COMPTE', $_token)){
-            $_SESSION['validation_compte']=[];
-            $_SESSION['validation_compte']['id_utilisateur']=$id_utilisateur;
-            $_SESSION['validation_compte']['token']=recuperer_token($id_utilisateur)[0]['token'];
+        if (insertion_token($id_utilisateur, 'VALIDATION_COMPTE', $_token)) {
+            $_SESSION['validation_compte'] = [];
+            $_SESSION['validation_compte']['id_utilisateur'] = $id_utilisateur;
+            $_SESSION['validation_compte']['token'] = recuperer_token($id_utilisateur)[0]['token'];
         }
-    $objet = 'Validation de compte';
-    
-    $corps = buffer_html_file("../soutenance/app/membre/inscription/message_mail.php");
+        $objet = 'Validation de compte';
 
-    $mail = $data["email"];
+        $corps = buffer_html_file("app/membre/inscription/message_mail.php");
 
-    //email($mail, $objet, $corps);
-    
-    if (email($mail, $objet, $corps)){
+        $mail = $data["email"];
 
-        $_SESSION['success'] = "Inscription éffectuée";
-        header('location:/soutenance/membre/inscription/validation');
+        if (send_email($mail, $objet, $corps)) {
 
-    } else {
-        die ('Non envoyé');
-    }
-       
+            $_SESSION['success'] = "Inscription éffectuée";
+            header('location:' . PROJECT_DIR . 'membre/inscription/validation');
+        } else {
+            die('Non envoyé');
+        }
     } else {
         echo 'pas bon';
     }
-
-
 }
 //Si les informations de l'utilisateur sont incorrects, je le redirige vers la page d'inscription avec des messages d'erreurs 
-else{
-    $_SESSION['errors']= $errors;
-    header('location:/soutenance/membre/inscription');
+else {
+    $_SESSION['errors'] = $errors;
+    header('location:' . PROJECT_DIR . 'membre/inscription');
 }
-    
-     
-   
-
-
-
-   
-

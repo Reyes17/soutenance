@@ -1,6 +1,6 @@
 <?php
 
-include '../soutenance/app/commun/fonction/fonction.php';
+include 'app/commun/fonction/fonction.php';
 session_start();
 $data=[];
 $errors=[];
@@ -124,7 +124,7 @@ if (empty($errors)) {
     if($resultat){
         
         $success="Inscription réussie!";
-        header('location: /soutenance/bibliothecaire/connexion');
+        header('location:' . PROJECT_DIR .'bibliothecaire/connexion');
     } else {
         echo 'pas bon';
     }
@@ -134,7 +134,7 @@ if (empty($errors)) {
 //Si les informations de l'utilisateur sont incorrects, je le redirige vers la page d'inscription avec des messages d'erreurs 
 else{
     $_SESSION['errors']= $errors;
-    header('location: /soutenance/bibliothecaire/inscription');
+    header('location:' . PROJECT_DIR .'bibliothecaire/inscription');
 }
     
      

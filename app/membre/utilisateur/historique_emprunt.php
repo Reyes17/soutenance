@@ -1,10 +1,10 @@
 <?php
 session_start();
-include '../soutenance/app/commun/fonction/fonction.php';
+include 'app/commun/fonction/fonction.php';
 $user_connected = check_if_user_conneted();
 
 if (!$user_connected) {
-    header("location: /soutenance/membre/connexion");
+    header("location:' . PROJECT_DIR .'membre/connexion");
    }
 include("haut.php");
 ?>

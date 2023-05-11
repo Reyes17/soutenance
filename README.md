@@ -11,10 +11,10 @@ Pré-requis :
 
 - Créer une base de données.
 
-- Importer le ficher de la base de données situé dans le dossier : base-de-donnees/africa-express-cargo.sql.
+- Importer le ficher de la base de données situé dans le dossier : base-de-donnees/gestion-bibliotheque.sql.
 
 - Configurer la constante PROJECT dans le fichier index.php a la racine du projet en spécifiant le path de votre projet a partir du répertoire web. 
-Exemple : C:\wamp64\www\africa-express-cargo. Ma constante PROJECT aura comme valeur : /africa-express-cargo/
+Exemple : C:\wamp64\www\gestion-bibliotheque. Ma constante PROJECT aura comme valeur : /gestion-bibliotheque/
 
 - Configurer les constantes DATABASE_NAME, DATABASE_USERNAME, DATABASE_PASSWORD dans le fichier index.php a la racine du projet en spécifiant les informations de la base de données.
 
@@ -22,4 +22,4 @@ Exemple : C:\wamp64\www\africa-express-cargo. Ma constante PROJECT aura comme va
 
 - Lancer le projet avec la commande : php -S localhost:8081
 
-- Déployer votre projet en accédant a l'url suivant : http://ocalhost:8081
+- Déployer votre projet en accédant a l'url suivant : http://localhost:8081

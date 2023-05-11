@@ -3,8 +3,9 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-function verifier_info($info): bool {
-    return(isset($info) AND !empty($info));
+function verifier_info($info): bool
+{
+    return (isset($info) and !empty($info));
 }
 
 
@@ -15,13 +16,12 @@ function connect_db()
     $db = null;
 
     try {
-        $db = new PDO('mysql:host=localhost;dbname=bibliotheque;charset=utf8', 'root', '',array(PDO::ATTR_ERRMODE=> PDO::ERRMODE_EXCEPTION));
-    } catch (Exception $e) {
+        $db = new PDO('mysql:host=' . DATABASE_HOST . ';dbname=' . DATABASE_NAME . ';charset=utf8', DATABASE_USERNAME, DATABASE_PASSWORD, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+    } catch (\Exception $e) {
         $db = "Oups! Une erreur s'est produite lors de la connexion a la base de donnée.";
     }
 
     return $db;
-
 }
 
 
@@ -36,7 +36,7 @@ function check_email_exist_in_db(string $email)
 
     $check = false;
 
-    $db=connect_db();
+    $db = connect_db();
 
     $requette = "SELECT count(*) as nbr_utilisateur FROM utilisateur WHERE email = :email and est_supprimer = :est_supprimer";
 
@@ -52,11 +52,9 @@ function check_email_exist_in_db(string $email)
         $nbr_utilisateur = $verifier_email->fetch(PDO::FETCH_ASSOC)["nbr_utilisateur"];
 
         $check = ($nbr_utilisateur > 0) ? true : false;
-
     }
 
     return $check;
-
 }
 
 
@@ -71,7 +69,7 @@ function check_user_name_exist_in_db(string $nom_utilisateur)
 
     $check = false;
 
-    $db=connect_db();
+    $db = connect_db();
 
     $requette = "SELECT count(*) as nbr_utilisateur FROM utilisateur WHERE nom_utilisateur = :nom_utilisateur and est_supprimer = :est_supprimer";
 
@@ -87,86 +85,81 @@ function check_user_name_exist_in_db(string $nom_utilisateur)
         $nbr_utilisateur = $verifier_nom_utilisateur->fetch(PDO::FETCH_ASSOC)["nbr_utilisateur"];
 
         $check = ($nbr_utilisateur > 0) ? true : false;
-
     }
 
     return $check;
-
 }
 
 
 /**
  * .3++++++
  * 
-     * Send mail.
-     *
-     * @param string $destination The destination.
-     * @param string $subject The subject.
-     * @param string $body The body.
-     * @return bool The result.
-     */
-     function email(string $destination, string $subject, string $body): bool
-    {
-        // passing true in constructor enables exceptions in PHPMailer
-        $mail = new PHPMailer(true);
-        $mail->CharSet = "UTF-8";
+ * Send mail.
+ *
+ * @param string $destination The destination.
+ * @param string $subject The subject.
+ * @param string $body The body.
+ * @return bool The result.
+ */
+function send_email(string $destination, string $subject, string $body): bool
+{
+    // passing true in constructor enables exceptions in PHPMailer
+    $mail = new PHPMailer(true);
+    $mail->CharSet = "UTF-8";
 
-        try {
+    try {
 
-            // Server settings
-            // for detailed debug output
-            // $mail->SMTPDebug = SMTP::DEBUG_SERVER;
-            $mail->SMTPDebug = 0;
-            $mail->isSMTP();
-            $mail->Host = 'smtp.gmail.com';
-            $mail->SMTPAuth = true;
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-            $mail->Port = 587;
+        // Server settings
+        // for detailed debug output
+        // $mail->SMTPDebug = SMTP::DEBUG_SERVER;
+        $mail->SMTPDebug = 0;
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port = 587;
 
-            $mail->Username = 'akaisukibibliotheque@gmail.com';
-            $mail->Password = 'vwjposuraetwxstd';
+        $mail->Username = MAIL_ADDRESS;
+        $mail->Password = MAIL_PASSWORD;
 
-            // Sender and recipient settings
-            $mail->setFrom('akaisukibibliotheque@gmail.com', htmlspecialchars_decode('Bibliotheque AKAITSUKI'));
-            $mail->addAddress($destination, 'UTILISATEUR');
-            $mail->addReplyTo('akaisukibibliotheque@gmail.com', htmlspecialchars_decode('Bibliotheque AKAITSUKI'));
+        // Sender and recipient settings
+        $mail->setFrom('akaisukibibliotheque@gmail.com', htmlspecialchars_decode('Bibliotheque AKAITSUKI'));
+        $mail->addAddress($destination, 'UTILISATEUR');
+        $mail->addReplyTo('akaisukibibliotheque@gmail.com', htmlspecialchars_decode('Bibliotheque AKAITSUKI'));
 
-            // Setting the email content
-            $mail->IsHTML(true);
-            $mail->Subject = htmlspecialchars_decode($subject);
-            $mail->Body = $body;
+        // Setting the email content
+        $mail->IsHTML(true);
+        $mail->Subject = htmlspecialchars_decode($subject);
+        $mail->Body = $body;
 
-            return $mail->send();
-
-        } catch (Exception $e) {
-
-            return false;
-
-        }
-
+        return $mail->send();
+    } catch (Exception $e) {
+        return false;
     }
+}
 
-    //Fonction buffer pour récupérer du html
+//Fonction buffer pour récupérer du html
 
-function buffer_html_file($filename) {
-        ob_start(); //démarre la temporisation de sortie
+function buffer_html_file($filename)
+{
+    ob_start(); //démarre la temporisation de sortie
 
-        include $filename; //Inclut des fichier html dans le tampon
+    include $filename; //Inclut des fichier html dans le tampon
 
-        $html= ob_get_contents(); // Récupère le contenu du tampon
-        ob_end_clean(); // Arrête et vide la tamporisation de sortie
+    $html = ob_get_contents(); // Récupère le contenu du tampon
+    ob_end_clean(); // Arrête et vide la tamporisation de sortie
 
-        return $html; // Retourne le contenu du fichier html
-    }
+    return $html; // Retourne le contenu du fichier html
+}
 
 //Exemple de fonction pour exécuter la requête INSERT INTO
 
-function insertion_token(int $user_id, string $type, string $token ): bool
+function insertion_token(int $user_id, string $type, string $token): bool
 {
 
     $insertion_token = false;
 
-    $db=connect_db();
+    $db = connect_db();
 
     $request = "INSERT INTO token (user_id, type, token) VALUES (:user_id, :type, :token)";
 
@@ -189,24 +182,25 @@ function insertion_token(int $user_id, string $type, string $token ): bool
 }
 
 // Récupérer le token
-function recuperer_token(string $user_id){
-    $token =[];
+function recuperer_token(string $user_id)
+{
+    $token = [];
 
-    $db=connect_db();
+    $db = connect_db();
 
     $request = "SELECT token FROM token WHERE user_id=:user_id";
 
-    $request_prepare =$db->prepare($request);
+    $request_prepare = $db->prepare($request);
 
     $request_execution = $request_prepare->execute([
         'user_id' => $user_id
     ]);
 
-    if ($request_execution){
+    if ($request_execution) {
 
         $data = $request_prepare->fetchAll(PDO::FETCH_ASSOC);
 
-        if(isset($data) && !empty($data) && is_array($data)) {
+        if (isset($data) && !empty($data) && is_array($data)) {
             $token = $data;
         }
     }
@@ -215,24 +209,25 @@ function recuperer_token(string $user_id){
 
 //Recupérer id de l'utilisateur
 
-function select_user_id(string $email){
-    $user_id =[];
+function select_user_id(string $email)
+{
+    $user_id = [];
 
-    $db=connect_db();
+    $db = connect_db();
 
     $request = "SELECT id FROM utilisateur WHERE email=:email";
 
-    $request_prepare =$db->prepare($request);
+    $request_prepare = $db->prepare($request);
 
     $request_execution = $request_prepare->execute([
         'email' => $email
     ]);
 
-    if ($request_execution){
+    if ($request_execution) {
 
         $data = $request_prepare->fetchAll(PDO::FETCH_ASSOC);
 
-        if(isset($data) && !empty($data) && is_array($data)) {
+        if (isset($data) && !empty($data) && is_array($data)) {
             $user_id = $data;
         }
     }
@@ -275,7 +270,7 @@ function maj(int $id_utilisateur): bool
 
     $maj = false;
 
-    $date=date("Y-m-d H:i:s");
+    $date = date("Y-m-d H:i:s");
 
     $db = connect_db();
 
@@ -308,7 +303,7 @@ function maj1(int $id_utilisateur): bool
 
     $maj1 = false;
 
-    $date=date("Y-m-d H:i:s");
+    $date = date("Y-m-d H:i:s");
 
     $db = connect_db();
 
@@ -366,7 +361,7 @@ function check_id_utilisateur_exist_in_db(int $user_id, string $type, string $to
         if (isset($data) && !empty($data) && is_array($data)) {
 
             $check = true;
-         }
+        }
     }
 
     return $check;
@@ -383,7 +378,7 @@ function check_id_utilisateur_exist_in_db(int $user_id, string $type, string $to
  *
  * @return array $user Les informations de l'utilisateur.
  */
-function check_if_user_exist(string $nom_utilisateur, string $mot_de_passe, string $profil, int $est_actif = 1 ): bool
+function check_if_user_exist(string $nom_utilisateur, string $mot_de_passe, string $profil, int $est_actif = 1): bool
 {
 
     $user = false;
@@ -396,12 +391,12 @@ function check_if_user_exist(string $nom_utilisateur, string $mot_de_passe, stri
 
     $resultat = $verifier_nom_utilisateur->execute([
         'nom_utilisateur' => $nom_utilisateur,
-        'mot_de_passe' => sha1 ($mot_de_passe),
+        'mot_de_passe' => sha1($mot_de_passe),
         'profil' => $profil,
         'est_actif' => $est_actif,
-        
-        
-        
+
+
+
     ]);
 
     if ($resultat) {
@@ -409,11 +404,9 @@ function check_if_user_exist(string $nom_utilisateur, string $mot_de_passe, stri
         $utilisateur = $verifier_nom_utilisateur->fetchAll(PDO::FETCH_ASSOC);
         $_SESSION['utilisateur_connecter'] = $utilisateur;
         $user = (isset($utilisateur) && !empty($utilisateur) && is_array($utilisateur)) ?  true : false;
-
     }
 
     return $user;
-
 }
 
 
@@ -426,46 +419,43 @@ function check_if_user_conneted()
     if (isset($_SESSION["utilisateur_connecter"]) && !empty($_SESSION["utilisateur_connecter"])) {
 
         $check = true;
-
     }
     return $check;
-
 }
 
 //Cette fonction permet de rechercher si le mot de passe existe et appartient à l'utilisateur enregistrer dans la base de donnée 
-function check_password_exist(string $mot_de_passe, int $id){
-    $users="false";
-    $db= connect_db();
-    $req= $db->prepare('SELECT id from utilisateur WHERE mot_de_passe=:mot_de_passe AND id=:id');
+function check_password_exist(string $mot_de_passe, int $id)
+{
+    $users = "false";
+    $db = connect_db();
+    $req = $db->prepare('SELECT id from utilisateur WHERE mot_de_passe=:mot_de_passe AND id=:id');
     $req->execute(array(
-        'mot_de_passe'=>sha1($mot_de_passe),
-        'id'=>$id
+        'mot_de_passe' => sha1($mot_de_passe),
+        'id' => $id
     ));
-    $users= $req->fetch();
-    if($users){
-        $users=true;
+    $users = $req->fetch();
+    if ($users) {
+        $users = true;
     }
     return $users;
-    
-
 }
 
 //Cette fonction permet de modifier le mot de passe de l'utilisateur dans la base de données
-function update_password_in_db( int $id,  string $mot_de_passe){
-    $update_password="false";
+function update_password_in_db(int $id,  string $mot_de_passe)
+{
+    $update_password = "false";
 
 
-    $db= connect_db();
-    $requete= "UPDATE utilisateur SET mot_de_passe=:mot_de_passe WHERE id= :id";
-    $requete_prepare= $db->prepare($requete);
-    $requete_execute= $requete_prepare->execute(array(
-        'mot_de_passe'=>sha1($mot_de_passe),
-        'id'=>$id
+    $db = connect_db();
+    $requete = "UPDATE utilisateur SET mot_de_passe=:mot_de_passe WHERE id= :id";
+    $requete_prepare = $db->prepare($requete);
+    $requete_execute = $requete_prepare->execute(array(
+        'mot_de_passe' => sha1($mot_de_passe),
+        'id' => $id
     ));
 
-    if($requete_execute){
-        $update_password= true;
-        
+    if ($requete_execute) {
+        $update_password = true;
     }
     return $update_password;
 }
