@@ -1,10 +1,8 @@
 <?php
-include("haut.php");
-$user_connected = check_if_user_conneted();
-
-if (!$user_connected) {
-	header("location:' . PROJECT_DIR .'membre/connexion");
+if (!check_if_user_connected()) {
+	header("location:" . PROJECT_DIR ."membre/connexion");
 }
+include("haut.php");
 ?>
 
 <section class="section">

@@ -8,7 +8,6 @@ function verifier_info($info): bool
 	return (isset($info) and !empty($info));
 }
 
-
 /*********Cette fonction permet de connecter à la base de données */
 function connect_db()
 {
@@ -23,7 +22,6 @@ function connect_db()
 
 	return $db;
 }
-
 
 /**
  * Cette fonction permet de verifier si un utilisateur dans la base de donnée ne possède pas cette adresse mail.
@@ -56,7 +54,6 @@ function check_email_exist_in_db(string $email)
 
 	return $check;
 }
-
 
 /**
  * Cette fonction permet de verifier si un utilisateur dans la base de donnée ne possède pas ce nom d'utilisateur.
@@ -384,21 +381,20 @@ function check_id_utilisateur_exist_in_db(int $user_id, string $type, string $to
 	return $check;
 }
 
-
 /**
  * Cette fonction permet de verifier si un utilisateur (nom utilisateur + mot de passe) existe dans la base de donnée.
- * Si oui elle retourne un tableau contenant les informations de l'utilisateur.
- * Sinon elle retourne un tableau vide.
  *
- * @param string $email L'email.
- * @param string $password Le mot de passe.
+ * @param string $nom_utilisateur Le nom de l'utilisateur.
+ * @param string $mot_de_passe Le mot de passe de l'utilisateur.
+ * @param string $profil Le profil de l'utilisateur.
+ * @param int $est_actif Est-ce que l'utilisateur est actif ou pas.
  *
  * @return array $user Les informations de l'utilisateur.
  */
-function check_if_user_exist(string $nom_utilisateur, string $mot_de_passe, string $profil, int $est_actif = 1): bool
+function check_if_user_exist(string $nom_utilisateur, string $mot_de_passe, string $profil, int $est_actif = 1): array
 {
 
-	$user = false;
+	$user = [];
 
 	$db = connect_db();
 
@@ -411,32 +407,17 @@ function check_if_user_exist(string $nom_utilisateur, string $mot_de_passe, stri
 		'mot_de_passe' => sha1($mot_de_passe),
 		'profil' => $profil,
 		'est_actif' => $est_actif,
-
-
 	]);
 
 	if ($resultat) {
-
-		$utilisateur = $verifier_nom_utilisateur->fetchAll(PDO::FETCH_ASSOC);
-		$_SESSION['utilisateur_connecter'] = $utilisateur;
-		$user = (isset($utilisateur) && !empty($utilisateur) && is_array($utilisateur)) ? true : false;
+		$user = $verifier_nom_utilisateur->fetch(PDO::FETCH_ASSOC);
 	}
-
 	return $user;
 }
 
-
-function check_if_user_conneted()
+function check_if_user_connected(): bool
 {
-
-	$check = false;
-
-
-	if (isset($_SESSION["utilisateur_connecter"]) && !empty($_SESSION["utilisateur_connecter"])) {
-
-		$check = true;
-	}
-	return $check;
+	return !empty($_SESSION["utilisateur_connecter"]);
 }
 
 //Cette fonction permet de rechercher si le mot de passe existe et appartient à l'utilisateur enregistrer dans la base de donnée 
@@ -476,42 +457,89 @@ function update_password_in_db(int $id, string $mot_de_passe)
 	return $update_password;
 }
 
-
-//Fonction qui permet de mettre à jour les informations du profil dans la base de donnee 
-function maj_nv_info_user(int $id, string $nom, string $prenom, string $telephone, string $nom_utilisateur, string $adresse): bool
+/**
+ * Cette fonction permet de mettre a jour les information de l'utilisateur a partir de son identifiant (id).
+ *
+ * @param int $id
+ * @param string|null $nom
+ * @param string|null $prenom
+ * @param string|null $sexe
+ * @param string|null $date_naissance
+ * @param string|null $telephone
+ * @param string|null $avatar
+ * @param string|null $nom_utilisateur
+ * @param string|null $adresse
+ *
+ * @return bool
+ */
+function mettre_a_jour_informations_utilisateur(int $id, string $nom = null, string $prenom = null, string $sexe = null, string $date_naissance = null, string $telephone = null, string $avatar = null, string $nom_utilisateur = null, string $adresse = null): bool
 {
-
-	$modifier_profil = false;
-
-	$date = date("Y-m-d H:i:s");
-
+	$mettre_a_jour_informations_utilisateur = false;
+	$data = ["id" => $id, "maj_le" => date("Y-m-d H:i:s")];
 	$db = connect_db();
+	if (is_object($db)) {
+		$request = "UPDATE utilisateur SET";
+		if (!empty($nom)) {
+			$request .= " nom = :nom,";
+			$data["nom"] = $nom;
+		}
 
-	$request = "UPDATE utilisateur SET nom = :nom, prenom = :prenom, telephone = :telephone, nom_utilisateur = :nom_utilisateur, adresse = :adresse, maj_le = :maj_le WHERE id= :id";
+		if (!empty($prenom)) {
+			$request .= " prenom = :prenom,";
+			$data["prenom"] = $prenom;
+		}
 
-	$request_prepare = $db->prepare($request);
+		if (!empty($sexe)) {
+			$request .= " sexe = :sexe,";
+			$data["sexe"] = $sexe;
+		}
 
-	$request_execution = $request_prepare->execute(array(
-		'id' => $id,
-		'nom' => $nom,
-		'prenom' => $prenom,
-		'telephone' => $telephone,
-		'nom_utilisateur' => $nom_utilisateur,
-		'adresse' => $adresse,
-		'maj_le' => $date
-	));
+		if (!empty($date_naissance)) {
+			$request .= " date_naissance = :date_naissance,";
+			$data["date_naissance"] = $date_naissance;
+		}
 
-	if ($request_execution) {
+		if (!empty($telephone)) {
+			$request .= " telephone = :telephone,";
+			$data["telephone"] = $telephone;
+		}
 
-		$modifier_profil = true;
+		if (!empty($avatar)) {
+			$request .= " avatar = :avatar,";
+			$data["avatar"] = $avatar;
+		}
+
+		if (!empty($adresse)) {
+			$request .= " adresse = :adresse,";
+			$data["adresse"] = $adresse;
+		}
+
+		if (!empty($nom_utilisateur)) {
+			$request .= " nom_utilisateur = :nom_utilisateur,";
+			$data["nom_utilisateur"] = $nom_utilisateur;
+		}
+
+		$request .= " maj_le = :maj_le";
+
+		$request .= " WHERE id= :id";
+
+		//die(var_dump($request, $data));
+
+		$request_prepare = $db->prepare($request);
+
+		$request_execution = $request_prepare->execute($data);
+
+		if ($request_execution) {
+			$mettre_a_jour_informations_utilisateur = true;
+		}
 	}
 
-	return $modifier_profil;
+	return $mettre_a_jour_informations_utilisateur;
 }
 
 
 //Fonction pour récupérer la mise à jour du profil
-function recup_maj_nv_info_user($id): bool
+function recup_mettre_a_jour_informations_utilisateur($id): bool
 {
 
 	$recup = false;
@@ -527,7 +555,7 @@ function recup_maj_nv_info_user($id): bool
 	if ($resultat) {
 		$data = [];
 
-		$data = $request_recupere->fetchAll(PDO::FETCH_ASSOC);
+		$data = $request_recupere->fetch(PDO::FETCH_ASSOC);
 
 		$_SESSION['utilisateur_connecter'] = $data;
 

@@ -1,7 +1,7 @@
 <?php
 session_start();
 include 'app/commun/fonction/fonction.php';
-if (check_if_user_conneted()) {
+if (check_if_user_connected()) {
 	include("haut.php");
 	?>
 

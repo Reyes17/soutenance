@@ -1,4 +1,8 @@
 <?php
+if (check_if_user_connected()) {
+	header('location:' . PROJECT_DIR . 'membre/utilisateur/acceuil');
+}
+
 include './app/commun/index.php';
 ?>
 

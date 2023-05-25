@@ -7,7 +7,7 @@ if (isset($_SESSION['data']) && !empty($_SESSION['data'])) {
 	$data = $_SESSION['data'];
 }
 
-if (check_if_user_conneted()) {
+if (check_if_user_connected()) {
 	header('location:' . PROJECT_DIR . 'bibliothecaire/dossier/dashboard');
 } else {
 

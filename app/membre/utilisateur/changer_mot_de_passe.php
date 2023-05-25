@@ -7,11 +7,11 @@ $errors = [];
 
 
 if (!isset($_POST["nouveau_mot_de_passe"]) || empty($_POST["nouveau_mot_de_passe"])) {
-	$errors["nouveau_mot_de_passe"] = "Le champs du nouveau mot de passe est vide. Veuillez le renseigner.";
+	$errors["nouveau_mot_de_passe"] = "Le champ du nouveau mot de passe est vide. Veuillez le renseigner.";
 }
 
 if (isset($_POST["nouveau_mot_de_passe"]) && !empty($_POST["nouveau_mot_de_passe"]) && strlen(($_POST["nouveau_mot_de_passe"])) < 8) {
-	$errors["nouveau_mot_de_passe"] = "Le champs doit contenir minimum 8 caractères. Les espaces ne sont pas pris en compte.";
+	$errors["nouveau_mot_de_passe"] = "Le champ doit contenir minimum 8 caractères. Les espaces ne sont pas pris en compte.";
 }
 
 if (isset($_POST["nouveau_mot_de_passe"]) && strlen(($_POST["nouveau_mot_de_passe"])) >= 8) {
@@ -30,7 +30,7 @@ if ((isset($_POST["nouveau_mot_de_passe"]) && !empty($_POST["nouveau_mot_de_pass
 	$data["nouveau_mot_de_passe"] = trim(htmlentities($_POST['nouveau_mot_de_passe']));
 }
 
-if (!check_password_exist(($_POST['mot_de_passe']), $_SESSION['utilisateur_connecter'][0]['id'])) {
+if (!check_password_exist(($_POST['mot_de_passe']), $_SESSION['utilisateur_connecter']['id'])) {
 	$errors["mot_de_passe"] = "Mot de passe incorrecte. Veuillez réessayer";
 }
 

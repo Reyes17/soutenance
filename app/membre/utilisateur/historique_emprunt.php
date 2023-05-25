@@ -1,5 +1,5 @@
 <?php
-$user_connected = check_if_user_conneted();
+$user_connected = check_if_user_connected();
 
 if (!$user_connected) {
 	header('location:' . PROJECT_DIR . 'membre/connexion');

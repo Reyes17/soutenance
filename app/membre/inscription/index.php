@@ -1,4 +1,8 @@
 <?php
+if (check_if_user_connected()) {
+	header('location:' . PROJECT_DIR . 'membre/utilisateur/acceuil');
+}
+
 if (isset($_SESSION['inscription-erreurs']) && !empty($_SESSION['inscription-erreurs'])) {
 	$errors = $_SESSION['inscription-erreurs'];
 }
@@ -7,7 +11,7 @@ if (isset($_SESSION['donnees-utilisateur']) && !empty($_SESSION['donnees-utilisa
 	$data = $_SESSION['donnees-utilisateur'];
 }
 include 'app/commun/index.php';
-if (check_if_user_conneted()) {
+if (check_if_user_connected()) {
 
 	header('location:' . PROJECT_DIR . 'membre/utilisateur/acceuil');
 }
@@ -138,7 +142,6 @@ if (check_if_user_conneted()) {
 											<span class="text-danger">(*)</span>
 										</label>
 										<div class="input-group has-validation">
-											<span class="input-group-text" id="inputGroupPrepend">@</span>
 											<input type="text"
 												   class="form-control <?= isset($_SESSION['inscription-erreurs']['nom_utilisateur']) ? 'is-invalid' : '' ?>"
 												   name="nom_utilisateur" id="nom_utilisateur"

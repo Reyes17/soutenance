@@ -7,13 +7,13 @@ $_SESSION['data'] = [];
 if (isset($_POST["nom_utilisateur"]) && !empty($_POST["nom_utilisateur"])) {
 	$data["nom_utilisateur"] = $_POST["nom_utilisateur"];
 } else {
-	$errors["nom_utilisateur"] = "Le champs nom utilisateur est requis. Veuillez le renseigner.";
+	$errors["nom_utilisateur"] = "Le champ nom utilisateur est requis. Veuillez le renseigner.";
 }
 
 if (isset($_POST["mot_de_passe"]) && !empty($_POST["mot_de_passe"])) {
 	$data["mot_de_passe"] = $_POST["mot_de_passe"];
 } else {
-	$errors["mot_de_passe"] = "Le champs mot de passe est requis. Veuillez le renseigner.";
+	$errors["mot_de_passe"] = "Le champ mot de passe est requis. Veuillez le renseigner.";
 }
 $_SESSION ['data'] = $data;
 

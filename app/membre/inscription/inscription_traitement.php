@@ -11,34 +11,34 @@ $errors = [];
 if (verifier_info($_POST['nom'])) {
 	$data['nom'] = htmlentities($_POST['nom']);
 } else {
-	$errors['nom'] = '<p> Le champs nom est requis. Veuillez le renseigner! </p>';
+	$errors['nom'] = '<p> Le champ nom est requis. Veuillez le renseigner! </p>';
 }
 
 if (verifier_info($_POST['prenom'])) {
 	$data['prenom'] = htmlentities($_POST['prenom']);
 } else {
-	$errors['prenom'] = '<p > Le champs prénom est requis. Veuillez le renseigner!</p>';
+	$errors['prenom'] = '<p > Le champ prénom est requis. Veuillez le renseigner!</p>';
 }
 
 
 if (isset($_POST["nom_utilisateur"]) && !empty($_POST["nom_utilisateur"])) {
 	$data["nom_utilisateur"] = $_POST["nom_utilisateur"];
 } else {
-	$errors["nom_utilisateur"] = "Le champs nom utilisateur est requis. Veuillez le renseigner.";
+	$errors["nom_utilisateur"] = "Le champ nom utilisateur est requis. Veuillez le renseigner.";
 }
 
 if (isset($_POST["email"]) && !empty($_POST["email"]) && filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
 	$data["email"] = $_POST["email"];
 } else {
-	$errors['email'] = '<p>Le champs email est requis ou est déjà utlisé. Veuillez le renseigner!</p>';
+	$errors['email'] = '<p>Le champ email est requis ou est déjà utlisé. Veuillez le renseigner!</p>';
 }
 
 if (!isset($_POST["mot_de_passe"]) || empty($_POST["mot_de_passe"])) {
-	$errors["mot_de_passe"] = "Le champs du mot de passe est vide. Veuillez le renseigner.";
+	$errors["mot_de_passe"] = "Le champ du mot de passe est vide. Veuillez le renseigner.";
 }
 
 if (isset($_POST["mot_de_passe"]) && !empty($_POST["mot_de_passe"]) && strlen(($_POST["mot_de_passe"])) < 8) {
-	$errors["mot_de_passe"] = "Le champs doit contenir minimum 8 caractères. Les espaces ne sont pas pris en compte.";
+	$errors["mot_de_passe"] = "Le champ doit contenir minimum 8 caractères. Les espaces ne sont pas pris en compte.";
 }
 
 if (isset($_POST["mot_de_passe"]) && !empty($_POST["mot_de_passe"]) && strlen(($_POST["mot_de_passe"])) >= 8 && empty($_POST["confirmer_mot_de_passe"])) {
@@ -74,14 +74,9 @@ if ($check_user_name_exist_in_db) {
 
 $data["profil"] = "MEMBRE";
 
-
-// die(var_dump($_SESSION['inscription-erreurs']));
-
-
 if (empty($errors)) {
 
 	$resultat = enregistrer_utilisateur($data["nom"], $data["prenom"], $data["email"], $data["nom_utilisateur"], $data["mot_de_passe"], $data["profil"]);
-// die(var_dump($resultat));
 	if ($resultat) {
 		$token = uniqid("VALIDATION_COMPTE");
 		$id_utilisateur = recuperer_id_utilisateur_par_son_mail($data['email']);
