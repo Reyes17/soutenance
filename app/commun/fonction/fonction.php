@@ -281,7 +281,7 @@ function check_token_exist(int $user_id, string $token, string $type, int $est_a
 }
 
 
-// Exemple de fonction pour exécuter la requête UPDATE TOKEN
+// Exemple de fonction pour exécuter la requête UPDATE TOKEN et faire passer le estu_supprimer à 1
 
 function suppression_logique_token(int $id_utilisateur): bool
 {

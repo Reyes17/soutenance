@@ -36,17 +36,17 @@ if (check_if_user_conneted()) {
                 <?php
                 if (isset($_SESSION['inscription-message-success-global']) && !empty($_SESSION['inscription-message-success-global'])) {
                 ?>
-                  <div class="alert alert-primary" style="color: white; background-color: #2653d4; text-align:center; border-color: snow;">
+                  <div class="alert alert-primary" style="color: white; background-color: #2bc717; text-align:center; border-radius: 15px; padding: 2%; text-align:center;">
                     <?= $_SESSION['inscription-message-success-global'] ?>
                   </div>
                 <?php
                 }
                 ?>
-
+                <!----message d'erreur global à la connexion----->
                 <?php
                 if (isset($_SESSION['inscription-message-erreur-global']) && !empty($_SESSION['inscription-message-erreur-global'])) {
                 ?>
-                  <div class="alert alert-primary" style="color: white; background-color: #9f0808; text-align:center; border-color: snow;">
+                  <div class="alert alert-primary" style="color: white; background-color: #dc3545; border-radius: 15px; padding: 2%; text-align:center;">
                     <?= $_SESSION['inscription-message-erreur-global'] ?>
                   </div>
                 <?php
@@ -58,12 +58,12 @@ if (check_if_user_conneted()) {
                   <h3 class="text-center small">Entrer vos informations personnelles pour créer un compte</h3>
                 </div>
 
-                <form action="<?= PROJECT_DIR; ?>membre/inscription/inscription_traitement" method="post"  class="row g-3 needs-validation" novalidate>
+                <form action="<?= PROJECT_DIR; ?>membre/inscription/inscription_traitement" method="post" class="row g-3 needs-validation" novalidate>
                   <div class="col-12 mb-3">
                     <label for="incription_nom" class="form-label">Nom
                       <span class="text-danger"> (*)</span>
                     </label>
-                    <input type="text" class="form-control <?= isset($_SESSION['inscription-erreurs']['nom']) ? 'is-invalid' : '' ?>" name="nom" id="nom" value="<?= (isset($data["nom"]) && !empty($data["nom"])) ? $data['nom'] : '' ;?>" placeholder="Veuillez entrer votre nom">
+                    <input type="text" class="form-control <?= isset($_SESSION['inscription-erreurs']['nom']) ? 'is-invalid' : '' ?>" name="nom" id="nom" value="<?= (isset($data["nom"]) && !empty($data["nom"])) ? $data['nom'] : ''; ?>" placeholder="Veuillez entrer votre nom">
                     <?php
                     if (isset($_SESSION['inscription-erreurs']['nom'])) {
                     ?>
@@ -101,10 +101,10 @@ if (check_if_user_conneted()) {
                       <span class="text-danger"> (*)</span>
                     </label>
                     <input type="email" class="form-control <?= isset($_SESSION['inscription-erreurs']['email']) ? 'is-invalid' : '' ?>" name="email" value="<?php if (isset($data["email"]) && !empty($data["email"])) {
-                                                                                                                                                              echo $data["email"];
-                                                                                                                                                            } else {
-                                                                                                                                                              echo '';
-                                                                                                                                                            } ?>" id="email" placeholder="Veuillez entrer votre adresse email">
+                                                                                                                                                                echo $data["email"];
+                                                                                                                                                              } else {
+                                                                                                                                                                echo '';
+                                                                                                                                                              } ?>" id="email" placeholder="Veuillez entrer votre adresse email">
                     <?php
                     if (isset($_SESSION['inscription-erreurs']['email'])) {
                     ?>
@@ -126,10 +126,10 @@ if (check_if_user_conneted()) {
                     <div class="input-group has-validation">
                       <span class="input-group-text" id="inputGroupPrepend">@</span>
                       <input type="text" class="form-control <?= isset($_SESSION['inscription-erreurs']['nom_utilisateur']) ? 'is-invalid' : '' ?>" name="nom_utilisateur" id="nom_utilisateur" value="<?php if (isset($data["nom_utilisateur"]) && !empty($data["nom_utilisateur"])) {
-                                                                                                                                                                                                        echo $data["nom_utilisateur"];
-                                                                                                                                                                                                      } else {
-                                                                                                                                                                                                        echo '';
-                                                                                                                                                                                                      } ?>" placeholder="Veuillez entrer un nom d'utilisateur">
+                                                                                                                                                                                                          echo $data["nom_utilisateur"];
+                                                                                                                                                                                                        } else {
+                                                                                                                                                                                                          echo '';
+                                                                                                                                                                                                        } ?>" placeholder="Veuillez entrer un nom d'utilisateur">
                       <?php
                       if (isset($_SESSION['inscription-erreurs']['nom_utilisateur'])) {
                       ?>

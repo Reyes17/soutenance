@@ -47,7 +47,7 @@ if (isset($_COOKIE['data_users']) and !empty($_COOKIE['data_users'])) {
                 <?php
                 if (isset($_SESSION['validation-compte-message-success']) && !empty($_SESSION['validation-compte-message-success'])) {
                 ?>
-                  <div class="alert alert-primary" style="color: white; background-color: #1cc88a; border-color: snow;">
+                  <div class="alert alert-primary" style="color: white; background-color: #2bc717; border-radius: 15px; padding: 2%; text-align:center;">
                     <?= $_SESSION['validation-compte-message-success'] ?>
                   </div>
                 <?php
@@ -58,7 +58,7 @@ if (isset($_COOKIE['data_users']) and !empty($_COOKIE['data_users'])) {
                 <?php
                 if (isset($_SESSION['validation-compte-message-erreur']) && !empty($_SESSION['validation-compte-message-erreur'])) {
                 ?>
-                  <div class="alert alert-primary" style="color: white; background-color: #1cc88a; border-color: snow;">
+                  <div class="alert alert-primary" style="color: white; background-color: #dc3545; border-radius: 15px; padding: 2%; text-align:center;">
                     <?= $_SESSION['validation-compte-message-erreur'] ?>
                   </div>
                 <?php

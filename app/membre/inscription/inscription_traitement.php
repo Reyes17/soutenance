@@ -99,7 +99,7 @@ if (empty($errors)) {
                 $message_success_global = "Votre inscription s'est effectuée avec succès. Veuillez consulter votre adresse mail pour valider votre compte.";
                 header('location: ' . PROJECT_DIR . 'membre/inscription');
             } else {
-                $message_erreur_global = "Votre inscription s'est effectuée avec succès mais une erreur est survenue lors de l'envoi du mail de validation de votre compte. Veuillez contacter un administrateur.";
+                $message_erreur_global = "Votre inscription s'est effectuée avec succès mais une erreur est survenue lors de l'envoi du mail de validation à votre compte. Veuillez contacter un administrateur.";
                 header('location: ' . PROJECT_DIR . 'membre/inscription');
             }
         }
