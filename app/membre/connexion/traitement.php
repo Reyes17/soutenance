@@ -1,7 +1,4 @@
 <?php
-
-include 'app/commun/fonction/fonction.php';
-session_start();
 $data=[];
 $errors=[];
 $danger=[];

@@ -1,8 +1,8 @@
 <?php
-include 'app/commun/fonction/fonction.php';
-//session_start();
-//die (var_dump($_SESSION["utilisateur_connecter"]));
 include("haut.php");
+if(isset($_SESSION['utilisateur_connecter']['0']['id']) && !empty($_SESSION['utilisateur_connecter']['0']['id'])){
+
+}
 
 if(isset($_SESSION['desactivation-errors']) && !empty($_SESSION['desactivation-errors'])){
   $errors = $_SESSION['desactivation-errors'];
@@ -13,12 +13,13 @@ if(isset($_SESSION['passe']) && !empty($_SESSION['passe'])){
 }
 $user_connected = check_if_user_conneted();
 
+
 if (!$user_connected) {
-    header("location:' . PROJECT_DIR .'membre/connexion");
+    header('location:' . PROJECT_DIR . 'membre/connexion');
    }
 ?>
 
-  <main id="main" class="main">
+<main id="main">
 
     <div class="pagetitle">
       <h1>Profil</h1>
@@ -205,6 +206,7 @@ if (!$user_connected) {
                   <div class="tab-content">
                     <div class="profile-edit pt-3">
                       <h3 class="card-title">Modifications des informations personnelles</h3>
+                      <!-- Message d'erreur global quand la modification a échoué -->
                       <?php
                                     if (isset($_SESSION['passe']) && !empty($_SESSION['passe'])) {
                                     ?>
@@ -214,19 +216,30 @@ if (!$user_connected) {
                                     <?php
                                     }
                                     ?>
+                       <!-- Message de succès global quand la modification a réussi -->
+                       <?php
+                                    if (isset($_SESSION['success']) && !empty($_SESSION['success'])) {
+                                    ?>
+                                        <div class="alert alert-danger" style="color: white; background-color:#2bc717 ; border-radius: 15px; padding: 2%; text-align:center;">
+                                            <?= $_SESSION['success'] ?>
+                                        </div>
+                                    <?php
+                                    }
+                                    ?>
+
                       <!-- Profile Edit Form -->
                       
                         <div class="row mb-3">
                           <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profil Image</label>
                           <div class="col-md-8 col-lg-9">
-                            <img src="<?= PROJECT_DIR;?>public/image/bliotheque.jpg" alt="Profile">
+                            <img src="<?= PROJECT_DIR; ?>public/image/bliotheque.jpg" alt="Profile">
                             <div class="pt-2">
                               <a href="#" class="btn btn-primary btn-sm" title="Upload new profile image"><i class="bi bi-upload"></i></a>
                               <a href="#" class="btn btn-danger btn-sm" title="Remove my profile image"><i class="bi bi-trash"></i></a>
                             </div>                        
                           </div>
                         </div>
-                      <form action="<?= PROJECT_DIR;?>membre/utilisateur/modifier_profil" method="post">
+                      <form action="<?= PROJECT_DIR ?>membre/utilisateur/modifier_profil" method="post">
                         <div class="row mb-3">
                           <label for="nom" class="col-md-4 col-lg-3 col-form-label">Nom</label>
                           <div class="col-md-8 col-lg-9">
@@ -265,7 +278,7 @@ if (!$user_connected) {
                         <div class="row mb-3">
                           <label for="traitement_mot_de_passe" class="col-md-4 col-lg-3 col-form-label">Mot de passe</label>
                           <div class="col-md-8 col-lg-9">
-                          <input type="password"  class="form-control <?= isset($_SESSION['errors']['mot_de_passe']) ?  : ''?>" name="mot_de_passe" value="<?php if (isset($data["mot_de_passe"]) && !empty($data["mot_de_passe"]))?>"
+                            <input type="password"  class="form-control <?= isset($_SESSION['errors']['mot_de_passe']) ?  : ''?>" name="mot_de_passe" value="<?php if (isset($data["mot_de_passe"]) && !empty($data["mot_de_passe"]))?>"
                                       id="mot_de_passe" placeholder=" Veuillez entrer un mot de passe">
                                       <?php
                                       if(isset($_SESSION['errors']['mot_de_passe'])){ 
@@ -300,7 +313,7 @@ if (!$user_connected) {
                 <div class="profile-change-password">
                       <!-- Change Password Form -->
                       <h3 class="card-title">Changer votre mot de passe</h3>
-                      <form action="<?= PROJECT_DIR;?>membre/utilisateur/changer_mot_de_passe" method="post">
+                      <form action="<?= PROJECT_DIR; ?>membre/utilisateur/changer_mot_de_passe" method="post">
 
                         <div class="row mb-3">
                           <label for="changer_mot_de_passe" class="col-md-4 col-lg-3 col-form-label">Mot de passe actuel</label>
@@ -364,8 +377,7 @@ if (!$user_connected) {
     <!-- End #main -->
         
 <?php
-unset($_SESSION['desactivation-errors']);
-unset($_SESSION['passe']);
+unset($_SESSION['desactivation-errors'], $_SESSION['passe'], $_SESSION['success']);
   include('bas.php');
 ?>
 

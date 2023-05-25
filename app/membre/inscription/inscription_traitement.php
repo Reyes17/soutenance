@@ -1,13 +1,10 @@
 <?php
-
-include 'app/commun/fonction/fonction.php';
-
-session_start();
 $data = [];
+$message_erreur_global = "";
+$message_success_global = "";
 $errors = [];
-$success = "";
-$null = null;
-$_SESSION['data'] = [];
+
+
 //Je vérifie si les informations envoyés par le visiteur sont corrrects.
 
 
@@ -23,23 +20,11 @@ if (verifier_info($_POST['prenom'])) {
     $errors['prenom'] = '<p > Le champs prénom est requis. Veuillez le renseigner!</p>';
 }
 
-if (isset($_POST["sexe"]) && !empty($_POST["sexe"])) {
-    $data["sexe"] = $_POST["sexe"];
-} else {
-    $errors["sexe"] = "Le champs sexe est requis. Veuillez le renseigner.";
-}
 
 if (isset($_POST["nom_utilisateur"]) && !empty($_POST["nom_utilisateur"])) {
     $data["nom_utilisateur"] = $_POST["nom_utilisateur"];
 } else {
     $errors["nom_utilisateur"] = "Le champs nom utilisateur est requis. Veuillez le renseigner.";
-}
-
-
-if (isset($_POST["date_naissance"]) && !empty($_POST["date_naissance"])) {
-    $data["date_naissance"] = $_POST["date_naissance"];
-} else {
-    $errors["date_naissance"] = "Le champs date de naissance est requis. Veuillez le renseigner.";
 }
 
 if (isset($_POST["email"]) && !empty($_POST["email"]) && filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
@@ -87,70 +72,46 @@ if ($check_user_name_exist_in_db) {
     $errors["nom_utilisateur"] = "Ce nom d'utilisateur est déja utilisé. Veuillez le changer.";
 }
 
+$data["profil"] = "MEMBRE";
 
 
-$_SESSION['data'] = $data;
-
-$_SESSION['success'] = "";
-
+// die(var_dump($_SESSION['inscription-erreurs']));
 
 
 if (empty($errors)) {
-    $db = connect_db();
 
-
-    // Ecriture de la requête
-    //$requette = 'INSERT INTO utilisateur (nom, prenom, sexe, date_naissance, email, nom_utilisateur, telephone, adresse, mot_de_passe, profil) VALUES (:nom, :prenom, :sexe, :date_naissance, :email, :nom_utilisateur, :telephone, :adresse, :mot_de_passe, :profil)';
-    $requette = 'INSERT INTO utilisateur (nom, prenom, sexe, date_naissance, email, nom_utilisateur, mot_de_passe, profil) VALUES (:nom, :prenom, :sexe, :date_naissance, :email, :nom_utilisateur, :mot_de_passe, :profil)';
-
-    // Préparation
-    $inserer_utilisateur = $db->prepare($requette);
-
-    // Exécution ! La recette est maintenant en base de données
-    $resultat = $inserer_utilisateur->execute([
-        'nom' => $data['nom'],
-        'prenom' => $data["prenom"],
-        'sexe' => $data["sexe"],
-        'date_naissance' => $data["date_naissance"],
-        'email' => $data["email"],
-        'nom_utilisateur' => $data["nom_utilisateur"],
-        //'telephone' => $data["telephone"],
-        //'adresse'=> $data["adresse"],
-        'mot_de_passe' => sha1($data["mot_de_passe"]),
-        'profil' => 'membre',
-
-    ]);
-
-    //die(var_dump($resultat));
-
-
+    $resultat = enregistrer_utilisateur($data["nom"], $data["prenom"], $data["email"], $data["nom_utilisateur"], $data["mot_de_passe"], $data["profil"]);
+// die(var_dump($resultat));
     if ($resultat) {
-        $_token = uniqid("");
-        $id_utilisateur = select_user_id($data['email'])[0]['id'];
-        if (insertion_token($id_utilisateur, 'VALIDATION_COMPTE', $_token)) {
-            $_SESSION['validation_compte'] = [];
-            $_SESSION['validation_compte']['id_utilisateur'] = $id_utilisateur;
-            $_SESSION['validation_compte']['token'] = recuperer_token($id_utilisateur)[0]['token'];
-        }
-        $objet = 'Validation de compte';
+        $token = uniqid("VALIDATION_COMPTE");
+        $id_utilisateur = recuperer_id_utilisateur_par_son_mail($data['email']);
 
-        $corps = buffer_html_file("app/membre/inscription/message_mail.php");
-
-        $mail = $data["email"];
-
-        if (send_email($mail, $objet, $corps)) {
-
-            $_SESSION['success'] = "Inscription éffectuée";
-            header('location:' . PROJECT_DIR . 'membre/inscription/validation');
+        if (!insertion_token($id_utilisateur, 'VALIDATION_COMPTE', $token)) {
+            $message_erreur_global = "Votre inscription s'est effectué avec succès mais une erreur est survenue lors de la génération de la clè de validation de votre compte. Veuillez contacter un administrateur.";
         } else {
-            die('Non envoyé');
+            $objet = 'Validation de votre inscription';
+            ob_start(); // Démarre la temporisation de sortie
+            include 'app/membre/inscription/message_mail.php'; // Inclut le fichier HTML dans le tampon
+            $template_mail = ob_get_contents(); // Récupère le contenu du tampon
+            ob_end_clean(); // Arrête et vide la temporisation de sortie
+
+            if (send_email($data["email"], $objet, $template_mail)) {
+                $message_success_global = "Votre inscription s'est effectuée avec succès. Veuillez consulter votre adresse mail pour valider votre compte.";
+                header('location: ' . PROJECT_DIR . 'membre/inscription');
+            } else {
+                $message_erreur_global = "Votre inscription s'est effectuée avec succès mais une erreur est survenue lors de l'envoi du mail de validation de votre compte. Veuillez contacter un administrateur.";
+                header('location: ' . PROJECT_DIR . 'membre/inscription');
+            }
         }
     } else {
-        echo 'pas bon';
+        $message_erreur_global = "Oups ! Une erreur s'est produite lors de l'enregistrement de l'utilisateur.";
+        header('location: ' . PROJECT_DIR . 'membre/inscription');
     }
+} else {
+    $_SESSION['donnees-utilisateur'] = $data;
+    $_SESSION['inscription-erreurs'] = $errors;
+    header('location: ' . PROJECT_DIR . 'membre/inscription');
 }
-//Si les informations de l'utilisateur sont incorrects, je le redirige vers la page d'inscription avec des messages d'erreurs 
-else {
-    $_SESSION['errors'] = $errors;
-    header('location:' . PROJECT_DIR . 'membre/inscription');
-}
+$_SESSION['inscription-message-erreur-global'] = $message_erreur_global;
+$_SESSION['inscription-message-success-global'] = $message_success_global;
+header('location: ' . PROJECT_DIR . 'membre/inscription');

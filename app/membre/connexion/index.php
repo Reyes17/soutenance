@@ -1,10 +1,6 @@
 <?php
-session_start();
 include 'app/commun/index.php';
-include 'app/commun/fonction/fonction.php';
 $user_connected = check_if_user_conneted();
-
-
 $data = [];
 if (isset($_SESSION['data']) && !empty($_SESSION['data'])) {
   $data = $_SESSION['data'];
@@ -12,9 +8,6 @@ if (isset($_SESSION['data']) && !empty($_SESSION['data'])) {
 if (isset($_COOKIE['data_users']) and !empty($_COOKIE['data_users'])) {
   $users_utilisateur = json_decode($_COOKIE['data_users']);
 }
-// if ($user_connected) {
-// header("location: PROJECT_DIR . 'membre/utilisateur/acceuil';");
-// }else{
 
 
 ?>
@@ -38,16 +31,7 @@ if (isset($_COOKIE['data_users']) and !empty($_COOKIE['data_users'])) {
             <div class="card-body">
 
               <div class="pt-4 pb-2">
-                <!----message de succès global à la connexion----->
-                <?php
-                if (isset($_SESSION['success']) && !empty($_SESSION['success'])) {
-                ?>
-                  <div class="alert alert-primary" style="color: white; background-color: #1cc88a; border-color: snow;">
-                    <?= $_SESSION['success'] ?>
-                  </div>
-                <?php
-                }
-                ?>
+
                 <!----message d'erreur global après envoie d'un mauvais mot de passe ou non utilisiateur à la connexion----->
                 <?php
                 if (isset($_SESSION['danger']) && !empty($_SESSION['danger'])) {
@@ -59,16 +43,28 @@ if (isset($_COOKIE['data_users']) and !empty($_COOKIE['data_users'])) {
                 }
                 ?>
 
-                <!----message d'erreur global après déconnexion----->
+                <!----message de succès global après validation de mail----->
                 <?php
-                if (isset($_SESSION['deconnexion']) && !empty($_SESSION['deconnexion'])) {
+                if (isset($_SESSION['validation-compte-message-success']) && !empty($_SESSION['validation-compte-message-success'])) {
                 ?>
                   <div class="alert alert-primary" style="color: white; background-color: #1cc88a; border-color: snow;">
-                    <?= $_SESSION['deconnexion'] ?>
+                    <?= $_SESSION['validation-compte-message-success'] ?>
                   </div>
                 <?php
                 }
                 ?>
+
+                <!----message d'erreur global après validation de mail----->
+                <?php
+                if (isset($_SESSION['validation-compte-message-erreur']) && !empty($_SESSION['validation-compte-message-erreur'])) {
+                ?>
+                  <div class="alert alert-primary" style="color: white; background-color: #1cc88a; border-color: snow;">
+                    <?= $_SESSION['validation-compte-message-erreur'] ?>
+                  </div>
+                <?php
+                }
+                ?>
+                
                 <h5 class="card-title text-center pb-0 fs-4">Connectez-vous à votre compte</h5>
                 <p class="text-center small">Entrez votre nom d'utilisateur et votre mot de passe pour vous connecter</p>
               </div>

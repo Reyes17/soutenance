@@ -1,12 +1,7 @@
 <?php
-$url = 'localhost<?= PROJECT_DIR;?>membre/inscription/confirmation/{id_utilisateur}/{token}';
+$url = $_SERVER["REQUEST_SCHEME"] . '://' . $_SERVER["HTTP_HOST"] . PROJECT_DIR . 'membre/inscription/confirmation/{id_utilisateur}/{token}';
 
-if (isset($_SESSION['validation_compte']) && !empty($_SESSION['validation_compte'])) {
-    $id_utlilisateur = $_SESSION['validation_compte']['id_utilisateur'];
-    $token = $_SESSION['validation_compte']['token'];
-}
-
-$url = str_replace('{id_utilisateur}', $id_utlilisateur, $url);
+$url = str_replace('{id_utilisateur}', $id_utilisateur, $url);
 
 $url = str_replace('{token}', $token, $url);
 

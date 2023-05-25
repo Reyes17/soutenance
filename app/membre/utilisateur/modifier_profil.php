@@ -1,11 +1,7 @@
 <?php
-session_start();
-
-include 'app/commun/fonction/fonction.php';
-
 $_SESSION['passe'] = "";
 
-$_SESSION['donnees-utilisateur'] = [];
+$_SESSION['success'] = "";
 
 $data = $_SESSION['utilisateur_connecter'];
 
@@ -37,7 +33,7 @@ if (isset($_POST['sauvegarder'])) {
         }
 
         if (isset($_POST['nom_utilisateur']) && !empty($_POST['nom_utilisateur']) && $_POST['nom_utilisateur'] != $data[0]['nom_utilisateur']) {
-            $new_data['nom_utilisateur'] =$_POST['nom_utillisateur'];
+            $new_data['nom_utilisateur'] =$_POST['nom_utilisateur'];
         } else {
             $new_data['nom_utilisateur'] = $data[0]['nom_utilisateur'];
         }
@@ -48,13 +44,15 @@ if (isset($_POST['sauvegarder'])) {
             $new_data['adresse'] = $data[0]['adresse'];
         }
 
-        if (isset($_POST["mot_de_passe"]) && !empty($_POST["mot_de_passe"])) {
-            $data["mot_de_passe"] = trim(htmlentities($_POST['mot_de_passe']));
-        } else {
-            $errors["mot_de_passe"] = "Le champs mot de passe est requis. Veuillez le renseigner.";
+        if (!isset($_POST["mot_de_passe"]) || empty($_POST["mot_de_passe"])) {
+            $errors["mot_de_passe"] = "Le champs du mot de passe est vide. Veuillez le renseigner.";
+        }
+        
+        if (isset($_POST["mot_de_passe"]) && !empty($_POST["mot_de_passe"]) && strlen(($_POST["mot_de_passe"])) < 8) {
+            $errors["mot_de_passe"] = "Le champs doit contenir minimum 8 caractères. Les espaces ne sont pas pris en compte.";
         }
 
-        
+        $_SESSION['passe'] ="";     
 
         if (maj_nv_info_user(
             $data[0]['id'],
@@ -69,16 +67,17 @@ if (isset($_POST['sauvegarder'])) {
                 $data[0]['id']
             )) {
                 $_SESSION['success'] = "Modification(s) effectuée(s) avec succès";
-                header('location:' . PROJECT_DIR .'membre/utilisateur/mon-profil');
+                header('location:'. PROJECT_DIR .'membre/utilisateur/mon-profil');
             } else {
                 $_SESSION['passe'] = "La modification à echouer. Vérifier votre mot de passe et réessayer.";
-
-                header('location:' . PROJECT_DIR .'membre/utilisateur/mon-profil');
+                header('location:'. PROJECT_DIR .'membre/utilisateur/mon-profil');
             }
         }
     } else {
-        $_SESSION['errors'] = "La modification à echouer. Vérifier votre mot de passe et réessayer.";
-
-        header('location:' . PROJECT_DIR .'membre/utilisateur/mon-profil');
+        $_SESSION['passe'] = "La modification à echouer. Vérifier votre mot de passe et réessayer.";
+                header('location:'. PROJECT_DIR .'membre/utilisateur/mon-profil');
     }
+}else{
+    $_SESSION['errors'] = $errors;
+        header('location:'. PROJECT_DIR .'membre/utilisateur/mon-profil');
 }

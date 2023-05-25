@@ -39,7 +39,7 @@ function check_email_exist_in_db(string $email)
     $db = connect_db();
 
     $requette = "SELECT count(*) as nbr_utilisateur FROM utilisateur WHERE email = :email and est_supprimer = :est_supprimer";
-
+    
     $verifier_email = $db->prepare($requette);
 
     $resultat = $verifier_email->execute([
@@ -207,68 +207,86 @@ function recuperer_token(string $user_id)
     return $token;
 }
 
-//Recupérer id de l'utilisateur
-
-function select_user_id(string $email)
+/**
+ * Cette fonction permet de récupérer l'id de l'utilisateur grace a son adresse mail.
+ *
+ * @param string $email L'email de l'utilisateur.
+ * @return int $user_id L'id de l'utilisateur.
+ */
+function recuperer_id_utilisateur_par_son_mail(string $email): int
 {
-    $user_id = [];
+
+	$user_id = 0;
+
+	$db = connect_db();
+
+	if (is_object($db)) {
+
+		$request = "SELECT id FROM utilisateur WHERE email=:email";
+
+		$request_prepare = $db->prepare($request);
+
+		$request_execution = $request_prepare->execute([
+			'email' => $email
+		]);
+
+		if ($request_execution) {
+			$data = $request_prepare->fetch(PDO::FETCH_ASSOC);
+			if (isset($data) && !empty($data) && is_array($data)) {
+				$user_id = $data["id"];
+			}
+		}
+	}
+	return $user_id;
+}
+
+/**
+ * Cette fonction permet de verifier si le id_utilisateur existe dans la base de donnée .
+ * @param string $nom_utilisateur Le nom d'utilisateur a vérifié.
+ *
+ * @return bool $check
+ */
+function check_token_exist(int $user_id, string $token, string $type, int $est_actif = 1, int $est_supprimer = 0): bool
+{
+
+    $check = false;
 
     $db = connect_db();
 
-    $request = "SELECT id FROM utilisateur WHERE email=:email";
+    if (is_object($db)) {
 
-    $request_prepare = $db->prepare($request);
+        $requette = "SELECT * FROM token WHERE user_id = :user_id and token= :token and type= :type and est_actif= :est_actif and $est_supprimer= :est_supprimer";
 
-    $request_execution = $request_prepare->execute([
-        'email' => $email
-    ]);
+        $verifier_id_utilisateur = $db->prepare($requette);
 
-    if ($request_execution) {
+        $resultat = $verifier_id_utilisateur->execute([
+            'user_id' => $user_id,
+            'token' => $token,
+            'type' => $type,
+            'est_actif' => $est_actif,
+            'est_supprimer' => $est_supprimer
+        ]);
 
-        $data = $request_prepare->fetchAll(PDO::FETCH_ASSOC);
+        if ($resultat) {
 
-        if (isset($data) && !empty($data) && is_array($data)) {
-            $user_id = $data;
+            $data = $verifier_id_utilisateur->fetchAll(PDO::FETCH_ASSOC);
+
+            if (isset($data) && !empty($data) && is_array($data)) {
+
+                $check = true;
+            }
         }
     }
-    return $user_id;
+    return $check;
 }
 
-// Exemple de fonction pour exécuter la requête SELECT
-
-function search_user_id($user_id)
-{
-
-    $user_id = [];
-
-    $db = connect_db();
-
-    $request = "SELECT user_id FROM token WHERE id=:id";
-
-    $request_prepare = $db->prepare($request);
-
-    $request_execution = $request_prepare->execute([
-        'user_id' => $user_id
-    ]);
-
-    if ($request_execution) {
-
-        $data = $request_prepare->fetchAll(PDO::FETCH_ASSOC);
-
-        if (isset($data) && !empty($data) && is_array($data)) {
-
-            $user_id = $data;
-        }
-    }
-    return $user_id;
-}
 
 // Exemple de fonction pour exécuter la requête UPDATE TOKEN
 
-function maj(int $id_utilisateur): bool
+function suppression_logique_token(int $id_utilisateur): bool
 {
 
-    $maj = false;
+    $suppression_logique_token = false;
 
     $date = date("Y-m-d H:i:s");
 
@@ -289,19 +307,19 @@ function maj(int $id_utilisateur): bool
 
     if ($request_execution) {
 
-        $maj = true;
+        $suppression_logique_token = true;
     }
 
-    return $maj;
+    return $suppression_logique_token;
 }
 
 
 // Exemple de fonction pour mettre à jour la table utilisateur
 
-function maj1(int $id_utilisateur): bool
+function activation_compte_utilisateur(int $id_utilisateur): bool
 {
 
-    $maj1 = false;
+    $activation_compte_utilisateur = false;
 
     $date = date("Y-m-d H:i:s");
 
@@ -321,10 +339,10 @@ function maj1(int $id_utilisateur): bool
 
     if ($request_execution) {
 
-        $maj1 = true;
+        $activation_compte_utilisateur = true;
     }
 
-    return $maj1;
+    return $activation_compte_utilisateur;
 }
 
 
@@ -576,4 +594,43 @@ function supprimer_utilisateur(int $id): bool
     }
 
     return $profile_supprimer;
+}
+
+
+
+
+/** Cette fonction permet d'inserer un utilisateur de profile MEMBRE
+ * @param int $id
+ * @return bool
+ */
+function enregistrer_utilisateur(string $nom, string $prenom, string $email, string $nom_utilisateur, string $mot_de_passe, string $profil = "CLIENT"): bool
+{
+	$enregistrer_utilisateur = false;
+
+	$db = connect_db();
+
+	if (!is_null($db)) {
+
+		// Ecriture de la requête
+		$requette = 'INSERT INTO utilisateur (nom, prenom, email, nom_utilisateur, profil, mot_de_passe) VALUES (:nom, :prenom, :email, :nom_utilisateur, :profil, :mot_de_passe)';
+
+		// Préparation
+		$inserer_utilisateur = $db->prepare($requette);
+
+		// Exécution ! La recette est maintenant en base de données
+		$resultat = $inserer_utilisateur->execute([
+			'nom' => $nom,
+			'prenom' => $prenom,
+			'email' => $email,
+			'nom_utilisateur' => $nom_utilisateur,
+			'profil' => $profil,
+			'mot_de_passe' => sha1($mot_de_passe)
+		]);
+
+		$enregistrer_utilisateur = $resultat;
+
+	}
+
+	return $enregistrer_utilisateur;
+
 }

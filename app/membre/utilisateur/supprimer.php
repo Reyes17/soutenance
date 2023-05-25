@@ -1,9 +1,5 @@
 <?php
-session_start();
-include 'app/commun/fonction/fonction.php';
 $_SESSION['desactivaction-errors'] = "";
-
-$_SESSION['donnees-utilisateur'] = [];
 
 $data = [];
 
@@ -11,7 +7,7 @@ $errors = [];
 
 if (isset($_POST['supprimer'])) {
 
-    if (check_password_exist(($_POST['mot_de_passe']), $_SESSION['utilisateur_connecter']['id'])) {
+    if (check_password_exist(($_POST['mot_de_passe']), $_SESSION['utilisateur_connecter'][0]['id'])) {
         if (supprimer_utilisateur($_SESSION['utilisateur_connecter']['id'])) {
             session_destroy();
             header('location:' . PROJECT_DIR .'membre/utilisateur/acceuil');

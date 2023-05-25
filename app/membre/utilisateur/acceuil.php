@@ -1,6 +1,5 @@
 <?php
 include("haut.php");
-include 'app/commun/fonction/fonction.php';
 $user_connected = check_if_user_conneted();
 
 if (!$user_connected) {
