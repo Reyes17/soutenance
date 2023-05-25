@@ -1,12 +1,12 @@
 <?php
 require 'vendor/autoload.php';
 
-define('PROJECT_DIR', '/soutenance/');
+define('PROJECT_DIR', '/stage/gestion-bibliotheque/');
 
 define('DATABASE_HOST', 'localhost');
-define('DATABASE_NAME', 'bibliotheque');
+define('DATABASE_NAME', 'gestion-bibliotheque');
 define('DATABASE_USERNAME', 'root');
-define('DATABASE_PASSWORD', '');
+define('DATABASE_PASSWORD', 'root');
 
 define('MAIL_ADDRESS', 'akaisukibibliotheque@gmail.com');
 define('MAIL_PASSWORD', 'vwjposuraetwxstd');
