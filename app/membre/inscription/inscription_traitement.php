@@ -42,7 +42,7 @@ if (isset($_POST["mot_de_passe"]) && !empty($_POST["mot_de_passe"]) && strlen(($
 }
 
 if (isset($_POST["mot_de_passe"]) && !empty($_POST["mot_de_passe"]) && strlen(($_POST["mot_de_passe"])) >= 8 && empty($_POST["confirmer_mot_de_passe"])) {
-    $errors["confirmer_mot_de_mot"] = "Entrez votre mot de passe à nouveau.";
+    $errors["confirmer_mot_de_passe"] = "Entrez votre mot de passe à nouveau.";
 }
 
 if ((isset($_POST["confirmer_mot_de_passe"]) && !empty($_POST["confirmer_mot_de_passe"]) && strlen(($_POST["mot_de_passe"])) >= 8 && $_POST["confirmer_mot_de_passe"] != $_POST["mot_de_passe"])) {
