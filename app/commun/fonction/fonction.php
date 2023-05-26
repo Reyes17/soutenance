@@ -1,29 +1,27 @@
 <?php
 
-use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\PHPMailer;
 
 function verifier_info($info): bool
 {
-    return (isset($info) and !empty($info));
+	return (isset($info) and !empty($info));
 }
-
 
 /*********Cette fonction permet de connecter à la base de données */
 function connect_db()
 {
 
-    $db = null;
+	$db = null;
 
-    try {
-        $db = new PDO('mysql:host=' . DATABASE_HOST . ';dbname=' . DATABASE_NAME . ';charset=utf8', DATABASE_USERNAME, DATABASE_PASSWORD, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
-    } catch (\Exception $e) {
-        $db = "Oups! Une erreur s'est produite lors de la connexion a la base de donnée.";
-    }
+	try {
+		$db = new PDO('mysql:host=' . DATABASE_HOST . ';dbname=' . DATABASE_NAME . ';charset=utf8', DATABASE_USERNAME, DATABASE_PASSWORD, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+	} catch (\Exception $e) {
+		$db = "Oups! Une erreur s'est produite lors de la connexion a la base de donnée.";
+	}
 
-    return $db;
+	return $db;
 }
-
 
 /**
  * Cette fonction permet de verifier si un utilisateur dans la base de donnée ne possède pas cette adresse mail.
@@ -34,29 +32,28 @@ function connect_db()
 function check_email_exist_in_db(string $email)
 {
 
-    $check = false;
+	$check = false;
 
-    $db = connect_db();
+	$db = connect_db();
 
-    $requette = "SELECT count(*) as nbr_utilisateur FROM utilisateur WHERE email = :email and est_supprimer = :est_supprimer";
-    
-    $verifier_email = $db->prepare($requette);
+	$requette = "SELECT count(*) as nbr_utilisateur FROM utilisateur WHERE email = :email and est_supprimer = :est_supprimer";
 
-    $resultat = $verifier_email->execute([
-        'email' => $email,
-        'est_supprimer' => 0,
-    ]);
+	$verifier_email = $db->prepare($requette);
 
-    if ($resultat) {
+	$resultat = $verifier_email->execute([
+		'email' => $email,
+		'est_supprimer' => 0,
+	]);
 
-        $nbr_utilisateur = $verifier_email->fetch(PDO::FETCH_ASSOC)["nbr_utilisateur"];
+	if ($resultat) {
 
-        $check = ($nbr_utilisateur > 0) ? true : false;
-    }
+		$nbr_utilisateur = $verifier_email->fetch(PDO::FETCH_ASSOC)["nbr_utilisateur"];
 
-    return $check;
+		$check = ($nbr_utilisateur > 0) ? true : false;
+	}
+
+	return $check;
 }
-
 
 /**
  * Cette fonction permet de verifier si un utilisateur dans la base de donnée ne possède pas ce nom d'utilisateur.
@@ -67,33 +64,33 @@ function check_email_exist_in_db(string $email)
 function check_user_name_exist_in_db(string $nom_utilisateur)
 {
 
-    $check = false;
+	$check = false;
 
-    $db = connect_db();
+	$db = connect_db();
 
-    $requette = "SELECT count(*) as nbr_utilisateur FROM utilisateur WHERE nom_utilisateur = :nom_utilisateur and est_supprimer = :est_supprimer";
+	$requette = "SELECT count(*) as nbr_utilisateur FROM utilisateur WHERE nom_utilisateur = :nom_utilisateur and est_supprimer = :est_supprimer";
 
-    $verifier_nom_utilisateur = $db->prepare($requette);
+	$verifier_nom_utilisateur = $db->prepare($requette);
 
-    $resultat = $verifier_nom_utilisateur->execute([
-        'nom_utilisateur' => $nom_utilisateur,
-        'est_supprimer' => 0,
-    ]);
+	$resultat = $verifier_nom_utilisateur->execute([
+		'nom_utilisateur' => $nom_utilisateur,
+		'est_supprimer' => 0,
+	]);
 
-    if ($resultat) {
+	if ($resultat) {
 
-        $nbr_utilisateur = $verifier_nom_utilisateur->fetch(PDO::FETCH_ASSOC)["nbr_utilisateur"];
+		$nbr_utilisateur = $verifier_nom_utilisateur->fetch(PDO::FETCH_ASSOC)["nbr_utilisateur"];
 
-        $check = ($nbr_utilisateur > 0) ? true : false;
-    }
+		$check = ($nbr_utilisateur > 0) ? true : false;
+	}
 
-    return $check;
+	return $check;
 }
 
 
 /**
  * .3++++++
- * 
+ *
  * Send mail.
  *
  * @param string $destination The destination.
@@ -103,53 +100,53 @@ function check_user_name_exist_in_db(string $nom_utilisateur)
  */
 function send_email(string $destination, string $subject, string $body): bool
 {
-    // passing true in constructor enables exceptions in PHPMailer
-    $mail = new PHPMailer(true);
-    $mail->CharSet = "UTF-8";
+	// passing true in constructor enables exceptions in PHPMailer
+	$mail = new PHPMailer(true);
+	$mail->CharSet = "UTF-8";
 
-    try {
+	try {
 
-        // Server settings
-        // for detailed debug output
-        // $mail->SMTPDebug = SMTP::DEBUG_SERVER;
-        $mail->SMTPDebug = 0;
-        $mail->isSMTP();
-        $mail->Host = 'smtp.gmail.com';
-        $mail->SMTPAuth = true;
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port = 587;
+		// Server settings
+		// for detailed debug output
+		// $mail->SMTPDebug = SMTP::DEBUG_SERVER;
+		$mail->SMTPDebug = 0;
+		$mail->isSMTP();
+		$mail->Host = 'smtp.gmail.com';
+		$mail->SMTPAuth = true;
+		$mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+		$mail->Port = 587;
 
-        $mail->Username = MAIL_ADDRESS;
-        $mail->Password = MAIL_PASSWORD;
+		$mail->Username = MAIL_ADDRESS;
+		$mail->Password = MAIL_PASSWORD;
 
-        // Sender and recipient settings
-        $mail->setFrom('akaisukibibliotheque@gmail.com', htmlspecialchars_decode('Bibliotheque AKAITSUKI'));
-        $mail->addAddress($destination, 'UTILISATEUR');
-        $mail->addReplyTo('akaisukibibliotheque@gmail.com', htmlspecialchars_decode('Bibliotheque AKAITSUKI'));
+		// Sender and recipient settings
+		$mail->setFrom('akaisukibibliotheque@gmail.com', htmlspecialchars_decode('Bibliotheque AKAITSUKI'));
+		$mail->addAddress($destination, 'UTILISATEUR');
+		$mail->addReplyTo('akaisukibibliotheque@gmail.com', htmlspecialchars_decode('Bibliotheque AKAITSUKI'));
 
-        // Setting the email content
-        $mail->IsHTML(true);
-        $mail->Subject = htmlspecialchars_decode($subject);
-        $mail->Body = $body;
+		// Setting the email content
+		$mail->IsHTML(true);
+		$mail->Subject = htmlspecialchars_decode($subject);
+		$mail->Body = $body;
 
-        return $mail->send();
-    } catch (Exception $e) {
-        return false;
-    }
+		return $mail->send();
+	} catch (Exception $e) {
+		return false;
+	}
 }
 
 //Fonction buffer pour récupérer du html
 
 function buffer_html_file($filename)
 {
-    ob_start(); //démarre la temporisation de sortie
+	ob_start(); //démarre la temporisation de sortie
 
-    include $filename; //Inclut des fichier html dans le tampon
+	include $filename; //Inclut des fichier html dans le tampon
 
-    $html = ob_get_contents(); // Récupère le contenu du tampon
-    ob_end_clean(); // Arrête et vide la tamporisation de sortie
+	$html = ob_get_contents(); // Récupère le contenu du tampon
+	ob_end_clean(); // Arrête et vide la tamporisation de sortie
 
-    return $html; // Retourne le contenu du fichier html
+	return $html; // Retourne le contenu du fichier html
 }
 
 //Exemple de fonction pour exécuter la requête INSERT INTO
@@ -157,54 +154,54 @@ function buffer_html_file($filename)
 function insertion_token(int $user_id, string $type, string $token): bool
 {
 
-    $insertion_token = false;
+	$insertion_token = false;
 
-    $db = connect_db();
+	$db = connect_db();
 
-    $request = "INSERT INTO token (user_id, type, token) VALUES (:user_id, :type, :token)";
+	$request = "INSERT INTO token (user_id, type, token) VALUES (:user_id, :type, :token)";
 
-    $request_prepare = $db->prepare($request);
+	$request_prepare = $db->prepare($request);
 
-    $request_execution = $request_prepare->execute(
-        [
-            'user_id' => $user_id,
-            'type' => $type,
-            'token' => $token
-        ]
-    );
+	$request_execution = $request_prepare->execute(
+		[
+			'user_id' => $user_id,
+			'type' => $type,
+			'token' => $token
+		]
+	);
 
-    if ($request_execution) {
+	if ($request_execution) {
 
-        $insertion_token = true;
-    }
+		$insertion_token = true;
+	}
 
-    return $insertion_token;
+	return $insertion_token;
 }
 
 // Récupérer le token
 function recuperer_token(string $user_id)
 {
-    $token = [];
+	$token = [];
 
-    $db = connect_db();
+	$db = connect_db();
 
-    $request = "SELECT token FROM token WHERE user_id=:user_id";
+	$request = "SELECT token FROM token WHERE user_id=:user_id";
 
-    $request_prepare = $db->prepare($request);
+	$request_prepare = $db->prepare($request);
 
-    $request_execution = $request_prepare->execute([
-        'user_id' => $user_id
-    ]);
+	$request_execution = $request_prepare->execute([
+		'user_id' => $user_id
+	]);
 
-    if ($request_execution) {
+	if ($request_execution) {
 
-        $data = $request_prepare->fetchAll(PDO::FETCH_ASSOC);
+		$data = $request_prepare->fetchAll(PDO::FETCH_ASSOC);
 
-        if (isset($data) && !empty($data) && is_array($data)) {
-            $token = $data;
-        }
-    }
-    return $token;
+		if (isset($data) && !empty($data) && is_array($data)) {
+			$token = $data;
+		}
+	}
+	return $token;
 }
 
 /**
@@ -249,35 +246,35 @@ function recuperer_id_utilisateur_par_son_mail(string $email): int
 function check_token_exist(int $user_id, string $token, string $type, int $est_actif = 1, int $est_supprimer = 0): bool
 {
 
-    $check = false;
+	$check = false;
 
-    $db = connect_db();
+	$db = connect_db();
 
-    if (is_object($db)) {
+	if (is_object($db)) {
 
-        $requette = "SELECT * FROM token WHERE user_id = :user_id and token= :token and type= :type and est_actif= :est_actif and $est_supprimer= :est_supprimer";
+		$requette = "SELECT * FROM token WHERE user_id = :user_id and token= :token and type= :type and est_actif= :est_actif and $est_supprimer= :est_supprimer";
 
-        $verifier_id_utilisateur = $db->prepare($requette);
+		$verifier_id_utilisateur = $db->prepare($requette);
 
-        $resultat = $verifier_id_utilisateur->execute([
-            'user_id' => $user_id,
-            'token' => $token,
-            'type' => $type,
-            'est_actif' => $est_actif,
-            'est_supprimer' => $est_supprimer
-        ]);
+		$resultat = $verifier_id_utilisateur->execute([
+			'user_id' => $user_id,
+			'token' => $token,
+			'type' => $type,
+			'est_actif' => $est_actif,
+			'est_supprimer' => $est_supprimer
+		]);
 
-        if ($resultat) {
+		if ($resultat) {
 
-            $data = $verifier_id_utilisateur->fetchAll(PDO::FETCH_ASSOC);
+			$data = $verifier_id_utilisateur->fetchAll(PDO::FETCH_ASSOC);
 
-            if (isset($data) && !empty($data) && is_array($data)) {
+			if (isset($data) && !empty($data) && is_array($data)) {
 
-                $check = true;
-            }
-        }
-    }
-    return $check;
+				$check = true;
+			}
+		}
+	}
+	return $check;
 }
 
 
@@ -286,31 +283,31 @@ function check_token_exist(int $user_id, string $token, string $type, int $est_a
 function suppression_logique_token(int $id_utilisateur): bool
 {
 
-    $suppression_logique_token = false;
+	$suppression_logique_token = false;
 
-    $date = date("Y-m-d H:i:s");
+	$date = date("Y-m-d H:i:s");
 
-    $db = connect_db();
+	$db = connect_db();
 
-    $request = "UPDATE token SET est_actif = :est_actif, est_supprimer = :est_supprimer, maj_le = :maj_le WHERE user_id= :id_utilisateur";
+	$request = "UPDATE token SET est_actif = :est_actif, est_supprimer = :est_supprimer, maj_le = :maj_le WHERE user_id= :id_utilisateur";
 
-    $request_prepare = $db->prepare($request);
+	$request_prepare = $db->prepare($request);
 
-    $request_execution = $request_prepare->execute(
-        [
-            'id_utilisateur' => $id_utilisateur,
-            'est_actif' => 0,
-            'est_supprimer' => 1,
-            'maj_le' => $date
-        ]
-    );
+	$request_execution = $request_prepare->execute(
+		[
+			'id_utilisateur' => $id_utilisateur,
+			'est_actif' => 0,
+			'est_supprimer' => 1,
+			'maj_le' => $date
+		]
+	);
 
-    if ($request_execution) {
+	if ($request_execution) {
 
-        $suppression_logique_token = true;
-    }
+		$suppression_logique_token = true;
+	}
 
-    return $suppression_logique_token;
+	return $suppression_logique_token;
 }
 
 
@@ -319,32 +316,31 @@ function suppression_logique_token(int $id_utilisateur): bool
 function activation_compte_utilisateur(int $id_utilisateur): bool
 {
 
-    $activation_compte_utilisateur = false;
+	$activation_compte_utilisateur = false;
 
-    $date = date("Y-m-d H:i:s");
+	$date = date("Y-m-d H:i:s");
 
-    $db = connect_db();
+	$db = connect_db();
 
-    $request = "UPDATE utilisateur SET est_actif = :est_actif, maj_le = :maj_le WHERE id= :id_utilisateur";
+	$request = "UPDATE utilisateur SET est_actif = :est_actif, maj_le = :maj_le WHERE id= :id_utilisateur";
 
-    $request_prepare = $db->prepare($request);
+	$request_prepare = $db->prepare($request);
 
-    $request_execution = $request_prepare->execute(
-        [
-            'id_utilisateur' => $id_utilisateur,
-            'est_actif' => 1,
-            'maj_le' => $date
-        ]
-    );
+	$request_execution = $request_prepare->execute(
+		[
+			'id_utilisateur' => $id_utilisateur,
+			'est_actif' => 1,
+			'maj_le' => $date
+		]
+	);
 
-    if ($request_execution) {
+	if ($request_execution) {
 
-        $activation_compte_utilisateur = true;
-    }
+		$activation_compte_utilisateur = true;
+	}
 
-    return $activation_compte_utilisateur;
+	return $activation_compte_utilisateur;
 }
-
 
 
 /**
@@ -356,214 +352,244 @@ function activation_compte_utilisateur(int $id_utilisateur): bool
 function check_id_utilisateur_exist_in_db(int $user_id, string $type, string $token, int $est_actif, int $est_supprimer): bool
 {
 
-    $check = false;
+	$check = false;
 
-    $db = connect_db();
+	$db = connect_db();
 
-    $requette = "SELECT * FROM token WHERE user_id = :user_id and type= :type and token= :token and est_actif= :est_actif and est_supprimer= :est_supprimer";
+	$requette = "SELECT * FROM token WHERE user_id = :user_id and type= :type and token= :token and est_actif= :est_actif and est_supprimer= :est_supprimer";
 
-    $verifier_id_utilisateur = $db->prepare($requette);
+	$verifier_id_utilisateur = $db->prepare($requette);
 
-    $resultat = $verifier_id_utilisateur->execute([
-        'user_id' => $user_id,
-        'type' => $type,
-        'token' => $token,
-        'est_actif' => $est_actif,
-        'est_supprimer' => $est_supprimer
-    ]);
+	$resultat = $verifier_id_utilisateur->execute([
+		'user_id' => $user_id,
+		'type' => $type,
+		'token' => $token,
+		'est_actif' => $est_actif,
+		'est_supprimer' => $est_supprimer
+	]);
 
-    if ($resultat) {
+	if ($resultat) {
 
-        $data = $verifier_id_utilisateur->fetchAll(PDO::FETCH_ASSOC);
+		$data = $verifier_id_utilisateur->fetchAll(PDO::FETCH_ASSOC);
 
-        if (isset($data) && !empty($data) && is_array($data)) {
+		if (isset($data) && !empty($data) && is_array($data)) {
 
-            $check = true;
-        }
-    }
+			$check = true;
+		}
+	}
 
-    return $check;
+	return $check;
 }
-
 
 /**
  * Cette fonction permet de verifier si un utilisateur (nom utilisateur + mot de passe) existe dans la base de donnée.
- * Si oui elle retourne un tableau contenant les informations de l'utilisateur.
- * Sinon elle retourne un tableau vide.
  *
- * @param string $email L'email.
- * @param string $password Le mot de passe.
+ * @param string $nom_utilisateur Le nom de l'utilisateur.
+ * @param string $mot_de_passe Le mot de passe de l'utilisateur.
+ * @param string $profil Le profil de l'utilisateur.
+ * @param int $est_actif Est-ce que l'utilisateur est actif ou pas.
  *
  * @return array $user Les informations de l'utilisateur.
  */
-function check_if_user_exist(string $nom_utilisateur, string $mot_de_passe, string $profil, int $est_actif = 1): bool
+function check_if_user_exist(string $nom_utilisateur, string $mot_de_passe, string $profil, int $est_actif = 1): array
 {
 
-    $user = false;
+	$user = [];
 
-    $db = connect_db();
+	$db = connect_db();
 
-    $requette = "SELECT id, nom, prenom, sexe, email, nom_utilisateur, avatar, profil, telephone, adresse, date_naissance FROM utilisateur WHERE nom_utilisateur = :nom_utilisateur and mot_de_passe = :mot_de_passe and profil = :profil and est_actif = :est_actif";
+	$requette = "SELECT id, nom, prenom, sexe, email, nom_utilisateur, avatar, profil, telephone, adresse, date_naissance FROM utilisateur WHERE nom_utilisateur = :nom_utilisateur and mot_de_passe = :mot_de_passe and profil = :profil and est_actif = :est_actif";
 
-    $verifier_nom_utilisateur = $db->prepare($requette);
+	$verifier_nom_utilisateur = $db->prepare($requette);
 
-    $resultat = $verifier_nom_utilisateur->execute([
-        'nom_utilisateur' => $nom_utilisateur,
-        'mot_de_passe' => sha1($mot_de_passe),
-        'profil' => $profil,
-        'est_actif' => $est_actif,
+	$resultat = $verifier_nom_utilisateur->execute([
+		'nom_utilisateur' => $nom_utilisateur,
+		'mot_de_passe' => sha1($mot_de_passe),
+		'profil' => $profil,
+		'est_actif' => $est_actif,
+	]);
 
-
-
-    ]);
-
-    if ($resultat) {
-
-        $utilisateur = $verifier_nom_utilisateur->fetchAll(PDO::FETCH_ASSOC);
-        $_SESSION['utilisateur_connecter'] = $utilisateur;
-        $user = (isset($utilisateur) && !empty($utilisateur) && is_array($utilisateur)) ?  true : false;
-    }
-
-    return $user;
+	if ($resultat) {
+		$user = $verifier_nom_utilisateur->fetch(PDO::FETCH_ASSOC);
+	}
+	return $user;
 }
 
-
-function check_if_user_conneted()
+function check_if_user_connected(): bool
 {
-
-    $check = false;
-
-
-    if (isset($_SESSION["utilisateur_connecter"]) && !empty($_SESSION["utilisateur_connecter"])) {
-
-        $check = true;
-    }
-    return $check;
+	return !empty($_SESSION["utilisateur_connecter"]);
 }
 
 //Cette fonction permet de rechercher si le mot de passe existe et appartient à l'utilisateur enregistrer dans la base de donnée 
 function check_password_exist(string $mot_de_passe, int $id)
 {
-    $users = "false";
-    $db = connect_db();
-    $req = $db->prepare('SELECT id from utilisateur WHERE mot_de_passe=:mot_de_passe AND id=:id');
-    $req->execute(array(
-        'mot_de_passe' => sha1($mot_de_passe),
-        'id' => $id
-    ));
-    $users = $req->fetch();
-    if ($users) {
-        $users = true;
-    }
-    return $users;
+	$users = "false";
+	$db = connect_db();
+	$req = $db->prepare('SELECT id from utilisateur WHERE mot_de_passe=:mot_de_passe AND id=:id');
+	$req->execute(array(
+		'mot_de_passe' => sha1($mot_de_passe),
+		'id' => $id
+	));
+	$users = $req->fetch();
+	if ($users) {
+		$users = true;
+	}
+	return $users;
 }
 
 //Cette fonction permet de modifier le mot de passe de l'utilisateur dans la base de données
-function update_password_in_db(int $id,  string $mot_de_passe)
+function update_password_in_db(int $id, string $mot_de_passe)
 {
-    $update_password = "false";
+	$update_password = "false";
 
 
-    $db = connect_db();
-    $requete = "UPDATE utilisateur SET mot_de_passe=:mot_de_passe WHERE id= :id";
-    $requete_prepare = $db->prepare($requete);
-    $requete_execute = $requete_prepare->execute(array(
-        'mot_de_passe' => sha1($mot_de_passe),
-        'id' => $id
-    ));
+	$db = connect_db();
+	$requete = "UPDATE utilisateur SET mot_de_passe=:mot_de_passe WHERE id= :id";
+	$requete_prepare = $db->prepare($requete);
+	$requete_execute = $requete_prepare->execute(array(
+		'mot_de_passe' => sha1($mot_de_passe),
+		'id' => $id
+	));
 
-    if ($requete_execute) {
-        $update_password = true;
-    }
-    return $update_password;
+	if ($requete_execute) {
+		$update_password = true;
+	}
+	return $update_password;
 }
 
-
-//Fonction qui permet de mettre à jour les informations du profil dans la base de donnee 
-function maj_nv_info_user(int $id, string $nom, string $prenom, string $telephone, string $nom_utilisateur, string $adresse): bool
+/**
+ * Cette fonction permet de mettre a jour les information de l'utilisateur a partir de son identifiant (id).
+ *
+ * @param int $id
+ * @param string|null $nom
+ * @param string|null $prenom
+ * @param string|null $sexe
+ * @param string|null $date_naissance
+ * @param string|null $telephone
+ * @param string|null $avatar
+ * @param string|null $nom_utilisateur
+ * @param string|null $adresse
+ *
+ * @return bool
+ */
+function mettre_a_jour_informations_utilisateur(int $id, string $nom = null, string $prenom = null, string $sexe = null, string $date_naissance = null, string $telephone = null, string $avatar = null, string $nom_utilisateur = null, string $adresse = null): bool
 {
+	$mettre_a_jour_informations_utilisateur = false;
+	$data = ["id" => $id, "maj_le" => date("Y-m-d H:i:s")];
+	$db = connect_db();
+	if (is_object($db)) {
+		$request = "UPDATE utilisateur SET";
+		if (!empty($nom)) {
+			$request .= " nom = :nom,";
+			$data["nom"] = $nom;
+		}
 
-    $modifier_profil = false;
+		if (!empty($prenom)) {
+			$request .= " prenom = :prenom,";
+			$data["prenom"] = $prenom;
+		}
 
-    $date = date("Y-m-d H:i:s");
+		if (!empty($sexe)) {
+			$request .= " sexe = :sexe,";
+			$data["sexe"] = $sexe;
+		}
 
-    $db = connect_db();
+		if (!empty($date_naissance)) {
+			$request .= " date_naissance = :date_naissance,";
+			$data["date_naissance"] = $date_naissance;
+		}
 
-    $request = "UPDATE utilisateur SET nom = :nom, prenom = :prenom, telephone = :telephone, nom_utilisateur = :nom_utilisateur, adresse = :adresse, maj_le = :maj_le WHERE id= :id";
+		if (!empty($telephone)) {
+			$request .= " telephone = :telephone,";
+			$data["telephone"] = $telephone;
+		}
 
-    $request_prepare = $db->prepare($request);
+		if (!empty($avatar)) {
+			$request .= " avatar = :avatar,";
+			$data["avatar"] = $avatar;
+		}
 
-    $request_execution = $request_prepare->execute(array(
-        'id' => $id,
-        'nom' => $nom,
-        'prenom' => $prenom,
-        'telephone' => $telephone,
-        'nom_utilisateur' => $nom_utilisateur,
-        'adresse' => $adresse,
-        'maj_le' => $date
-    ));
+		if (!empty($adresse)) {
+			$request .= " adresse = :adresse,";
+			$data["adresse"] = $adresse;
+		}
 
-    if ($request_execution) {
+		if (!empty($nom_utilisateur)) {
+			$request .= " nom_utilisateur = :nom_utilisateur,";
+			$data["nom_utilisateur"] = $nom_utilisateur;
+		}
 
-        $modifier_profil = true;
-    }
+		$request .= " maj_le = :maj_le";
 
-    return $modifier_profil;
+		$request .= " WHERE id= :id";
+
+		//die(var_dump($request, $data));
+
+		$request_prepare = $db->prepare($request);
+
+		$request_execution = $request_prepare->execute($data);
+
+		if ($request_execution) {
+			$mettre_a_jour_informations_utilisateur = true;
+		}
+	}
+
+	return $mettre_a_jour_informations_utilisateur;
 }
 
 
 //Fonction pour récupérer la mise à jour du profil
-function recup_maj_nv_info_user($id): bool
+function recup_mettre_a_jour_informations_utilisateur($id): bool
 {
 
-    $recup = false;
+	$recup = false;
 
-    $db = connect_db();
+	$db = connect_db();
 
-    $request_recupere = $db->prepare('SELECT  id, nom, prenom, sexe, date_naissance, email, telephone, nom_utilisateur, avatar, adresse, profil FROM utilisateur WHERE id= :id');
+	$request_recupere = $db->prepare('SELECT  id, nom, prenom, sexe, date_naissance, email, telephone, nom_utilisateur, avatar, adresse, profil FROM utilisateur WHERE id= :id');
 
-    $resultat = $request_recupere->execute(array(
-        'id' => $id,
-    ));
+	$resultat = $request_recupere->execute(array(
+		'id' => $id,
+	));
 
-    if ($resultat) {
-        $data = [];
+	if ($resultat) {
+		$data = [];
 
-        $data = $request_recupere->fetchAll(PDO::FETCH_ASSOC);
+		$data = $request_recupere->fetch(PDO::FETCH_ASSOC);
 
-        $_SESSION['utilisateur_connecter'] = $data;
+		$_SESSION['utilisateur_connecter'] = $data;
 
-        $recup = true;
-    }
-    return $recup;
+		$recup = true;
+	}
+	return $recup;
 }
 
 //cette fonction permet de désactiver le profil d'un utilisatreur
 function desactiver_utilisateur(int $id): bool
 {
 
-    $profile_active = false;
+	$profile_active = false;
 
-    $date = date("Y-m-d H:i:s");
+	$date = date("Y-m-d H:i:s");
 
-    $db = connect_db();
+	$db = connect_db();
 
-    $request = "UPDATE utilisateur SET  est_actif = :est_actif, maj_le = :maj_le WHERE id= :id";
+	$request = "UPDATE utilisateur SET  est_actif = :est_actif, maj_le = :maj_le WHERE id= :id";
 
-    $request_prepare = $db->prepare($request);
+	$request_prepare = $db->prepare($request);
 
-    $request_execution = $request_prepare->execute(array(
-        'id' => $id,
-        'est_actif' => 0,
-        'maj_le' => $date
-    ));
+	$request_execution = $request_prepare->execute(array(
+		'id' => $id,
+		'est_actif' => 0,
+		'maj_le' => $date
+	));
 
-    if ($request_execution) {
+	if ($request_execution) {
 
-        $profile_active = true;
-    }
+		$profile_active = true;
+	}
 
-    return $profile_active;
+	return $profile_active;
 }
 
 
@@ -572,31 +598,29 @@ function desactiver_utilisateur(int $id): bool
 function supprimer_utilisateur(int $id): bool
 {
 
-    $profile_supprimer = false;
+	$profile_supprimer = false;
 
-    $date = date("Y-m-d H:i:s");
+	$date = date("Y-m-d H:i:s");
 
-    $db = connect_db();
+	$db = connect_db();
 
-    $request = "UPDATE utilisateur SET  est_actif = :est_actif, est_supprimer :est_supprimer, maj_le = :maj_le WHERE id= :id";
+	$request = "UPDATE utilisateur SET  est_actif = :est_actif, est_supprimer :est_supprimer, maj_le = :maj_le WHERE id= :id";
 
-    $request_prepare = $db->prepare($request);
+	$request_prepare = $db->prepare($request);
 
-    $request_execution = $request_prepare->execute(array(
-        'id' => $id,
-        'est_actif' => 0,
-        'est_supprimer' => 1,
-        'maj_le' => $date
-    ));
-    if ($request_execution) {
+	$request_execution = $request_prepare->execute(array(
+		'id' => $id,
+		'est_actif' => 0,
+		'est_supprimer' => 1,
+		'maj_le' => $date
+	));
+	if ($request_execution) {
 
-        $profile_supprimer = true;
-    }
+		$profile_supprimer = true;
+	}
 
-    return $profile_supprimer;
+	return $profile_supprimer;
 }
-
-
 
 
 /** Cette fonction permet d'inserer un utilisateur de profile MEMBRE
