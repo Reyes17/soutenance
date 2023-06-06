@@ -2,7 +2,7 @@
 include 'app/commun/fonction/fonction.php';
 if (check_if_user_connected()) {
 	include("haut.php");
-	?>
+?>
 
 	<section class="section dashboard">
 		<main id="main" class="main">
@@ -25,23 +25,20 @@ if (check_if_user_connected()) {
 						<div class="mb-3 row">
 							<label for="numero-emprunt" class="col-sm-2 col-form-label">Emprunt:</label>
 							<div class="col-sm-7">
-								<input type="text" class="form-control" id="numero-emprunt" name="numero-emprunt"
-									   placeholder="Veuillez entrer le numéro de l'emprunt">
+								<input type="text" class="form-control" id="numero-emprunt" name="numero-emprunt" placeholder="Veuillez entrer le numéro de l'emprunt">
 							</div>
 						</div>
 						<div class="mb-3 row">
 							<label for="numero-membre" class="col-sm-2 col-form-label">Membre:</label>
 							<div class="col-sm-7">
-								<input type="text" class="form-control" id="numero-membre" name="numero-membre"
-									   placeholder="Veuillez entrer l'identifiant ou le nom du membre">
+								<input type="text" class="form-control" id="numero-membre" name="numero-membre" placeholder="Veuillez entrer l'identifiant ou le nom du membre">
 							</div>
 						</div>
 
 						<div class="mb-3 row">
 							<label for="code-ouvrage" class="col-sm-2 col-form-label">Code:</label>
 							<div class="col-sm-7">
-								<input type="text" class="form-control" id="code-ouvrage" name="code-ouvrage"
-									   placeholder="Veuillez entrer l'ouvrage emprunter">
+								<input type="text" class="form-control" id="code-ouvrage" name="code-ouvrage" placeholder="Veuillez entrer l'ouvrage emprunter">
 							</div>
 						</div>
 
@@ -50,8 +47,7 @@ if (check_if_user_connected()) {
 							<label for="date-emprunt" class="col-sm-2 col-form-label">Date: </label>
 
 							<div class="col-sm-7">
-								<input type="date" class="form-control" id="date-emprunt" name="trip-start"
-									   value="" min="1920-01-01" max="2050-01-01">
+								<input type="date" class="form-control" id="date-emprunt" name="trip-start" value="" min="1920-01-01" max="2050-01-01">
 							</div>
 						</div>
 						<div class="row">
@@ -68,10 +64,9 @@ if (check_if_user_connected()) {
 		</main>
 	</section>
 
-	<?php
+<?php
 	include("bas.php");
 } else {
 	header('location:' . PROJECT_DIR . 'bibliothecaire/connexion/index');
 }
 ?>
-  

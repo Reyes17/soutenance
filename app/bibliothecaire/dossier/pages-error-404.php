@@ -2,7 +2,7 @@
 include 'app/commun/fonction/fonction.php';
 if (check_if_user_connected()) {
 	include("haut.php");
-	?>
+?>
 	<main>
 		<div class="container">
 
@@ -16,7 +16,7 @@ if (check_if_user_connected()) {
 	</main><!-- End #main -->
 
 
-	<?php
+<?php
 	include("bas.php");
 } else {
 	header('location:' . PROJECT_DIR . 'bibliothecaire/connexion/index');

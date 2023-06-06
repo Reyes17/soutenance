@@ -10,11 +10,12 @@ $url = str_replace('{token}', $token, $url);
 
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Email de gestion de bibliothèque</title>
-	<style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email de gestion de bibliothèque</title>
+    <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #F5F5F5;
@@ -59,16 +60,18 @@ $url = str_replace('{token}', $token, $url);
             color: #1E90FF;
             border: 1px solid #1E90FF;
         }
-	</style>
+    </style>
 </head>
+
 <body>
-<div class="container">
-	<h1>BIENVENUE,</h1>
-	<p>Merci de vous êtes inscrit dans notre bibliothèque.</p>
-	<p>Merci de cliquer sur le bouton afin de valider votre inscription.</p>
-	<p>Cordialement,</p>
-	<p>L'équipe de la bibliothèque AKAISUKI</p>
-	<a href="<?= $url ?>" class="button">Valider</a>
-</div>
+    <div class="container">
+        <h1>BIENVENUE,</h1>
+        <p>Merci de vous êtes inscrit dans notre bibliothèque.</p>
+        <p>Merci de cliquer sur le bouton afin de valider votre inscription.</p>
+        <p>Cordialement,</p>
+        <p>L'équipe de la bibliothèque AKAISUKI</p>
+        <a href="<?= $url ?>" class="button">Valider</a>
+    </div>
 </body>
+
 </html>

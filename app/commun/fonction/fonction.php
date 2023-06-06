@@ -151,12 +151,12 @@ function buffer_html_file($filename)
 
 
 /** 
-* Cette fonction permet de générer un token pour la validation du compte en fonction de l'id de l'utilsateur 
+ * Cette fonction permet de générer un token pour la validation du compte en fonction de l'id de l'utilsateur 
 
-* @param int $user_id
-* @param string $type
-* @param string $token
-*@return bool $insertion_token
+ * @param int $user_id
+ * @param string $type
+ * @param string $token
+ *@return bool $insertion_token
  */
 
 function insertion_token(int $user_id, string $type, string $token): bool
@@ -188,10 +188,10 @@ function insertion_token(int $user_id, string $type, string $token): bool
 
 
 /** 
-* Cette fonction permet de recupérer le token générer un token pour la validation du compte en fonction de l'id de l'utilsateur 
+ * Cette fonction permet de recupérer le token générer un token pour la validation du compte en fonction de l'id de l'utilsateur 
 
-* @param int $user_id
-*@return bool $token
+ * @param int $user_id
+ *@return bool $token
  */
 function recuperer_token(string $user_id)
 {
@@ -293,10 +293,10 @@ function check_token_exist(int $user_id, string $token, string $type, int $est_a
 
 
 /** 
-* Cette fonction permet de supprimer le token générer pour la validation du compte en fonction de l'id de l'utilsateur en faisant passé le est_supprimer de la table token à zéro
+ * Cette fonction permet de supprimer le token générer pour la validation du compte en fonction de l'id de l'utilsateur en faisant passé le est_supprimer de la table token à zéro
 
-* @param int $id_utilisateur l'identifiant de l'utilisateur
-*@return bool $suppression_logique_token
+ * @param int $id_utilisateur l'identifiant de l'utilisateur
+ *@return bool $suppression_logique_token
  */
 
 function suppression_logique_token(int $id_utilisateur): bool
@@ -331,10 +331,10 @@ function suppression_logique_token(int $id_utilisateur): bool
 
 
 /** 
-* Cette fonction permet d'activer le compte de l'utilisateur en faisant passée le est_actif à 1
+ * Cette fonction permet d'activer le compte de l'utilisateur en faisant passée le est_actif à 1
 
-* @param int $id_utilisateur identifiant de l'utilisateur
-*@return bool $activation_compte_utilisateur
+ * @param int $id_utilisateur identifiant de l'utilisateur
+ *@return bool $activation_compte_utilisateur
  */
 function activation_compte_utilisateur(int $id_utilisateur): bool
 {
@@ -354,7 +354,7 @@ function activation_compte_utilisateur(int $id_utilisateur): bool
 			'id_utilisateur' => $id_utilisateur,
 			'est_actif' => 1,
 			'maj_le' => $date,
-			
+
 		]
 	);
 
@@ -451,7 +451,7 @@ function check_if_user_connected(): bool
  * @param int $id l'identifiant de l'utilisateur.
  *
  * @return bool $users .
-*/
+ */
 function check_password_exist(string $mot_de_passe, int $id)
 {
 	$users = "false";
@@ -469,11 +469,11 @@ function check_password_exist(string $mot_de_passe, int $id)
 }
 
 /** 
-*Cette fonction permet de modifier le mot de passe dans le champ mot_de_passe de la table utilisateur dans la base de donnée
-* @param int $id L'id ded l'utilisatuer.
+ *Cette fonction permet de modifier le mot de passe dans le champ mot_de_passe de la table utilisateur dans la base de donnée
+ * @param int $id L'id ded l'utilisatuer.
  * @param string $mot_de_passe Le mot de passe de l'utilisateur.
  * @return bool $update_passwordu_in_db.
-*/
+ */
 function update_password_in_db(int $id, string $mot_de_passe)
 {
 	$update_password = "false";
@@ -573,10 +573,10 @@ function mettre_a_jour_informations_utilisateur(int $id, string $nom = null, str
 
 
 /** 
-*Fonction permet de récupérer les informations mise à jour du profil dans la base de donnée
-* @param int $id L'id de l'utilisateur.
+ *Fonction permet de récupérer les informations mise à jour du profil dans la base de donnée
+ * @param int $id L'id de l'utilisateur.
  * @return bool $recup.
-*/
+ */
 function recup_mettre_a_jour_informations_utilisateur($id): bool
 {
 
@@ -606,7 +606,7 @@ function recup_mettre_a_jour_informations_utilisateur($id): bool
  * Cette fonction permet de désactiver un utilisatreur en faisant passé le est_actif de la table utilisateur à zéro
  * @param int $id l'id de l'utilisateur
  * @return bool $profile_active 
-*/
+ */
 function desactiver_utilisateur(int $id): bool
 {
 
@@ -639,7 +639,7 @@ function desactiver_utilisateur(int $id): bool
  * Cette fonction permet de supprimer un utilisateur en faisant passé le est_actif de la table utilisateur à 0 et le est_supprimer à 0
  * @param int $id  l'id de l'utilisateur
  * @return bool $profile_supprimer
-*/
+ */
 
 function supprimer_utilisateur(int $id): bool
 {
@@ -698,9 +698,7 @@ function enregistrer_utilisateur(string $nom, string $prenom, string $email, str
 		]);
 
 		$enregistrer_utilisateur = $resultat;
-
 	}
 
 	return $enregistrer_utilisateur;
-
 }

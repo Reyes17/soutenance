@@ -87,7 +87,7 @@ if ($check_user_name_exist_in_db) {
 }
 
 
-$_SESSION ['data'] = $data;
+$_SESSION['data'] = $data;
 
 
 if (empty($errors)) {
@@ -120,18 +120,8 @@ if (empty($errors)) {
 	} else {
 		echo 'pas bon';
 	}
-
-
 } //Si les informations de l'utilisateur sont incorrects, je le redirige vers la page d'inscription avec des messages d'erreurs
 else {
 	$_SESSION['errors'] = $errors;
 	header('location:' . PROJECT_DIR . 'bibliothecaire/inscription');
 }
-    
-     
-   
-
-
-
-   
-

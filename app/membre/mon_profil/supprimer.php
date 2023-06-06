@@ -19,5 +19,3 @@ if (isset($_POST['supprimer'])) {
 } else {
 	die('no good at all');
 }
-
-?>

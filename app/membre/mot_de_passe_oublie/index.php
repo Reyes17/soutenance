@@ -36,9 +36,7 @@ include './app/commun/index.php';
 
 									<div class="col-12">
 										<label for="yourEmail" class="form-label">Adresse Email</label>
-										<input type="email" name="email" class="form-control"
-											   id="mot_de_passe_oublie_email"
-											   placeholder="Veuillez enter votre adresse email!" required>
+										<input type="email" name="email" class="form-control" id="mot_de_passe_oublie_email" placeholder="Veuillez enter votre adresse email!" required>
 										<!---<div class="invalid-feedback">Enter une adresse e-mail valide s'il vous plaît!</div>---->
 									</div>
 

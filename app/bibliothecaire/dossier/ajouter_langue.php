@@ -2,7 +2,7 @@
 include 'app/commun/fonction/fonction.php';
 if (check_if_user_connected()) {
 	include("haut.php");
-	?>
+?>
 
 	<section class="section dashboard">
 		<main id="main" class="main">
@@ -27,16 +27,14 @@ if (check_if_user_connected()) {
 						<div class="mb-3 row">
 							<label for="code-langue" class="col-sm-2 col-form-label">Code:</label>
 							<div class="col-sm-7">
-								<input type="text" class="form-control" id="code-langue" name="code-langue"
-									   placeholder="Veuillez entrer le code de la langue">
+								<input type="text" class="form-control" id="code-langue" name="code-langue" placeholder="Veuillez entrer le code de la langue">
 							</div>
 						</div>
 
 						<div class="mb-3 row">
 							<label for="libellé-langue" class="col-sm-2 col-form-label">Libellé:</label>
 							<div class="col-sm-7">
-								<input type="text" class="form-control" id="libellé-langue" name="libellé-langue"
-									   placeholder="Veuillez entrer le libellé de la libellé">
+								<input type="text" class="form-control" id="libellé-langue" name="libellé-langue" placeholder="Veuillez entrer le libellé de la libellé">
 							</div>
 						</div>
 				</div>
@@ -54,10 +52,9 @@ if (check_if_user_connected()) {
 		</main>
 	</section>
 
-	<?php
+<?php
 	include("bas.php");
 } else {
 	header('location:' . PROJECT_DIR . 'bibliothecaire/connexion/index');
 }
 ?>
- 

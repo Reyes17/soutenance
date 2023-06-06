@@ -2,7 +2,7 @@
 include 'app/commun/fonction/fonction.php';
 if (check_if_user_connected()) {
 	include("haut.php");
-	?>
+?>
 
 	<main id="main" class="main">
 
@@ -39,8 +39,7 @@ if (check_if_user_connected()) {
 							<ul class="nav nav-tabs nav-tabs-bordered">
 
 								<li class="nav-item">
-									<button class="nav-link active" data-bs-toggle="tab"
-											data-bs-target="#profile-overview">Aperçu
+									<button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Aperçu
 									</button>
 								</li>
 
@@ -57,8 +56,7 @@ if (check_if_user_connected()) {
 								</li>
 
 								<li class="nav-item">
-									<button class="nav-link" data-bs-toggle="tab"
-											data-bs-target="#profile-change-password">Changer mot de passe
+									<button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">Changer mot de passe
 									</button>
 								</li>
 
@@ -110,10 +108,8 @@ if (check_if_user_connected()) {
 											<div class="col-md-8 col-lg-9">
 												<img src="assets/img/profile-img.jpg" alt="Profile">
 												<div class="pt-2">
-													<a href="#" class="btn btn-primary btn-sm"
-													   title="Upload new profile image"><i class="bi bi-upload"></i></a>
-													<a href="#" class="btn btn-danger btn-sm"
-													   title="Remove my profile image"><i class="bi bi-trash"></i></a>
+													<a href="#" class="btn btn-primary btn-sm" title="Upload new profile image"><i class="bi bi-upload"></i></a>
+													<a href="#" class="btn btn-danger btn-sm" title="Remove my profile image"><i class="bi bi-trash"></i></a>
 												</div>
 											</div>
 										</div>
@@ -122,8 +118,7 @@ if (check_if_user_connected()) {
 											<label for="fullName" class="col-md-4 col-lg-3 col-form-label">Nom &
 												Prénoms</label>
 											<div class="col-md-8 col-lg-9">
-												<input name="fullName" type="text" class="form-control" id="fullName"
-													   value="">
+												<input name="fullName" type="text" class="form-control" id="fullName" value="">
 											</div>
 										</div>
 
@@ -131,8 +126,7 @@ if (check_if_user_connected()) {
 											<label for="apropos" class="col-md-4 col-lg-3 col-form-label">A
 												propos</label>
 											<div class="col-md-8 col-lg-9">
-												<textarea name="about" class="form-control" id="about"
-														  style="height: 100px"></textarea>
+												<textarea name="about" class="form-control" id="about" style="height: 100px"></textarea>
 											</div>
 										</div>
 
@@ -146,28 +140,23 @@ if (check_if_user_connected()) {
 
 
 										<div class="row mb-3">
-											<label for="Address"
-												   class="col-md-4 col-lg-3 col-form-label">Adresse</label>
+											<label for="Address" class="col-md-4 col-lg-3 col-form-label">Adresse</label>
 											<div class="col-md-8 col-lg-9">
-												<input name="address" type="text" class="form-control" id="Address"
-													   value="">
+												<input name="address" type="text" class="form-control" id="Address" value="">
 											</div>
 										</div>
 
 										<div class="row mb-3">
-											<label for="Phone"
-												   class="col-md-4 col-lg-3 col-form-label">Téléphone</label>
+											<label for="Phone" class="col-md-4 col-lg-3 col-form-label">Téléphone</label>
 											<div class="col-md-8 col-lg-9">
-												<input name="phone" type="text" class="form-control" id="Phone"
-													   value="">
+												<input name="phone" type="text" class="form-control" id="Phone" value="">
 											</div>
 										</div>
 
 										<div class="row mb-3">
 											<label for="Email" class="col-md-4 col-lg-3 col-form-label">Email</label>
 											<div class="col-md-8 col-lg-9">
-												<input name="email" type="email" class="form-control" id="Email"
-													   value="">
+												<input name="email" type="email" class="form-control" id="Email" value="">
 											</div>
 										</div>
 
@@ -188,8 +177,7 @@ if (check_if_user_connected()) {
 												Notifications</label>
 											<div class="col-md-8 col-lg-9">
 												<div class="form-check">
-													<input class="form-check-input" type="checkbox" id="changesMade"
-														   checked>
+													<input class="form-check-input" type="checkbox" id="changesMade" checked>
 													<label class="form-check-label" for="modifications">
 														Modifications apportées à votre compte
 													</label>
@@ -197,8 +185,7 @@ if (check_if_user_connected()) {
 
 
 												<div class="form-check">
-													<input class="form-check-input" type="checkbox" id="securityNotify"
-														   checked disabled>
+													<input class="form-check-input" type="checkbox" id="securityNotify" checked disabled>
 													<label class="form-check-label" for="securityNotify">
 														Alertes de sécurité
 													</label>
@@ -221,8 +208,7 @@ if (check_if_user_connected()) {
 											<label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Mot de
 												passe actuel</label>
 											<div class="col-md-8 col-lg-9">
-												<input name="password" type="password" class="form-control"
-													   id="currentPassword">
+												<input name="password" type="password" class="form-control" id="currentPassword">
 											</div>
 										</div>
 
@@ -230,8 +216,7 @@ if (check_if_user_connected()) {
 											<label for="newPassword" class="col-md-4 col-lg-3 col-form-label">Nouveau
 												mot de passe</label>
 											<div class="col-md-8 col-lg-9">
-												<input name="newpassword" type="password" class="form-control"
-													   id="newPassword">
+												<input name="newpassword" type="password" class="form-control" id="newPassword">
 											</div>
 										</div>
 
@@ -239,8 +224,7 @@ if (check_if_user_connected()) {
 											<label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Confirmer
 												mot de passe</label>
 											<div class="col-md-8 col-lg-9">
-												<input name="renewpassword" type="password" class="form-control"
-													   id="renewPassword">
+												<input name="renewpassword" type="password" class="form-control" id="renewPassword">
 											</div>
 										</div>
 
@@ -263,11 +247,9 @@ if (check_if_user_connected()) {
 
 	</main><!-- End #main -->
 
-	<?php
+<?php
 	include('bas.php');
 } else {
 	header('location:' . PROJECT_DIR . 'bibliothecaire/connexion/index');
 }
 ?>
-
- 

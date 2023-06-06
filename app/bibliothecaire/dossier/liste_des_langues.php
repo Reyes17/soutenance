@@ -2,7 +2,7 @@
 include 'app/commun/fonction/fonction.php';
 if (check_if_user_connected()) {
 	include("haut.php");
-	?>
+?>
 
 	<section class="section dashboard">
 		<main id="main" class="main">
@@ -22,53 +22,50 @@ if (check_if_user_connected()) {
 
 				<table class="table table-hover">
 					<thead>
-					<tr>
-						<th scope="col">Code</th>
-						<th scope="col">Libellé</th>
-						<th scope="col">Actions</th>
+						<tr>
+							<th scope="col">Code</th>
+							<th scope="col">Libellé</th>
+							<th scope="col">Actions</th>
 
-					</tr>
+						</tr>
 					</thead>
 					<tbody>
-					<tr>
-						<th scope="row">001</th>
-						<td>Français</td>
+						<tr>
+							<th scope="row">001</th>
+							<td>Français</td>
 
-						<td>
-
-
-							<a href="modifier_langue" class="btn btn-warning mb-3">Modifier</a>
-
-							<a href="" class="btn btn-danger mb-3" data-bs-toggle="modal"
-							   data-bs-target="#cefp-ouvrage-supprimer">Supprimer</a>
-						</td>
-					</tr>
-					<tr>
-						<th scope="row">002</th>
-						<td>Anglais</td>
-
-						<td>
+							<td>
 
 
-							<a href="modifier_langue" class="btn btn-warning mb-3">Modifier</a>
+								<a href="modifier_langue" class="btn btn-warning mb-3">Modifier</a>
 
-							<a href="#" class="btn btn-danger mb-3" data-bs-toggle="modal"
-							   data-bs-target="#cefp-ouvrage-supprimer">Supprimer</a>
-						</td>
-					</tr>
-					<tr>
-						<th scope="row">003</th>
-						<td>Espagnol</td>
+								<a href="" class="btn btn-danger mb-3" data-bs-toggle="modal" data-bs-target="#cefp-ouvrage-supprimer">Supprimer</a>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row">002</th>
+							<td>Anglais</td>
 
-						<td>
+							<td>
 
 
-							<a href="modifier_langue" class="btn btn-warning mb-3">Modifier</a>
+								<a href="modifier_langue" class="btn btn-warning mb-3">Modifier</a>
 
-							<a href="#" class="btn btn-danger mb-3" data-bs-toggle="modal"
-							   data-bs-target="#cefp-ouvrage-supprimer">Supprimer</a>
-						</td>
-					</tr>
+								<a href="#" class="btn btn-danger mb-3" data-bs-toggle="modal" data-bs-target="#cefp-ouvrage-supprimer">Supprimer</a>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row">003</th>
+							<td>Espagnol</td>
+
+							<td>
+
+
+								<a href="modifier_langue" class="btn btn-warning mb-3">Modifier</a>
+
+								<a href="#" class="btn btn-danger mb-3" data-bs-toggle="modal" data-bs-target="#cefp-ouvrage-supprimer">Supprimer</a>
+							</td>
+						</tr>
 					</tbody>
 				</table>
 
@@ -77,8 +74,7 @@ if (check_if_user_connected()) {
 	</section>
 
 	<!-- Modal pour le bouton supprimer-->
-	<div class="modal fade" id="cefp-ouvrage-supprimer" tabindex="-1" aria-labelledby="exampleModalLabel"
-		 aria-hidden="true">
+	<div class="modal fade" id="cefp-ouvrage-supprimer" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -96,7 +92,7 @@ if (check_if_user_connected()) {
 		</div>
 	</div>
 
-	<?php
+<?php
 	include("bas.php");
 } else {
 	header('location:' . PROJECT_DIR . 'bibliothecaire/connexion/index');

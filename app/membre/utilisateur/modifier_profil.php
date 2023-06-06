@@ -87,5 +87,3 @@ if (empty($errors)) {
 }
 
 header('location:' . PROJECT_DIR . 'membre/utilisateur/mon-profil');
-
-

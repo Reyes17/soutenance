@@ -5,7 +5,6 @@ if (!check_if_user_connected()) {
 
 include("haut.php");
 if (!empty($_SESSION['utilisateur_connecter']['0']['id']) && !empty($_SESSION['utilisateur_connecter']['0']['id'])) {
-
 }
 
 //if (!empty($_SESSION['desactivation-errors']) && !empty($_SESSION['desactivation-errors'])) {
@@ -37,9 +36,7 @@ if (!empty($_SESSION['utilisateur_connecter']['0']['id']) && !empty($_SESSION['u
 
 					<div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
-						<img
-							src="<?= isset($_SESSION['utilisateur_connecter']) ? $_SESSION['utilisateur_connecter']['avatar'] : 'avatar' ?>"
-							style="width: 170px;" alt="Profile" class="rounded-circle">
+						<img src="<?= isset($_SESSION['utilisateur_connecter']) ? $_SESSION['utilisateur_connecter']['avatar'] : 'avatar' ?>" style="width: 170px;" alt="Profile" class="rounded-circle">
 						<h2><?= $_SESSION['utilisateur_connecter']['nom'] ?> <?= $_SESSION['utilisateur_connecter']['prenom'] ?></h2>
 						<h3><?= $_SESSION['utilisateur_connecter']['profil'] ?></h3>
 					</div>
@@ -52,12 +49,11 @@ if (!empty($_SESSION['utilisateur_connecter']['0']['id']) && !empty($_SESSION['u
 						<!----message de succès global à la connexion----->
 						<?php
 						if (!empty($_SESSION['desactivation-errors']) && !empty($_SESSION['desactivation-errors'])) {
-							?>
-							<div class="alert alert-danger"
-								 style="color: white; background-color:#dc3545; border-radius: 15px; text-align:center;">
+						?>
+							<div class="alert alert-danger" style="color: white; background-color:#dc3545; border-radius: 15px; text-align:center;">
 								<?= $_SESSION['desactivation-errors'] ?>
 							</div>
-							<?php
+						<?php
 						}
 						?>
 						<!-- Settings Form -->
@@ -67,46 +63,35 @@ if (!empty($_SESSION['utilisateur_connecter']['0']['id']) && !empty($_SESSION['u
 								<form action="<?= PROJECT_DIR; ?>membre/utilisateur/desactivation" method="post">
 									<div class="row mb-3">
 										<div class="col-md-8 col-lg-12">
-											<button type="button" name="desactiver-compte" class="btn btn-danger"
-													data-bs-toggle="modal" data-bs-target="#desactiver"><i
-													class="bi bi-x-octagon-fill"> Désactiver le compte</i></button>
+											<button type="button" name="desactiver-compte" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#desactiver"><i class="bi bi-x-octagon-fill"> Désactiver le compte</i></button>
 
 											<div class="text-center" style="color: #070b3a;">
 												<!-- Modal -->
-												<div class="modal fade" id="desactiver" tabindex="-1" role="dialog"
-													 aria-labelledby="exampleModalLabel" aria-hidden="true">
+												<div class="modal fade" id="desactiver" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 													<div class="modal-dialog" role="document">
 														<div class="modal-content">
 															<div class="modal-header">
 																<h5 class="modal-title" id="exampleModalLabel">
 																	Mot de passe
 																</h5>
-																<button type="button" class="btn-close"
-																		data-bs-dismiss="modal" aria-label="Close">
+																<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
 																</button>
 															</div>
 															<div class="modal-body">
 																<div class="row mb-3">
-																	<label for="mot_de_passe"
-																		   class="col-12 col-form-label"
-																		   style="color: #070b3a;">
+																	<label for="mot_de_passe" class="col-12 col-form-label" style="color: #070b3a;">
 																		Veuiller entrer votre mot de passe pour
 																		appliquer l'action.</label>
 																	<br>
 																	<div class="col-md-8 col-lg-12">
-																		<input type="password" id="mot_de_passe"
-																			   name="mot_de_passe" class="form-control"
-																			   placeholder="Veuillez entrer votre mot de passe"
-																			   value="">
+																		<input type="password" id="mot_de_passe" name="mot_de_passe" class="form-control" placeholder="Veuillez entrer votre mot de passe" value="">
 																	</div>
 																</div>
 															</div>
 															<div class="modal-footer">
-																<button type="button" class="btn btn-secondary"
-																		data-bs-dismiss="modal">Annuler
+																<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler
 																</button>
-																<button type="submit" name="desactivation"
-																		class="btn btn-danger">Valider
+																<button type="submit" name="desactivation" class="btn btn-danger">Valider
 																</button>
 															</div>
 														</div>
@@ -121,45 +106,34 @@ if (!empty($_SESSION['utilisateur_connecter']['0']['id']) && !empty($_SESSION['u
 								<form action="<?= PROJECT_DIR; ?>membre/utilisateur/supprimer" method="post">
 									<div class="row mb-3">
 										<div class="col-md-6 col-lg-12">
-											<button type="button" name="supprimer-compte" class="btn btn-danger"
-													data-bs-toggle="modal" data-bs-target="#supprimer"><i
-													class="bi bi-trash-fill"> Supprimer le compte</i></button>
+											<button type="button" name="supprimer-compte" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#supprimer"><i class="bi bi-trash-fill"> Supprimer le compte</i></button>
 
 											<div class="text-center" style="color: #070b3a;">
 												<!-- Modal -->
-												<div class="modal fade" id="supprimer" tabindex="-1" role="dialog"
-													 aria-labelledby="exampleModalLabel" aria-hidden="true">
+												<div class="modal fade" id="supprimer" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 													<div class="modal-dialog" role="document">
 														<div class="modal-content">
 															<div class="modal-header">
 																<h5 class="modal-title" id="exampleModalLabel">Mot de
 																	passe</h5>
-																<button type="button" class="btn-close"
-																		data-bs-dismiss="modal" aria-label="Close">
+																<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
 																</button>
 															</div>
 															<div class="modal-body">
 																<div class="row mb-3">
-																	<label for="mot_de_passe"
-																		   class="col-12 col-form-label"
-																		   style="color: #070b3a;">
+																	<label for="mot_de_passe" class="col-12 col-form-label" style="color: #070b3a;">
 																		Veuiller entrer votre mot de passe pour
 																		appliquer l'action.</label>
 																	<br>
 																	<div class="col-md-8 col-lg-12">
-																		<input type="password" id="mot_de_passe"
-																			   name="mot_de_passe" class="form-control"
-																			   placeholder="Veuillez entrer votre mot de passe"
-																			   value="">
+																		<input type="password" id="mot_de_passe" name="mot_de_passe" class="form-control" placeholder="Veuillez entrer votre mot de passe" value="">
 																	</div>
 																</div>
 															</div>
 															<div class="modal-footer">
-																<button type="button" class="btn btn-secondary"
-																		data-bs-dismiss="modal">Annuler
+																<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler
 																</button>
-																<button type="submit" name="supprimer"
-																		class="btn btn-danger">Valider
+																<button type="submit" name="supprimer" class="btn btn-danger">Valider
 																</button>
 															</div>
 														</div>
@@ -188,12 +162,11 @@ if (!empty($_SESSION['utilisateur_connecter']['0']['id']) && !empty($_SESSION['u
 								<!-- Message d'erreur global quand la modification a échoué -->
 								<?php
 								if (!empty($_SESSION['passe']) && !empty($_SESSION['passe'])) {
-									?>
-									<div class="alert alert-danger"
-										 style="color: white; background-color: #dc3545; border-radius: 15px; padding: 2%; text-align:center;">
+								?>
+									<div class="alert alert-danger" style="color: white; background-color: #dc3545; border-radius: 15px; padding: 2%; text-align:center;">
 										<?= $_SESSION['passe'] ?>
 									</div>
-									<?php
+								<?php
 								}
 
 								//die(var_dump($_SESSION));
@@ -202,12 +175,11 @@ if (!empty($_SESSION['utilisateur_connecter']['0']['id']) && !empty($_SESSION['u
 								<!-- Message de succès global quand la modification a réussi -->
 								<?php
 								if (!empty($_SESSION['success']) && !empty($_SESSION['success'])) {
-									?>
-									<div class="alert alert-danger"
-										 style="color: white; background-color:#2bc717 ; border-radius: 15px; padding: 2%; text-align:center;">
+								?>
+									<div class="alert alert-danger" style="color: white; background-color:#2bc717 ; border-radius: 15px; padding: 2%; text-align:center;">
 										<?= $_SESSION['success'] ?>
 									</div>
-									<?php
+								<?php
 								}
 								?>
 
@@ -219,10 +191,8 @@ if (!empty($_SESSION['utilisateur_connecter']['0']['id']) && !empty($_SESSION['u
 									<div class="col-md-8 col-lg-9">
 										<img src="<?= PROJECT_DIR; ?>public/image/bliotheque.jpg" alt="Profile">
 										<div class="pt-2">
-											<a href="#" class="btn btn-primary btn-sm" title="Upload new profile image"><i
-													class="bi bi-upload"></i></a>
-											<a href="#" class="btn btn-danger btn-sm" title="Remove my profile image"><i
-													class="bi bi-trash"></i></a>
+											<a href="#" class="btn btn-primary btn-sm" title="Upload new profile image"><i class="bi bi-upload"></i></a>
+											<a href="#" class="btn btn-danger btn-sm" title="Remove my profile image"><i class="bi bi-trash"></i></a>
 										</div>
 									</div>
 								</div>
@@ -234,10 +204,7 @@ if (!empty($_SESSION['utilisateur_connecter']['0']['id']) && !empty($_SESSION['u
 											:
 										</label>
 										<div class="col-md-8 col-lg-9">
-											<input name="nom" type="text"
-												   class="form-control <?= isset($_SESSION['modifier-profil-erreur']['nom']) ? 'is-invalid' : '' ?>"
-												   id="fullName"
-												   value="<?= $_SESSION['utilisateur_connecter']['nom'] ?>">
+											<input name="nom" type="text" class="form-control <?= isset($_SESSION['modifier-profil-erreur']['nom']) ? 'is-invalid' : '' ?>" id="fullName" value="<?= $_SESSION['utilisateur_connecter']['nom'] ?>">
 											<?php if (!empty($_SESSION['modifier-profil-erreur']['nom'])) { ?>
 												<div class="invalid-feedback">
 													<?= $_SESSION['modifier-profil-erreur']['nom'] ?>
@@ -253,10 +220,7 @@ if (!empty($_SESSION['utilisateur_connecter']['0']['id']) && !empty($_SESSION['u
 											:
 										</label>
 										<div class="col-md-8 col-lg-9">
-											<input name="prenom" type="text"
-												   class="form-control <?= isset($_SESSION['modifier-profil-erreur']['prenom']) ? 'is-invalid' : '' ?>"
-												   id="fullname"
-												   value="<?= $_SESSION['utilisateur_connecter']['prenom'] ?>">
+											<input name="prenom" type="text" class="form-control <?= isset($_SESSION['modifier-profil-erreur']['prenom']) ? 'is-invalid' : '' ?>" id="fullname" value="<?= $_SESSION['utilisateur_connecter']['prenom'] ?>">
 											<?php if (!empty($_SESSION['modifier-profil-erreur']['prenom'])) { ?>
 												<div class="invalid-feedback">
 													<?= $_SESSION['modifier-profil-erreur']['prenom'] ?>
@@ -268,11 +232,7 @@ if (!empty($_SESSION['utilisateur_connecter']['0']['id']) && !empty($_SESSION['u
 									<div class="row mb-3">
 										<label for="adresse" class="col-md-4 col-lg-3 col-form-label">Adresse : </label>
 										<div class="col-md-8 col-lg-9">
-											<input name="adresse" type="text"
-												   class="form-control <?= isset($_SESSION['modifier-profil-erreur']['adresse']) ? 'is-invalid' : '' ?>"
-												   id="adresse"
-												   placeholder="Veuillez ajouter votre adresse"
-												   value="<?= $_SESSION['utilisateur_connecter']['adresse'] ?>">
+											<input name="adresse" type="text" class="form-control <?= isset($_SESSION['modifier-profil-erreur']['adresse']) ? 'is-invalid' : '' ?>" id="adresse" placeholder="Veuillez ajouter votre adresse" value="<?= $_SESSION['utilisateur_connecter']['adresse'] ?>">
 											<?php if (!empty($_SESSION['modifier-profil-erreur']['adresse'])) { ?>
 												<div class="invalid-feedback">
 													<?= $_SESSION['modifier-profil-erreur']['adresse'] ?>
@@ -288,10 +248,7 @@ if (!empty($_SESSION['utilisateur_connecter']['0']['id']) && !empty($_SESSION['u
 											:
 										</label>
 										<div class="col-md-8 col-lg-9">
-											<input name="nom_utilisateur" type="text"
-												   class="form-control <?= isset($_SESSION['modifier-profil-erreur']['nom_utilisateur']) ? 'is-invalid' : '' ?>"
-												   id="nom_utilisateur"
-												   value="<?= $_SESSION['utilisateur_connecter']['nom_utilisateur'] ?> ">
+											<input name="nom_utilisateur" type="text" class="form-control <?= isset($_SESSION['modifier-profil-erreur']['nom_utilisateur']) ? 'is-invalid' : '' ?>" id="nom_utilisateur" value="<?= $_SESSION['utilisateur_connecter']['nom_utilisateur'] ?> ">
 											<?php if (!empty($_SESSION['modifier-profil-erreur']['nom_utilisateur'])) { ?>
 												<div class="invalid-feedback">
 													<?= $_SESSION['modifier-profil-erreur']['nom_utilisateur'] ?>
@@ -301,14 +258,9 @@ if (!empty($_SESSION['utilisateur_connecter']['0']['id']) && !empty($_SESSION['u
 									</div>
 
 									<div class="row mb-3">
-										<label for="telephone"
-											   class="col-md-4 col-lg-3 col-form-label">Téléphone :</label>
+										<label for="telephone" class="col-md-4 col-lg-3 col-form-label">Téléphone :</label>
 										<div class="col-md-8 col-lg-9">
-											<input name="telephone" type="text"
-												   class="form-control <?= isset($_SESSION['modifier-profil-erreur']['telephone']) ? 'is-invalid' : '' ?>"
-												   id="telephone"
-												   placeholder="Veuillez renseigner votre numéro de téléphone"
-												   value="<?= $_SESSION['utilisateur_connecter']['telephone'] ?>">
+											<input name="telephone" type="text" class="form-control <?= isset($_SESSION['modifier-profil-erreur']['telephone']) ? 'is-invalid' : '' ?>" id="telephone" placeholder="Veuillez renseigner votre numéro de téléphone" value="<?= $_SESSION['utilisateur_connecter']['telephone'] ?>">
 											<?php if (!empty($_SESSION['modifier-profil-erreur']['telephone'])) { ?>
 												<div class="invalid-feedback">
 													<?= $_SESSION['modifier-profil-erreur']['telephone'] ?>
@@ -322,11 +274,7 @@ if (!empty($_SESSION['utilisateur_connecter']['0']['id']) && !empty($_SESSION['u
 											Date de naissance :
 										</label>
 										<div class="col-md-8 col-lg-9">
-											<input name="date_naissance" type="date"
-												   class="form-control <?= isset($_SESSION['modifier-profil-erreur']['date_naissance']) ? 'is-invalid' : '' ?>"
-												   id="date_naissance"
-												   placeholder="Veuillez renseigner votre date de naissance"
-												   value="<?= $_SESSION['utilisateur_connecter']['date_naissance'] ?>">
+											<input name="date_naissance" type="date" class="form-control <?= isset($_SESSION['modifier-profil-erreur']['date_naissance']) ? 'is-invalid' : '' ?>" id="date_naissance" placeholder="Veuillez renseigner votre date de naissance" value="<?= $_SESSION['utilisateur_connecter']['date_naissance'] ?>">
 											<?php if (!empty($_SESSION['modifier-profil-erreur']['date_naissance'])) { ?>
 												<div class="invalid-feedback">
 													<?= $_SESSION['modifier-profil-erreur']['date_naissance'] ?>
@@ -358,11 +306,7 @@ if (!empty($_SESSION['utilisateur_connecter']['0']['id']) && !empty($_SESSION['u
 											:
 										</label>
 										<div class="col-md-8 col-lg-9">
-											<input type="password"
-												   class="form-control <?= isset($_SESSION['modifier-profil-erreur']['mot_de_passe']) ? 'is-invalid' : '' ?>"
-												   name="mot_de_passe"
-												   value="<?php if (isset($data["mot_de_passe"]) && !empty($data["mot_de_passe"])) ?>"
-												   id="mot_de_passe" placeholder=" Veuillez entrer un mot de passe">
+											<input type="password" class="form-control <?= isset($_SESSION['modifier-profil-erreur']['mot_de_passe']) ? 'is-invalid' : '' ?>" name="mot_de_passe" value="<?php if (isset($data["mot_de_passe"]) && !empty($data["mot_de_passe"])) ?>" id="mot_de_passe" placeholder=" Veuillez entrer un mot de passe">
 											<?php
 											if (!empty($_SESSION['modifier-profil-erreur']['mot_de_passe'])) { ?>
 												<div class="invalid-feedback">
@@ -399,15 +343,14 @@ if (!empty($_SESSION['utilisateur_connecter']['0']['id']) && !empty($_SESSION['u
 										<label for="changer_mot_de_passe" class="col-md-4 col-lg-3 col-form-label">Mot
 											de passe actuel</label>
 										<div class="col-md-8 col-lg-9">
-											<input name="mot_de_passe" type="password" class="form-control"
-												   placeholder="Entrer votre mot de passe actuel" id="mot_de_passe">
+											<input name="mot_de_passe" type="password" class="form-control" placeholder="Entrer votre mot de passe actuel" id="mot_de_passe">
 											<span class="text-danger">
-                          <?php
-						  if (isset($errors["mot_de_passe"]) && !empty($errors["mot_de_passe"])) {
-							  echo $errors["mot_de_passe"];
-						  }
-						  ?>
-                        </span>
+												<?php
+												if (isset($errors["mot_de_passe"]) && !empty($errors["mot_de_passe"])) {
+													echo $errors["mot_de_passe"];
+												}
+												?>
+											</span>
 										</div>
 									</div>
 
@@ -415,16 +358,14 @@ if (!empty($_SESSION['utilisateur_connecter']['0']['id']) && !empty($_SESSION['u
 										<label for="changer_mot_de_passe" class="col-md-4 col-lg-3 col-form-label">Nouveau
 											mot de passe</label>
 										<div class="col-md-8 col-lg-9">
-											<input name="nouveau_mot_de_passe" type="password" class="form-control"
-												   placeholder="Entrer le nouveau mot de passe avec au moins 08 caractères"
-												   id="nouveau_mot_de_passe">
+											<input name="nouveau_mot_de_passe" type="password" class="form-control" placeholder="Entrer le nouveau mot de passe avec au moins 08 caractères" id="nouveau_mot_de_passe">
 											<span class="text-danger">
-                          <?php
-						  if (isset($errors["nouveau_mot_de_passe"]) && !empty($errors["nouveau_mot_de_passe"])) {
-							  echo $errors["nouveau_mot_de_passe"];
-						  }
-						  ?>
-                        </span>
+												<?php
+												if (isset($errors["nouveau_mot_de_passe"]) && !empty($errors["nouveau_mot_de_passe"])) {
+													echo $errors["nouveau_mot_de_passe"];
+												}
+												?>
+											</span>
 										</div>
 									</div>
 
@@ -432,16 +373,14 @@ if (!empty($_SESSION['utilisateur_connecter']['0']['id']) && !empty($_SESSION['u
 										<label for="changer_mot_de_passe" class="col-md-4 col-lg-3 col-form-label">Confirmer
 											mot de passe</label>
 										<div class="col-md-8 col-lg-9">
-											<input name="confirmer_mot_de_passe" type="password" class="form-control"
-												   placeholder="Entrer à nouveau le nouveau mot de passe"
-												   id="confirmer_mot_de_passe">
+											<input name="confirmer_mot_de_passe" type="password" class="form-control" placeholder="Entrer à nouveau le nouveau mot de passe" id="confirmer_mot_de_passe">
 											<span class="text-danger">
-                          <?php
-						  if (isset($errors["confirmer_mot_de_passe"]) && !empty($errors["confirmer_mot_de_passe"])) {
-							  echo $errors["confirmer_mot_de_passe"];
-						  }
-						  ?>
-                        </span>
+												<?php
+												if (isset($errors["confirmer_mot_de_passe"]) && !empty($errors["confirmer_mot_de_passe"])) {
+													echo $errors["confirmer_mot_de_passe"];
+												}
+												?>
+											</span>
 										</div>
 									</div>
 
@@ -468,5 +407,3 @@ if (!empty($_SESSION['utilisateur_connecter']['0']['id']) && !empty($_SESSION['u
 unset($_SESSION['desactivation-errors'], $_SESSION['passe'], $_SESSION['success']);
 include('bas.php');
 ?>
-
- 

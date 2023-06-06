@@ -39,23 +39,21 @@ if (check_if_user_connected()) {
 								<!----message de succès global à la connexion----->
 								<?php
 								if (isset($_SESSION['inscription-message-success-global']) && !empty($_SESSION['inscription-message-success-global'])) {
-									?>
-									<div class="alert alert-primary"
-										 style="color: white; background-color: #2bc717; text-align:center; border-radius: 15px; padding: 2%; text-align:center;">
+								?>
+									<div class="alert alert-primary" style="color: white; background-color: #2bc717; text-align:center; border-radius: 15px; padding: 2%; text-align:center;">
 										<?= $_SESSION['inscription-message-success-global'] ?>
 									</div>
-									<?php
+								<?php
 								}
 								?>
 								<!----message d'erreur global à la connexion----->
 								<?php
 								if (isset($_SESSION['inscription-message-erreur-global']) && !empty($_SESSION['inscription-message-erreur-global'])) {
-									?>
-									<div class="alert alert-primary"
-										 style="color: white; background-color: #dc3545; border-radius: 15px; padding: 2%; text-align:center;">
+								?>
+									<div class="alert alert-primary" style="color: white; background-color: #dc3545; border-radius: 15px; padding: 2%; text-align:center;">
 										<?= $_SESSION['inscription-message-erreur-global'] ?>
 									</div>
-									<?php
+								<?php
 								}
 
 								?>
@@ -65,24 +63,19 @@ if (check_if_user_connected()) {
 										compte</h3>
 								</div>
 
-								<form action="<?= PROJECT_DIR; ?>membre/inscription/inscription_traitement"
-									  method="post" class="row g-3 needs-validation" novalidate>
+								<form action="<?= PROJECT_DIR; ?>membre/inscription/inscription_traitement" method="post" class="row g-3 needs-validation" novalidate>
 									<div class="col-12 mb-3">
 										<label for="incription_nom" class="form-label">Nom
 											<span class="text-danger"> (*)</span>
 										</label>
-										<input type="text"
-											   class="form-control <?= isset($_SESSION['inscription-erreurs']['nom']) ? 'is-invalid' : '' ?>"
-											   name="nom" id="nom"
-											   value="<?= (isset($data["nom"]) && !empty($data["nom"])) ? $data['nom'] : ''; ?>"
-											   placeholder="Veuillez entrer votre nom">
+										<input type="text" class="form-control <?= isset($_SESSION['inscription-erreurs']['nom']) ? 'is-invalid' : '' ?>" name="nom" id="nom" value="<?= (isset($data["nom"]) && !empty($data["nom"])) ? $data['nom'] : ''; ?>" placeholder="Veuillez entrer votre nom">
 										<?php
 										if (isset($_SESSION['inscription-erreurs']['nom'])) {
-											?>
+										?>
 											<div class="invalid-feedback">
 												<?= $_SESSION['inscription-erreurs']['nom'] ?>
 											</div>
-											<?php
+										<?php
 										}
 										?>
 									</div>
@@ -91,21 +84,18 @@ if (check_if_user_connected()) {
 										<label for="incription_prenom" class="form-label">Prénoms
 											<span class="text-danger"> (*)</span>
 										</label>
-										<input type="text"
-											   class="form-control <?= isset($_SESSION['inscription-erreurs']['prenom']) ? 'is-invalid' : '' ?>"
-											   name="prenom" id="prenom"
-											   value="<?php if (isset($data["prenom"]) && !empty($data["prenom"])) {
-												   echo $data["prenom"];
-											   } else {
-												   echo '';
-											   } ?>" placeholder="Veuillez entrer vos prénoms">
+										<input type="text" class="form-control <?= isset($_SESSION['inscription-erreurs']['prenom']) ? 'is-invalid' : '' ?>" name="prenom" id="prenom" value="<?php if (isset($data["prenom"]) && !empty($data["prenom"])) {
+																																																	echo $data["prenom"];
+																																																} else {
+																																																	echo '';
+																																																} ?>" placeholder="Veuillez entrer vos prénoms">
 										<?php
 										if (isset($_SESSION['inscription-erreurs']['prenom'])) {
-											?>
+										?>
 											<div class="invalid-feedback">
 												<?= $_SESSION['inscription-erreurs']['prenom'] ?>
 											</div>
-											<?php
+										<?php
 										}
 										?>
 										<!------<div class="invalid-feedback">Entrer vos prénoms s'il vous plaît!</div>---->
@@ -115,21 +105,18 @@ if (check_if_user_connected()) {
 										<label for="yourEmail" class="form-label"> Email
 											<span class="text-danger"> (*)</span>
 										</label>
-										<input type="email"
-											   class="form-control <?= isset($_SESSION['inscription-erreurs']['email']) ? 'is-invalid' : '' ?>"
-											   name="email"
-											   value="<?php if (isset($data["email"]) && !empty($data["email"])) {
-												   echo $data["email"];
-											   } else {
-												   echo '';
-											   } ?>" id="email" placeholder="Veuillez entrer votre adresse email">
+										<input type="email" class="form-control <?= isset($_SESSION['inscription-erreurs']['email']) ? 'is-invalid' : '' ?>" name="email" value="<?php if (isset($data["email"]) && !empty($data["email"])) {
+																																														echo $data["email"];
+																																													} else {
+																																														echo '';
+																																													} ?>" id="email" placeholder="Veuillez entrer votre adresse email">
 										<?php
 										if (isset($_SESSION['inscription-erreurs']['email'])) {
-											?>
+										?>
 											<div class="invalid-feedback">
 												<?= $_SESSION['inscription-erreurs']['email'] ?>
 											</div>
-											<?php
+										<?php
 										}
 										?>
 										<!---<div class="invalid-feedback">Enter une adresse e-mail valide s'il vous plaît!</div>---->
@@ -142,21 +129,18 @@ if (check_if_user_connected()) {
 											<span class="text-danger">(*)</span>
 										</label>
 										<div class="input-group has-validation">
-											<input type="text"
-												   class="form-control <?= isset($_SESSION['inscription-erreurs']['nom_utilisateur']) ? 'is-invalid' : '' ?>"
-												   name="nom_utilisateur" id="nom_utilisateur"
-												   value="<?php if (isset($data["nom_utilisateur"]) && !empty($data["nom_utilisateur"])) {
-													   echo $data["nom_utilisateur"];
-												   } else {
-													   echo '';
-												   } ?>" placeholder="Veuillez entrer un nom d'utilisateur">
+											<input type="text" class="form-control <?= isset($_SESSION['inscription-erreurs']['nom_utilisateur']) ? 'is-invalid' : '' ?>" name="nom_utilisateur" id="nom_utilisateur" value="<?php if (isset($data["nom_utilisateur"]) && !empty($data["nom_utilisateur"])) {
+																																																									echo $data["nom_utilisateur"];
+																																																								} else {
+																																																									echo '';
+																																																								} ?>" placeholder="Veuillez entrer un nom d'utilisateur">
 											<?php
 											if (isset($_SESSION['inscription-erreurs']['nom_utilisateur'])) {
-												?>
+											?>
 												<div class="invalid-feedback">
 													<?= $_SESSION['inscription-erreurs']['nom_utilisateur'] ?>
 												</div>
-												<?php
+											<?php
 											}
 											?>
 											<!---<div class="invalid-feedback">Choisir un nom d'utilisateur.</div>---->
@@ -168,22 +152,18 @@ if (check_if_user_connected()) {
 										<label for="incription_mot_de_passe" class="form-label">Mot de passe
 											<span class="text-danger"> (*)</span>
 										</label>
-										<input type="password"
-											   class="form-control <?= isset($_SESSION['inscription-erreurs']['mot_de_passe']) ? 'is-invalid' : '' ?>"
-											   name="mot_de_passe"
-											   value="<?php if (isset($data["mot_de_passe"]) && !empty($data["mot_de_passe"])) {
-												   echo $data["mot_de_passe"];
-											   } else {
-												   echo '';
-											   } ?>" id="mot_de_passe"
-											   placeholder=" Veuillez entrer un mot de passe. Au moins huit (08) caractères">
+										<input type="password" class="form-control <?= isset($_SESSION['inscription-erreurs']['mot_de_passe']) ? 'is-invalid' : '' ?>" name="mot_de_passe" value="<?php if (isset($data["mot_de_passe"]) && !empty($data["mot_de_passe"])) {
+																																																		echo $data["mot_de_passe"];
+																																																	} else {
+																																																		echo '';
+																																																	} ?>" id="mot_de_passe" placeholder=" Veuillez entrer un mot de passe. Au moins huit (08) caractères">
 										<?php
 										if (isset($_SESSION['inscription-erreurs']['mot_de_passe'])) {
-											?>
+										?>
 											<div class="invalid-feedback">
 												<?= $_SESSION['inscription-erreurs']['mot_de_passe'] ?>
 											</div>
-											<?php
+										<?php
 										}
 										?>
 										<!---<div class="invalid-feedback">Entrer un mot de passe s'il vous plaît!</div>---->
@@ -195,22 +175,18 @@ if (check_if_user_connected()) {
 											de passe
 											<span class="text-danger"> (*)</span>
 										</label>
-										<input type="password"
-											   class="form-control <?= isset($_SESSION['inscription-erreurs']['confirmer_mot_de_passe']) ? 'is-invalid' : '' ?>"
-											   name="confirmer_mot_de_passe"
-											   value="<?php if (isset($data["confirmer_mot_de_passe"]) && !empty($data["confirmer_mot_de_passe"])) {
-												   echo $data["confirmer_mot_de_passe"];
-											   } else {
-												   echo '';
-											   } ?>" id="confirmer_mot_de_passe"
-											   placeholder="Veuillez confirmer le mot de passe">
+										<input type="password" class="form-control <?= isset($_SESSION['inscription-erreurs']['confirmer_mot_de_passe']) ? 'is-invalid' : '' ?>" name="confirmer_mot_de_passe" value="<?php if (isset($data["confirmer_mot_de_passe"]) && !empty($data["confirmer_mot_de_passe"])) {
+																																																							echo $data["confirmer_mot_de_passe"];
+																																																						} else {
+																																																							echo '';
+																																																						} ?>" id="confirmer_mot_de_passe" placeholder="Veuillez confirmer le mot de passe">
 										<?php
 										if (isset($_SESSION['inscription-erreurs']['confirmer_mot_de_passe'])) {
-											?>
+										?>
 											<div class="invalid-feedback">
 												<?= $_SESSION['inscription-erreurs']['confirmer_mot_de_passe'] ?>
 											</div>
-											<?php
+										<?php
 										}
 										?>
 										<!---<div class="invalid-feedback">Entrer un mot de passe s'il vous plaît!</div>---->
@@ -218,18 +194,17 @@ if (check_if_user_connected()) {
 									</div>
 									<div class="col-12">
 										<div class="form-check">
-											<input class="form-check-input" name="terms" type="checkbox"
-												   id="acceptTerms">
+											<input class="form-check-input" name="terms" type="checkbox" id="acceptTerms">
 											<label class="form-check-label" for="acceptTerms">Je suis d'accord et
 												j'accepte les <a href="#">termes et les conditions</a></label>
 											<div class="invalid-feedback">Vous devez accepter avant de soumettre.</div>
 											<span class="text-danger">
-                        <?php
-						if (isset($_SESSION['inscription-erreurs']["terms"]) && !empty($_SESSION['inscription-erreurs']["terms"])) {
-							echo $_SESSION['inscription-erreurs']["terms"];
-						}
-						?>
-                      </span>
+												<?php
+												if (isset($_SESSION['inscription-erreurs']["terms"]) && !empty($_SESSION['inscription-erreurs']["terms"])) {
+													echo $_SESSION['inscription-erreurs']["terms"];
+												}
+												?>
+											</span>
 										</div>
 
 										<div class="col-12 mt-3">

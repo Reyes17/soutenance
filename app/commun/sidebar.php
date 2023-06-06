@@ -106,8 +106,7 @@
 
 		<li class="nav-item">
 			<a class="nav-link collapsed" data-bs-target="#membres_indelicats-nav" data-bs-toggle="collapse" href="#">
-				<i class="ri-markdown-line"></i><span>MEMBRES INDELICATS</span><i
-					class="bi bi-chevron-down ms-auto"></i>
+				<i class="ri-markdown-line"></i><span>MEMBRES INDELICATS</span><i class="bi bi-chevron-down ms-auto"></i>
 			</a>
 			<ul id="membres_indelicats-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
 				<li>
@@ -143,8 +142,7 @@
 
 		<li class="nav-item">
 			<a class="nav-link collapsed" data-bs-target="#domaines_ouvrages-nav" data-bs-toggle="collapse" href="#">
-				<i class="ri-book-open-line"></i><span>DOMAINES OUVRAGES</span><i
-					class="bi bi-chevron-down ms-auto"></i>
+				<i class="ri-book-open-line"></i><span>DOMAINES OUVRAGES</span><i class="bi bi-chevron-down ms-auto"></i>
 			</a>
 			<ul id="domaines_ouvrages-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
 				<li>
@@ -162,8 +160,7 @@
 
 		<li class="nav-item">
 			<a class="nav-link collapsed" data-bs-target="#date_parution-nav" data-bs-toggle="collapse" href="#">
-				<i class="ri-calendar-event-line"></i><span>DATE PARUTION</span><i
-					class="bi bi-chevron-down ms-auto"></i>
+				<i class="ri-calendar-event-line"></i><span>DATE PARUTION</span><i class="bi bi-chevron-down ms-auto"></i>
 			</a>
 			<ul id="date_parution-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
 				<li>
@@ -181,8 +178,7 @@
 
 		<li class="nav-item">
 			<a class="nav-link collapsed" data-bs-target="#auteurs_secondaires-nav" data-bs-toggle="collapse" href="#">
-				<i class="ri-input-method-line"></i><span>AUTEURS SECONDAIRES</span><i
-					class="bi bi-chevron-down ms-auto"></i>
+				<i class="ri-input-method-line"></i><span>AUTEURS SECONDAIRES</span><i class="bi bi-chevron-down ms-auto"></i>
 			</a>
 			<ul id="auteurs_secondaires-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
 				<li>
