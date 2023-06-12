@@ -32,7 +32,7 @@ include './app/commun/index.php';
 										message</p>
 								</div>
 
-								<form class="row needs-validation" novalidate>
+								<form class="row needs-validation" action="<?= PROJECT_DIR; ?>membre/mot_de_passe_oublie/mot_de_passe_traitement" method="post">
 
 									<div class="col-12">
 										<label for="yourEmail" class="form-label">Adresse Email</label>
