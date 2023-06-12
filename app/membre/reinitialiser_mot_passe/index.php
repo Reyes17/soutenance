@@ -1,7 +1,7 @@
 <?php
-if (check_if_user_connected()) {
+/*if (check_if_user_connected()) {
     header('location:' . PROJECT_DIR . 'membre/utilisateur/acceuil');
-}
+}*/
 
 include './app/commun/index.php';
 ?>
@@ -27,7 +27,7 @@ include './app/commun/index.php';
                         
                         </div>
 
-                        <form class="row needs-validation" action="<?= PROJECT_DIR; ?>membre/reinitialiser/traitement" method="post" novalidate>
+                        <form class="row needs-validation" action="<?= PROJECT_DIR; ?>membre/reinitialiser_mot_passe/traitement" method="post" novalidate>
 
                             <div class="col-12">
                                 <label for="nouveau_mot_passe" class="form-label">Nouveau mot de passe</label>
