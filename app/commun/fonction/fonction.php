@@ -252,7 +252,7 @@ function recuperer_id_utilisateur_par_son_mail(string $email): int
 }
 
 /**
- * Cette fonction permet de verifier si le id_utilisateur existe dans la base de donnée .
+ * Cette fonction permet de verifier si le id_utilisateur existe dans la table token dans la base de donnée .
  * @param string $nom_utilisateur Le nom d'utilisateur a vérifié.
  *
  * @return bool $check
@@ -434,10 +434,14 @@ function check_if_user_exist(string $nom_utilisateur, string $mot_de_passe, stri
 	]);
 
 	if ($resultat) {
-		$user = $verifier_nom_utilisateur->fetch(PDO::FETCH_ASSOC);
+		$data = $verifier_nom_utilisateur->fetch(PDO::FETCH_ASSOC);
+		if (is_array($data) && !empty($data)){
+			$user = $data;
+		}
 	}
 	return $user;
 }
+
 
 function check_if_user_connected(): bool
 {
@@ -469,7 +473,7 @@ function check_password_exist(string $mot_de_passe, int $id)
 }
 
 /** 
- *Cette fonction permet de modifier le mot de passe dans le champ mot_de_passe de la table utilisateur dans la base de donnée
+ *Cette fonction permet de mettre à jour le mot de passe dans le champ mot_de_passe de la table utilisateur dans la base de donnée
  * @param int $id L'id ded l'utilisatuer.
  * @param string $mot_de_passe Le mot de passe de l'utilisateur.
  * @return bool $update_passwordu_in_db.
@@ -650,7 +654,7 @@ function supprimer_utilisateur(int $id): bool
 
 	$db = connect_db();
 
-	$request = "UPDATE utilisateur SET  est_actif = :est_actif, est_supprimer :est_supprimer, maj_le = :maj_le WHERE id= :id";
+	$request = "UPDATE utilisateur SET  est_actif = :est_actif, est_supprimer = :est_supprimer, maj_le = :maj_le WHERE id= :id";
 
 	$request_prepare = $db->prepare($request);
 
@@ -702,3 +706,5 @@ function enregistrer_utilisateur(string $nom, string $prenom, string $email, str
 
 	return $enregistrer_utilisateur;
 }
+
+

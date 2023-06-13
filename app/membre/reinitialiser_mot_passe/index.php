@@ -28,18 +28,42 @@ include './app/commun/index.php';
 
                                 </div>
 
-                                <form class="row needs-validation" action="<?= PROJECT_DIR; ?>membre/reinitialiser_mot_passe/traitement" method="post" novalidate>
+                                <form class="row needs-validation" action="<?= PROJECT_DIR; ?>membre/reinitialiser_mot_passe/traitement" method="post">
 
                                     <div class="col-12 mt-3">
-                                        <label for="nouveau_mot_passe" class="form-label">Nouveau mot de passe</label>
-                                        <input type="password" name="mot_de_passe" class="form-control" id="mot_de_passe" placeholder="Veuillez enter votre nouveau mot de passe" required>
+                                    <label for="reinitialiser_mot_de_passe" class="form-label">
+										Mot de passe
+										<span class="text-danger"> (*)</span>
+										:
+									</label>
+									<input type="password" id="reinitialiser_mot_de_passe"
+										   class="form-control <?= isset($_SESSION['errors']['mot_de_passe']) ? 'is-invalid' : '' ?>"
+										   name="mot_de_passe" placeholder=" Veuillez entrer un mot de passe"
+										   value="">
+									<?php if (isset($_SESSION['errors']['mot_de_passe']) && !empty($_SESSION['errors']['mot_de_passe'])) { ?>
+										<div class="invalid-feedback">
+											<?= $_SESSION['errors']['mot_de_passe'] ?>
+										</div>
+									<?php } ?>                                                                                                                                                       
                                         <!---<div class="invalid-feedback">Enter une adresse e-mail valide s'il vous plaît!</div>---->
                                     </div>
 
                                     <div class="col-12 mt-3">
-                                        <label for="confirmer_mot_passe" class="form-label">Confirmer mot de passe</label>
-                                        <input type="password" name="password" class="form-control" id="confirmer_mot_passe" placeholder="Veuillez confirmer votre nouveau mot de passe" required>
-                                        <!---<div class="invalid-feedback">Enter une adresse e-mail valide s'il vous plaît!</div>---->
+                                        <label for="confirmer_mot_de_passe" class="form-label">Confirmer mot de passe</label>
+                                        <input type="password" class="form-control <?= isset($_SESSION['errors']['confirmer_mot_de_passe']) ? 'is-invalid' : '' ?>" name="confirmer_mot_de_passe" value="<?php if (isset($data["confirmer_mot_de_passe"]) && !empty($data["confirmer_mot_de_passe"])) {
+																																																							echo $data["confirmer_mot_de_passe"];
+																																																						} else {
+																																																							echo '';
+																																																						} ?>" id="confirmer_mot_de_passe" placeholder="Veuillez confirmer le mot de passe">
+										<?php
+										if (isset($_SESSION['errors']['confirmer_mot_de_passe'])) {
+										?>
+											<div class="invalid-feedback">
+												<?= $_SESSION['errors']['confirmer_mot_de_passe'] ?>
+											</div>
+										<?php
+										}
+										?>
                                     </div>
 
                                     <div class="row mt-3 mb-3">

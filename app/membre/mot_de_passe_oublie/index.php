@@ -16,7 +16,7 @@ include './app/commun/index.php';
 
 						<div class="d-flex justify-content-center py-4">
 							<a href="" class="logo d-flex align-items-center w-auto">
-								<img src="../public/image/bliotheque.jpg" alt="bliotheque.jpg">
+								<img src="<?= PROJECT_DIR; ?>public/image/bliotheque.jpg" alt="bliotheque.jpg">
 								<span class="d-none d-lg-block">Bibliothèque AKAITSUKI</span>
 							</a>
 						</div><!-- End Logo -->
@@ -24,6 +24,27 @@ include './app/commun/index.php';
 						<div class="card mb-3">
 
 							<div class="card-body">
+							<!----message de succès global à la connexion----->
+							<?php
+								if (isset($_SESSION['mot_passe-message-success-global']) && !empty($_SESSION['mot_passe-message-success-global'])) {
+								?>
+									<div class="alert alert-primary mt-3" style="color: white; background-color: #2bc717; text-align:center; border:5px; text-align:center;">
+										<?= $_SESSION['mot_passe-message-success-global'] ?>
+									</div>
+								<?php
+								}
+								?>
+								<!----message d'erreur global à la connexion----->
+								<?php
+								if (isset($_SESSION['mot_passe_message_erreur_global']) && !empty($_SESSION['mot_passe_message_erreur_global'])) {
+								?>
+									<div class="alert alert-primary mt-3" style="color: white; background-color: #dc3545; border: 5px; text-align:center;">
+										<?= $_SESSION['mot_passe_message_erreur_global'] ?>
+									</div>
+								<?php
+								}
+
+								?>
 
 								<div class="pt-4 pb-2">
 									<h5 class="card-title text-center pb-0 fs-4">Aviez-vous oublier votre mot de
@@ -32,12 +53,27 @@ include './app/commun/index.php';
 										message</p>
 								</div>
 
-								<form class="row needs-validation" action="<?= PROJECT_DIR; ?>membre/mot_de_passe_oublie/mot_de_passe_traitement" method="post">
+								<form class="row needs-validation" action="<?= PROJECT_DIR; ?>membre/mot_de_passe_oublie/traitement" method="post" novalidate>
 
 									<div class="col-12">
-										<label for="yourEmail" class="form-label">Adresse Email</label>
-										<input type="email" name="email" class="form-control" id="mot_de_passe_oublie_email" placeholder="Veuillez enter votre adresse email!" required>
-										<!---<div class="invalid-feedback">Enter une adresse e-mail valide s'il vous plaît!</div>---->
+									<label for="inscription-email" style="color:black;">
+                                            Adresse mail:
+                                            <span class="text-danger">(*)</span>
+                                        </label>
+                                        <input type="email" class="form-control <?= isset($_SESSION['errors']['email']) ? 'is-invalid' : '' ?>" name="email" value="<?php if (isset($data["email"]) && !empty($data["email"])) {
+																																														echo $data["email"];
+																																													} else {
+																																														echo '';
+																																													} ?>" id="email" placeholder="Veuillez entrer votre adresse email">
+										<?php
+										if (isset($_SESSION['errors']['email'])) {
+										?>
+											<div class="invalid-feedback">
+												<?= $_SESSION['errors']['email'] ?>
+											</div>
+										<?php
+										}
+										?>
 									</div>
 
 									<div class="row mt-3 mb-3">
@@ -66,4 +102,8 @@ include './app/commun/index.php';
 		</section>
 
 	</div>
-</main><!-- End #main -->
+</main>
+<!-- End #main -->
+<?php
+unset($_SESSION['errors'], $_SESSION['mot_passe_message_erreur_global'], $_SESSION['mot_passe_message_success_global']);
+?>

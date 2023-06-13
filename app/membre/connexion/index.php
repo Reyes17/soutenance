@@ -13,7 +13,7 @@ if (isset($_COOKIE['data_users']) and !empty($_COOKIE['data_users'])) {
 
 ?>
 <div class="container">
-	<section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+<section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
 		<div class="container">
 			<div class="row justify-content-center">
 				<div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
@@ -21,7 +21,7 @@ if (isset($_COOKIE['data_users']) and !empty($_COOKIE['data_users'])) {
 					<div class="d-flex justify-content-center py-4">
 						<a href="" class="logo d-flex align-items-center w-auto">
 							<img src="<?= PROJECT_DIR; ?>public/image/bliotheque.jpg" alt="bliotheque.jpg">
-							<span class="d-none d-lg-block">Bibliothèque AKAITSUKI</span>
+							<span class="d-none d-lg-block">Bibliothèque AKAI</span>
 						</a>
 					</div>
 					<!-- End Logo -->
@@ -37,7 +37,7 @@ if (isset($_COOKIE['data_users']) and !empty($_COOKIE['data_users'])) {
 								if (isset($_SESSION['danger']) && !empty($_SESSION['danger'])) {
 									?>
 									<div class="alert alert-danger"
-										 style="color: white; background-color: red; border: 5px;">
+										 style="color: white; background-color: #dc3545; border: 5px; text-align: center;">
 										<?= $_SESSION['danger'] ?>
 									</div>
 									<?php
@@ -49,7 +49,7 @@ if (isset($_COOKIE['data_users']) and !empty($_COOKIE['data_users'])) {
 								if (isset($_SESSION['validation-compte-message-success']) && !empty($_SESSION['validation-compte-message-success'])) {
 									?>
 									<div class="alert alert-primary"
-										 style="color: white; background-color: #2bc717; border-radius: 15px; padding: 2%; text-align:center;">
+										 style="color: white; background-color: #2bc717; border: 5px; text-align:center;">
 										<?= $_SESSION['validation-compte-message-success'] ?>
 									</div>
 									<?php
@@ -90,7 +90,9 @@ if (isset($_COOKIE['data_users']) and !empty($_COOKIE['data_users'])) {
 											   class="form-control <?= isset($_SESSION['errors']['nom_utilisateur']) ? 'is-invalid' : '' ?>"
 											   name="nom_utilisateur"
 											   placeholder="Veuillez entrer un nom d'utilisateur"
-											   value="" required>
+											   value="<?php if (isset($data["nom_utilisateur"]) && !empty($data["nom_utilisateur"])) 
+											   { echo $data["nom_utilisateur"]; } else { echo ''; } ?>" placeholder="Veuillez entrer un nom d'utilisateur">
+																																																									
 										<?php if (isset($_SESSION['errors']['nom_utilisateur']) && !empty($_SESSION['errors']['nom_utilisateur'])) { ?>
 											<div class="invalid-feedback">
 												<?= $_SESSION['errors']['nom_utilisateur'] ?>
@@ -109,7 +111,7 @@ if (isset($_COOKIE['data_users']) and !empty($_COOKIE['data_users'])) {
 									<input type="password" id="connexion_mot_de_passe"
 										   class="form-control <?= isset($_SESSION['errors']['mot_de_passe']) ? 'is-invalid' : '' ?>"
 										   name="mot_de_passe" placeholder=" Veuillez entrer un mot de passe"
-										   value="" required>
+										   value="">
 									<?php if (isset($_SESSION['errors']['mot_de_passe']) && !empty($_SESSION['errors']['mot_de_passe'])) { ?>
 										<div class="invalid-feedback">
 											<?= $_SESSION['errors']['mot_de_passe'] ?>
@@ -146,3 +148,6 @@ if (isset($_COOKIE['data_users']) and !empty($_COOKIE['data_users'])) {
 		</div>
 	</section>
 </div>
+<?php
+unset($_SESSION['danger'], $_SESSION['validation-compte-message-success'], $_SESSION['validation-compte-message-erreur'],  $_SESSION['errors']);
+?>
