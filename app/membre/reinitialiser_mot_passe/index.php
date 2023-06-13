@@ -1,7 +1,7 @@
 <?php
-/*if (check_if_user_connected()) {
+if (check_if_user_connected()) {
     header('location:' . PROJECT_DIR . 'membre/utilisateur/acceuil');
-}*/
+}
 
 include './app/commun/index.php';
 ?>
@@ -20,8 +20,19 @@ include './app/commun/index.php';
                         </div><!-- End Logo -->
 
                         <div class="card mb-3">
-
+                        
                             <div class="card-body">
+                                <!----message d'erreur global après envoie d'un mauvais mot de passe ou non utilisiateur à la connexion----->
+								<?php
+								if (isset($_SESSION['save_errors']) && !empty($_SESSION['save_errors'])) {
+									?>
+									<div class="alert alert-danger"
+										 style="color: white; background-color: #dc3545; border: 5px; text-align: center;">
+										<?= $_SESSION['save_errors'] ?>
+									</div>
+									<?php
+								}
+								?>
 
                                 <div class="pt-4 pb-2">
                                     <h5 class="card-title text-center pb-0 fs-4">Réinitialiser mot de passe</h5>
@@ -91,3 +102,6 @@ include './app/commun/index.php';
         </section>
     </div>
 </main>
+<?php
+unset($_SESSION['save_errors'], $_SESSION['errors']);
+?>

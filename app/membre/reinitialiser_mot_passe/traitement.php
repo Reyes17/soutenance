@@ -31,7 +31,7 @@ if (empty($errors)) {
         session_destroy();
         header('location:' . PROJECT_DIR . 'membre/connexion');
     } else {
-        $_SESSION['errors'] = $errors;
+        $_SESSION['save_errors'] = "La modification du mot de passe n'a pas pu s'effectuer. Veuillez réessayer en vous assurant de bien insérer les données cette fois-ci. ";
         header('location: ' . PROJECT_DIR . 'membre/reinitialiser_mot_passe');
     }
 } else {
