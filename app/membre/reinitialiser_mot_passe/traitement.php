@@ -27,7 +27,7 @@ if ((isset($_POST["mot_de_passe"]) && !empty($_POST["mot_de_passe"]) && strlen((
 
 if (empty($errors)) {
 
-    if (update_password_in_db($id, $data["mot_de_passe"])) {
+    if (update_password_in_db($_SESSION['id_user'], $data["mot_de_passe"])) {
         session_destroy();
         header('location:' . PROJECT_DIR . 'membre/connexion');
     } else {

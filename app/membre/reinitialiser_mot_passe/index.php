@@ -24,9 +24,20 @@ include './app/commun/index.php';
                             <div class="card-body">
                                 <!----message d'erreur global après envoie d'un mauvais mot de passe ou non utilisiateur à la connexion----->
 								<?php
+								if (isset($_SESSION['validation-compte-message-success']) && !empty($_SESSION['validation-compte-message-success'])) {
+									?>
+									<div class="alert alert-danger mt-3"
+										 style="color: white; background-color: #2bc717; border: 5px; text-align: center;">
+										<?= $_SESSION['validation-compte-message-success'] ?>
+									</div>
+									<?php
+								}
+								?>
+
+<?php
 								if (isset($_SESSION['save_errors']) && !empty($_SESSION['save_errors'])) {
 									?>
-									<div class="alert alert-danger"
+									<div class="alert alert-danger mt-3"
 										 style="color: white; background-color: #dc3545; border: 5px; text-align: center;">
 										<?= $_SESSION['save_errors'] ?>
 									</div>

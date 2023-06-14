@@ -24,22 +24,33 @@ include './app/commun/index.php';
 						<div class="card mb-3">
 
 							<div class="card-body">
-							<!----message de succès global à la connexion----->
+							<!----message de succès global lors du processus d'envoi de mail pour un changement de mot de passe----->
 							<?php
-								if (isset($_SESSION['mot_passe-message-success-global']) && !empty($_SESSION['mot_passe-message-success-global'])) {
+								if (isset($_SESSION['mot_passe_message_success_global']) && !empty($_SESSION['mot_passe_message_success_global'])) {
 								?>
 									<div class="alert alert-primary mt-3" style="color: white; background-color: #2bc717; text-align:center; border:5px; text-align:center;">
-										<?= $_SESSION['mot_passe-message-success-global'] ?>
+										<?= $_SESSION['mot_passe_message_success_global'] ?>
 									</div>
 								<?php
 								}
 								?>
-								<!----message d'erreur global à la connexion----->
+								<!----message d'erreur global lors du processus d'envoi de mail pour un changement de mot de passe----->
 								<?php
 								if (isset($_SESSION['mot_passe_message_erreur_global']) && !empty($_SESSION['mot_passe_message_erreur_global'])) {
 								?>
 									<div class="alert alert-primary mt-3" style="color: white; background-color: #dc3545; border: 5px; text-align:center;">
 										<?= $_SESSION['mot_passe_message_erreur_global'] ?>
+									</div>
+								<?php
+								}
+
+								?>
+
+<?php
+								if (isset($_SESSION['validation-compte-message-erreur']) && !empty($_SESSION['validation-compte-message-erreur'])) {
+								?>
+									<div class="alert alert-primary mt-3" style="color: white; background-color: #dc3545; border: 5px; text-align:center;">
+										<?= $_SESSION['validation-compte-message-erreur'] ?>
 									</div>
 								<?php
 								}
