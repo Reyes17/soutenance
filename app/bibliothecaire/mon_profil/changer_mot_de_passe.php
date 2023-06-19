@@ -30,16 +30,16 @@ if ((isset($_POST["nouveau_mot_de_passe"]) && !empty($_POST["nouveau_mot_de_pass
 	$data["nouveau_mot_de_passe"] = trim(htmlentities($_POST['nouveau_mot_de_passe']));
 }
 
-if (!check_password_exist(($_POST['mot_de_passe']), $_SESSION['utilisateur_connecter']['id'])) {
+if (!check_password_exist(($_POST['mot_de_passe']), $_SESSION['utilisateur_connecter_bibliothecaire']['id'])) {
 	$errors["mot_de_passe"] = "Mot de passe incorrecte. Veuillez réessayer";
 }
 
 
 if (empty($errors)) {
 
-	if (check_password_exist(($_POST['mot_de_passe']), $_SESSION['utilisateur_connecter']['id'])) {
+	if (check_password_exist(($_POST['mot_de_passe']), $_SESSION['utilisateur_connecter_bibliothecaire']['id'])) {
 
-		if (update_password_in_db($_SESSION['utilisateur_connecter']['id'], $data["nouveau_mot_de_passe"])) {
+		if (update_password_in_db($_SESSION['utilisateur_connecter_bibliothecaire']['id'], $data["nouveau_mot_de_passe"])) {
 			session_destroy();
 			header('location:' . PROJECT_DIR . 'bibliothecaire/connexion');
 		} else {

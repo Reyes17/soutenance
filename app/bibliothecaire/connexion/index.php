@@ -1,6 +1,6 @@
 <?php
 include 'app/commun/index.php';
-if ($_SESSION["utilisateur_connecter_bibliothecaire"]) {
+if (!empty($_SESSION["utilisateur_connecter_bibliothecaire"])) {
 	header('location:' . PROJECT_DIR . 'bibliothecaire/dossier/dashboard');
 }
 $data = [];

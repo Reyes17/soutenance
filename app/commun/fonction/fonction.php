@@ -443,10 +443,10 @@ function check_if_user_exist(string $nom_utilisateur, string $mot_de_passe, stri
 }
 
 
-function check_if_user_connected(): bool
+/*function check_if_user_connected(): bool
 {
-	return !empty($_SESSION);
-}
+	return !empty($_SESSION["utilisateur_connecter"]);
+}*/
 
 
 /**
@@ -581,7 +581,7 @@ function mettre_a_jour_informations_utilisateur(int $id, string $nom = null, str
  * @param int $id L'id de l'utilisateur.
  * @return bool $recup.
  */
-function recup_mettre_a_jour_informations_utilisateur($id): bool
+function recup_mettre_a_jour_informations_utilisateur($id): array
 {
 
 	$data = [];

@@ -1,19 +1,12 @@
 <?php
-if (!$_SESSION["utilisateur_connecter_bibliothecaire"]) {
+if (empty($_SESSION["utilisateur_connecter_bibliothecaire"])) {
 	header('location:' . PROJECT_DIR . 'bibliothecaire/connexion');
 }
 
 include("haut.php");
-if (!empty($_SESSION['utilisateur_connecter']['0']['id']) && !empty($_SESSION['utilisateur_connecter']['0']['id'])) {
+if (!empty($_SESSION['utilisateur_connecter_bibliothecaire']['0']['id']) && !empty($_SESSION['utilisateur_connecter_bibliothecaire']['0']['id'])) {
 }
 
-//if (!empty($_SESSION['desactivation-errors']) && !empty($_SESSION['desactivation-errors'])) {
-//	$errors = $_SESSION['desactivation-errors'];
-//}
-//
-//if (!empty($_SESSION['passe']) && !empty($_SESSION['passe'])) {
-//	$errors = $_SESSION['passe'];
-//}
 ?>
 
 <main id="main">
@@ -36,10 +29,10 @@ if (!empty($_SESSION['utilisateur_connecter']['0']['id']) && !empty($_SESSION['u
 
 					<div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
-						<img src="<?= isset($_SESSION['utilisateur_connecter']) ? $_SESSION['utilisateur_connecter']['avatar'] : 'avatar' ?>" style="width: 170px;" alt="Profile" class="rounded-circle">
-						<h2><?= $_SESSION['utilisateur_connecter']['nom'] ?> <?= $_SESSION['utilisateur_connecter']['prenom'] ?></h2>
-						<h3 class="mt-2"><?= $_SESSION['utilisateur_connecter']['profil'] ?></h3>
-						<p class="mt-2"><?= $_SESSION['utilisateur_connecter']['email'] ?></p>
+						<img src="<?= isset($_SESSION['utilisateur_connecter_bibliothecaire']) ? $_SESSION['utilisateur_connecter_bibliothecaire']['avatar'] : 'avatar' ?>" style="width: 170px;" alt="Profile" class="rounded-circle">
+						<h2><?= $_SESSION['utilisateur_connecter_bibliothecaire']['nom'] ?> <?= $_SESSION['utilisateur_connecter_bibliothecaire']['prenom'] ?></h2>
+						<h3 class="mt-2"><?= $_SESSION['utilisateur_connecter_bibliothecaire']['profil'] ?></h3>
+						<p class="mt-2"><?= $_SESSION['utilisateur_connecter_bibliothecaire']['email'] ?></p>
 					</div>
 				</div>
 				<div class="card">
@@ -205,7 +198,7 @@ if (!empty($_SESSION['utilisateur_connecter']['0']['id']) && !empty($_SESSION['u
 											:
 										</label>
 										<div class="col-md-8 col-lg-9">
-											<input name="nom" type="text" class="form-control <?= isset($_SESSION['modifier-profil-erreur']['nom']) ? 'is-invalid' : '' ?>" id="fullName" value="<?= $_SESSION['utilisateur_connecter']['nom'] ?>">
+											<input name="nom" type="text" class="form-control <?= isset($_SESSION['modifier-profil-erreur']['nom']) ? 'is-invalid' : '' ?>" id="fullName" value="<?= $_SESSION['utilisateur_connecter_bibliothecaire']['nom'] ?>">
 											<?php if (!empty($_SESSION['modifier-profil-erreur']['nom'])) { ?>
 												<div class="invalid-feedback">
 													<?= $_SESSION['modifier-profil-erreur']['nom'] ?>
@@ -221,7 +214,7 @@ if (!empty($_SESSION['utilisateur_connecter']['0']['id']) && !empty($_SESSION['u
 											:
 										</label>
 										<div class="col-md-8 col-lg-9">
-											<input name="prenom" type="text" class="form-control <?= isset($_SESSION['modifier-profil-erreur']['prenom']) ? 'is-invalid' : '' ?>" id="fullname" value="<?= $_SESSION['utilisateur_connecter']['prenom'] ?>">
+											<input name="prenom" type="text" class="form-control <?= isset($_SESSION['modifier-profil-erreur']['prenom']) ? 'is-invalid' : '' ?>" id="fullname" value="<?= $_SESSION['utilisateur_connecter_bibliothecaire']['prenom'] ?>">
 											<?php if (!empty($_SESSION['modifier-profil-erreur']['prenom'])) { ?>
 												<div class="invalid-feedback">
 													<?= $_SESSION['modifier-profil-erreur']['prenom'] ?>
@@ -233,7 +226,7 @@ if (!empty($_SESSION['utilisateur_connecter']['0']['id']) && !empty($_SESSION['u
 									<div class="row mb-3">
 										<label for="adresse" class="col-md-4 col-lg-3 col-form-label">Adresse : </label>
 										<div class="col-md-8 col-lg-9">
-											<input name="adresse" type="text" class="form-control <?= isset($_SESSION['modifier-profil-erreur']['adresse']) ? 'is-invalid' : '' ?>" id="adresse" placeholder="Veuillez ajouter votre adresse" value="<?= $_SESSION['utilisateur_connecter']['adresse'] ?>">
+											<input name="adresse" type="text" class="form-control <?= isset($_SESSION['modifier-profil-erreur']['adresse']) ? 'is-invalid' : '' ?>" id="adresse" placeholder="Veuillez ajouter votre adresse" value="<?= $_SESSION['utilisateur_connecter_bibliothecaire']['adresse'] ?>">
 											<?php if (!empty($_SESSION['modifier-profil-erreur']['adresse'])) { ?>
 												<div class="invalid-feedback">
 													<?= $_SESSION['modifier-profil-erreur']['adresse'] ?>
@@ -249,7 +242,7 @@ if (!empty($_SESSION['utilisateur_connecter']['0']['id']) && !empty($_SESSION['u
 											:
 										</label>
 										<div class="col-md-8 col-lg-9">
-											<input name="nom_utilisateur" type="text" class="form-control <?= isset($_SESSION['modifier-profil-erreur']['nom_utilisateur']) ? 'is-invalid' : '' ?>" id="nom_utilisateur" value="<?= $_SESSION['utilisateur_connecter']['nom_utilisateur'] ?> ">
+											<input name="nom_utilisateur" type="text" class="form-control <?= isset($_SESSION['modifier-profil-erreur']['nom_utilisateur']) ? 'is-invalid' : '' ?>" id="nom_utilisateur" value="<?= $_SESSION['utilisateur_connecter_bibliothecaire']['nom_utilisateur'] ?> ">
 											<?php if (!empty($_SESSION['modifier-profil-erreur']['nom_utilisateur'])) { ?>
 												<div class="invalid-feedback">
 													<?= $_SESSION['modifier-profil-erreur']['nom_utilisateur'] ?>
@@ -261,7 +254,7 @@ if (!empty($_SESSION['utilisateur_connecter']['0']['id']) && !empty($_SESSION['u
 									<div class="row mb-3">
 										<label for="telephone" class="col-md-4 col-lg-3 col-form-label">Téléphone :</label>
 										<div class="col-md-8 col-lg-9">
-											<input name="telephone" type="text" class="form-control <?= isset($_SESSION['modifier-profil-erreur']['telephone']) ? 'is-invalid' : '' ?>" id="telephone" placeholder="Veuillez renseigner votre numéro de téléphone" value="<?= $_SESSION['utilisateur_connecter']['telephone'] ?>">
+											<input name="telephone" type="text" class="form-control <?= isset($_SESSION['modifier-profil-erreur']['telephone']) ? 'is-invalid' : '' ?>" id="telephone" placeholder="Veuillez renseigner votre numéro de téléphone" value="<?= $_SESSION['utilisateur_connecter_bibliothecaire']['telephone'] ?>">
 											<?php if (!empty($_SESSION['modifier-profil-erreur']['telephone'])) { ?>
 												<div class="invalid-feedback">
 													<?= $_SESSION['modifier-profil-erreur']['telephone'] ?>
@@ -275,7 +268,7 @@ if (!empty($_SESSION['utilisateur_connecter']['0']['id']) && !empty($_SESSION['u
 											Date de naissance :
 										</label>
 										<div class="col-md-8 col-lg-9">
-											<input name="date_naissance" type="date" class="form-control <?= isset($_SESSION['modifier-profil-erreur']['date_naissance']) ? 'is-invalid' : '' ?>" id="date_naissance" placeholder="Veuillez renseigner votre date de naissance" value="<?= $_SESSION['utilisateur_connecter']['date_naissance'] ?>">
+											<input name="date_naissance" type="date" class="form-control <?= isset($_SESSION['modifier-profil-erreur']['date_naissance']) ? 'is-invalid' : '' ?>" id="date_naissance" placeholder="Veuillez renseigner votre date de naissance" value="<?= $_SESSION['utilisateur_connecter_bibliothecaire']['date_naissance'] ?>">
 											<?php if (!empty($_SESSION['modifier-profil-erreur']['date_naissance'])) { ?>
 												<div class="invalid-feedback">
 													<?= $_SESSION['modifier-profil-erreur']['date_naissance'] ?>

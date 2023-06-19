@@ -1,5 +1,5 @@
 <?php
-if (!$_SESSION["utilisateur_connecter_bibliothecaire"]) {
+if (empty($_SESSION["utilisateur_connecter_bibliothecaire"])) {
 	header('location:' . PROJECT_DIR . 'bibliothecaire/connexion');
 }
 	include("haut.php");

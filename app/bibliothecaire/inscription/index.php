@@ -1,5 +1,5 @@
 <?php
-if ($_SESSION["utilisateur_connecter_bibliothecaire"]) {
+if (isset($_SESSION['utilisateur_connecter_bibliothecaire']) && !empty($_SESSION['utilisateur_connecter_bibliothecaire'])) {
 	header('location:' . PROJECT_DIR . 'bibliothecaire/dossier/dashboard');
 }
 

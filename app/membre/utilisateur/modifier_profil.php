@@ -3,7 +3,7 @@ $_SESSION['passe'] = "";
 
 $_SESSION['success'] = "";
 
-$data = $_SESSION['utilisateur_connecter'];
+$data = $_SESSION['utilisateur_connecter_membre'];
 
 $new_data = [];
 
@@ -77,13 +77,12 @@ if (empty($errors)) {
 		$new_data['nom_utilisateur'],
 		$new_data['adresse']
 	)) {
-
-		if (recup_mettre_a_jour_informations_utilisateur($data['id'])) {
+			$_SESSION['utilisateur_connecter_membre']= recup_mettre_a_jour_informations_utilisateur($data['id']);
+			//die(var_dump($_SESSION['utilisateur_connecter_membre']));
 			$_SESSION['success'] = "Modification(s) effectuée(s) avec succès";
 		} else {
 			$_SESSION['passe'] = "La modification a échouée. Vérifier votre mot de passe et réessayer.";
 		}
 	}
-}
 
 header('location:' . PROJECT_DIR . 'membre/utilisateur/mon-profil');

@@ -19,7 +19,7 @@ $_SESSION ['data'] = $data;
 if (empty($errors)) {
 	$user = check_if_user_exist($data["nom_utilisateur"], $data["mot_de_passe"], "membre");
 	if (!empty($user)) {
-		$_SESSION["utilisateur_connecter"] = $user;
+		$_SESSION["utilisateur_connecter_membre"] = $user;
 		header('location:' . PROJECT_DIR . 'membre/utilisateur/acceuil');
 	} else {
 		$_SESSION['danger'] = "Nom d'utilisateur ou mot de passe incorrect. Veuillez vérifier";

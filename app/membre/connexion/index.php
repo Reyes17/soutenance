@@ -1,6 +1,6 @@
 <?php
 include 'app/commun/index.php';
-if ($_SESSION["utilisateur_connecter_membre"]) {
+if ($_SESSION['utilisateur_connecter_membre']) {
 	header('location:' . PROJECT_DIR . 'membre/utilisateur/acceuil');
 }
 $data = [];
