@@ -445,7 +445,7 @@ function check_if_user_exist(string $nom_utilisateur, string $mot_de_passe, stri
 
 function check_if_user_connected(): bool
 {
-	return !empty($_SESSION["utilisateur_connecter"]);
+	return !empty($_SESSION);
 }
 
 
@@ -584,7 +584,7 @@ function mettre_a_jour_informations_utilisateur(int $id, string $nom = null, str
 function recup_mettre_a_jour_informations_utilisateur($id): bool
 {
 
-	$recup = false;
+	$data = [];
 
 	$db = connect_db();
 
@@ -599,11 +599,11 @@ function recup_mettre_a_jour_informations_utilisateur($id): bool
 
 		$data = $request_recupere->fetch(PDO::FETCH_ASSOC);
 
-		$_SESSION['utilisateur_connecter'] = $data;
+		/*$_SESSION['utilisateur_connecter'] = $data;
 
-		$recup = true;
+		$recup = true;*/
 	}
-	return $recup;
+	return $data;
 }
 
 /**

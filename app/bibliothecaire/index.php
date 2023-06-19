@@ -1,4 +1,6 @@
 <?php
+session_start();
+include 'app/commun/fonction/fonction.php';
 $params = explode('/', $_GET['p']);
 $profile = "bibliothecaire";
 $default_ressource = "connexion";

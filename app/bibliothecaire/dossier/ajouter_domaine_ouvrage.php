@@ -1,6 +1,7 @@
 <?php
-include 'app/commun/fonction/fonction.php';
-if (check_if_user_connected()) {
+if (!$_SESSION["utilisateur_connecter_bibliothecaire"]) {
+	header('location:' . PROJECT_DIR . 'bibliothecaire/connexion');
+} 
 	include("haut.php");
 	?>
 	<section class="section dashboard">
@@ -10,8 +11,5 @@ if (check_if_user_connected()) {
 	</section>
 	<?php
 	include("bas.php");
-} else {
-	header('location:' . PROJECT_DIR . 'bibliothecaire/connexion/index');
-}
 ?>
   

@@ -1,5 +1,5 @@
 <?php
-if (check_if_user_connected()) {
+if ($_SESSION["utilisateur_connecter_membre"]) {
 	header('location:' . PROJECT_DIR . 'membre/utilisateur/acceuil');
 }
 
@@ -11,7 +11,7 @@ if (isset($_SESSION['donnees-utilisateur']) && !empty($_SESSION['donnees-utilisa
 	$data = $_SESSION['donnees-utilisateur'];
 }
 include 'app/commun/index.php';
-if (check_if_user_connected()) {
+if ($_SESSION["utilisateur_connecter_membre"]) {
 
 	header('location:' . PROJECT_DIR . 'membre/utilisateur/acceuil');
 }

@@ -1,15 +1,15 @@
 <?php
-if (!$_SESSION["utilisateur_connecter_membre"]) {
-	header('location:' . PROJECT_DIR . 'membre/connexion');
-}
 
+if (!$_SESSION["utilisateur_connecter_bibliothecaire"]) {
+	header('location:' . PROJECT_DIR . 'bibliothecaire/connexion');
+}
 include("haut.php");
 ?>
 
-<section class="section">
+<<main id="main">
 
 
-	<div class="container-fluid" style="margin-top: 5%;">
+	<div class="container-fluid" style="text-align: center;">
 		<div class="card-header py-3">
 			<h1 class="m-0 font-weight-bold">Historique de mes emprunts</h1>
 		</div>
@@ -118,6 +118,7 @@ include("haut.php");
 		</div>
 	</div>
 	<!-- /.container-fluid -->
+</main>
 	<?php
 	include('bas.php')
 	?>

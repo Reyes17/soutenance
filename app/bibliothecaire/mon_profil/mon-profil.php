@@ -1,6 +1,6 @@
 <?php
-if (!$_SESSION["utilisateur_connecter_membre"]) {
-	header('location:' . PROJECT_DIR . 'membre/connexion');
+if (!$_SESSION["utilisateur_connecter_bibliothecaire"]) {
+	header('location:' . PROJECT_DIR . 'bibliothecaire/connexion');
 }
 
 include("haut.php");
@@ -38,7 +38,8 @@ if (!empty($_SESSION['utilisateur_connecter']['0']['id']) && !empty($_SESSION['u
 
 						<img src="<?= isset($_SESSION['utilisateur_connecter']) ? $_SESSION['utilisateur_connecter']['avatar'] : 'avatar' ?>" style="width: 170px;" alt="Profile" class="rounded-circle">
 						<h2><?= $_SESSION['utilisateur_connecter']['nom'] ?> <?= $_SESSION['utilisateur_connecter']['prenom'] ?></h2>
-						<h3><?= $_SESSION['utilisateur_connecter']['profil'] ?></h3>
+						<h3 class="mt-2"><?= $_SESSION['utilisateur_connecter']['profil'] ?></h3>
+						<p class="mt-2"><?= $_SESSION['utilisateur_connecter']['email'] ?></p>
 					</div>
 				</div>
 				<div class="card">
@@ -60,7 +61,7 @@ if (!empty($_SESSION['utilisateur_connecter']['0']['id']) && !empty($_SESSION['u
 						<div class="row mb-3" style="display: contents; text-align:center;">
 
 							<div class="col-md-8 col-lg-9">
-								<form action="<?= PROJECT_DIR; ?>membre/utilisateur/desactivation" method="post">
+								<form action="<?= PROJECT_DIR; ?>bibliothecaire/mon_profil/desactivation" method="post">
 									<div class="row mb-3">
 										<div class="col-md-8 col-lg-12">
 											<button type="button" name="desactiver-compte" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#desactiver"><i class="bi bi-x-octagon-fill"> Désactiver le compte</i></button>
@@ -103,7 +104,7 @@ if (!empty($_SESSION['utilisateur_connecter']['0']['id']) && !empty($_SESSION['u
 								</form>
 
 
-								<form action="<?= PROJECT_DIR; ?>membre/utilisateur/supprimer" method="post">
+								<form action="<?= PROJECT_DIR; ?>bibliothecaire/mon_profil/supprimer" method="post">
 									<div class="row mb-3">
 										<div class="col-md-6 col-lg-12">
 											<button type="button" name="supprimer-compte" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#supprimer"><i class="bi bi-trash-fill"> Supprimer le compte</i></button>
@@ -196,7 +197,7 @@ if (!empty($_SESSION['utilisateur_connecter']['0']['id']) && !empty($_SESSION['u
 										</div>
 									</div>
 								</div>
-								<form action="<?= PROJECT_DIR ?>membre/utilisateur/modifier_profil" method="post">
+								<form action="<?= PROJECT_DIR ?>bibliothecaire/mon_profil/modifier_profil" method="post">
 									<div class="row mb-3">
 										<label for="nom" class="col-md-4 col-lg-3 col-form-label">
 											Nom
@@ -337,7 +338,7 @@ if (!empty($_SESSION['utilisateur_connecter']['0']['id']) && !empty($_SESSION['u
 							<div class="profile-change-password">
 								<!-- Change Password Form -->
 								<h3 class="card-title">Changer votre mot de passe</h3>
-								<form action="<?= PROJECT_DIR; ?>membre/utilisateur/changer_mot_de_passe" method="post">
+								<form action="<?= PROJECT_DIR; ?>bibliothecaire/mon_profil/changer_mot_de_passe" method="post">
 
 									<div class="row mb-3">
 										<label for="changer_mot_de_passe" class="col-md-4 col-lg-3 col-form-label">Mot
