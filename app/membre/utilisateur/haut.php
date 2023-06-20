@@ -61,7 +61,7 @@
 				<li class="nav-item dropdown pe-3">
 
 					<a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-						<img src="<?= isset($_SESSION['utilisateur_connecter_membre']) ? $_SESSION['utilisateur_connecter_membre']['avatar'] : 'avatar' ?>" style="width: 170px;" alt="Profile" class="rounded-circle">
+					<img src="<?= $_SESSION['utilisateur_connecter_membre']['avatar'] == 'Non defini' ? PROJECT_DIR . 'public/image/user.png' : $_SESSION['utilisateur_connecter_membre']['avatar'] ?>" style="width: 50px;" alt="Profile" class="rounded-circle">
 						<span class="d-none d-md-block dropdown-toggle ps-2"><?= $_SESSION['utilisateur_connecter_membre']['nom'] ?> <?= $_SESSION['utilisateur_connecter_membre']['prenom'] ?></span>
 					</a><!-- End Profile Iamge Icon -->
 
@@ -76,7 +76,7 @@
 						</li>
 
 						<li>
-							<a class="dropdown-item d-flex align-items-center" href="<?= PROJECT_DIR; ?>membre/utilisateur/mon-profil">
+							<a class="dropdown-item d-flex align-items-center" href="<?= PROJECT_DIR; ?>membre/mon_profil/mon-profil">
 								<i class="bi bi-person"></i>
 								<span>Mon Profil</span>
 							</a>
@@ -86,7 +86,7 @@
 						</li>
 
 						<li>
-							<a class="dropdown-item d-flex align-items-center" href="<?= PROJECT_DIR; ?>membre/utilisateur/historique_emprunt">
+							<a class="dropdown-item d-flex align-items-center" href="<?= PROJECT_DIR; ?>membre/mon_profil/historique_emprunt">
 								<i class="bi bi-h-circle"></i>
 								<span>Historique des emprunts</span>
 							</a>
@@ -96,7 +96,7 @@
 						</li>
 
 						<li>
-							<a class="dropdown-item d-flex align-items-center" href="<?= PROJECT_DIR; ?>membre/utilisateur/mon-profil">
+							<a class="dropdown-item d-flex align-items-center" href="<?= PROJECT_DIR; ?>membre/mon_profil/mon-profil">
 								<i class="bi bi-gear"></i>
 								<span>Paramètres du compte</span>
 							</a>

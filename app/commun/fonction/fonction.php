@@ -512,7 +512,7 @@ function update_password_in_db(int $id, string $mot_de_passe)
  *
  * @return bool
  */
-function mettre_a_jour_informations_utilisateur(int $id, string $nom = null, string $prenom = null, string $sexe = null, string $date_naissance = null, string $telephone = null, string $avatar = null, string $nom_utilisateur = null, string $adresse = null): bool
+function mettre_a_jour_informations_utilisateur(int $id, string $nom = null, string $prenom = null, string $sexe = null, string $date_naissance = null, string $telephone = null, /*string $avatar = null,*/ string $nom_utilisateur = null, string $adresse = null): bool
 {
 	$mettre_a_jour_informations_utilisateur = false;
 	$data = ["id" => $id, "maj_le" => date("Y-m-d H:i:s")];
@@ -544,10 +544,10 @@ function mettre_a_jour_informations_utilisateur(int $id, string $nom = null, str
 			$data["telephone"] = $telephone;
 		}
 
-		if (!empty($avatar)) {
+		/*if (!empty($avatar)) {
 			$request .= " avatar = :avatar,";
 			$data["avatar"] = $avatar;
-		}
+		}*/
 
 		if (!empty($adresse)) {
 			$request .= " adresse = :adresse,";
@@ -707,4 +707,43 @@ function enregistrer_utilisateur(string $nom, string $prenom, string $email, str
 	return $enregistrer_utilisateur;
 }
 
+
+/**
+ * Cette fonction permet d'effectuer la mise à jour de l'avatar de l'utilisateur
+ *
+ * @param  int $id L'id de l'utilisateur
+ * @param  string $avatar La photo de profil
+ * @return bool
+ */
+function mise_a_jour_avatar(int $id, string $avatar): bool
+{
+
+	$mise_a_jour_avatar = false;
+
+	$date = date("Y-m-d H:i:s");
+
+	$db = connect_db();
+
+	if (is_object($db)) {
+
+		$request = "UPDATE utilisateur SET avatar = :avatar, maj_le = :maj_le  WHERE id= :id";
+
+		$request_prepare = $db->prepare($request);
+
+		$request_execution = $request_prepare->execute(
+			[
+				'id' => $id,
+				'avatar' => $avatar,
+				'maj_le' => $date,
+			]
+		);
+
+		if ($request_execution) {
+
+			$mise_a_jour_avatar = true;
+		}
+	}
+
+	return $mise_a_jour_avatar;
+}
 

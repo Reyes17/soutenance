@@ -29,7 +29,8 @@ if (!empty($_SESSION['utilisateur_connecter_membre']['0']['id']) && !empty($_SES
 
 					<div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
-						<img src="<?= isset($_SESSION['utilisateur_connecter_membre']) ? $_SESSION['utilisateur_connecter_membre']['avatar'] : 'avatar' ?>" style="width: 170px;" alt="Profile" class="rounded-circle">
+
+						<img src="<?= $_SESSION['utilisateur_connecter_membre']['avatar'] == 'Non defini' ? PROJECT_DIR . 'public/image/user.png' : $_SESSION['utilisateur_connecter_membre']['avatar'] ?>" style="width: 170px;" alt="Profile" class="rounded-circle">
 						<h2><?= $_SESSION['utilisateur_connecter_membre']['nom'] ?> <?= $_SESSION['utilisateur_connecter_membre']['prenom'] ?></h2>
 						<h3 class="mt-2"><?= $_SESSION['utilisateur_connecter_membre']['profil'] ?></h3>
 						<p class="mt-2"><?= $_SESSION['utilisateur_connecter_membre']['email'] ?></p>
@@ -162,8 +163,6 @@ if (!empty($_SESSION['utilisateur_connecter_membre']['0']['id']) && !empty($_SES
 									</div>
 								<?php
 								}
-
-								//die(var_dump($_SESSION));
 								?>
 
 								<!-- Message de succès global quand la modification a réussi -->
@@ -177,16 +176,73 @@ if (!empty($_SESSION['utilisateur_connecter_membre']['0']['id']) && !empty($_SES
 								}
 								?>
 
+								<!-- Message de d'erreur global quand la modification de la photo à échouer -->
+								<?php
+								if (!empty($_SESSION['photo-erreurs']) && !empty($_SESSION['photo-erreurs'])) {
+								?>
+									<div class="alert alert-danger" style="color: white; background-color: #dc3545; border-radius: 15px; padding: 2%; text-align:center;">
+										<?= $_SESSION['photo-erreurs'] ?>
+									</div>
+								<?php
+								}
+								?>
+
 								<!-- Profile Edit Form -->
 
 								<div class="row mb-3">
 									<label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profil
-										Image</label>
+										Image
+									</label>
 									<div class="col-md-8 col-lg-9">
-										<img src="<?= PROJECT_DIR; ?>public/image/bliotheque.jpg" alt="Profile">
-										<div class="pt-2">
-											<a href="#" class="btn btn-primary btn-sm" title="Upload new profile image"><i class="bi bi-upload"></i></a>
-											<a href="#" class="btn btn-danger btn-sm" title="Remove my profile image"><i class="bi bi-trash"></i></a>
+										<img src="<?= $_SESSION['utilisateur_connecter_membre']['avatar'] == 'Non defini' ? PROJECT_DIR . 'public/image/user.png' : $_SESSION['utilisateur_connecter_membre']['avatar'] ?>" style="width: 170px;" alt="Profile" class="rounded-circle">
+										<div class="pb-3 pt-2">
+
+											<form action="<?= PROJECT_DIR ?>membre/mon_profil/traitement_photo" method="post">
+												<div class="row" style="text-align: center; display:flex;">
+													<div class="col-md-9">
+														<label class="form-label" for="image" style="color: #01297099;">Changer ma photo de profil</label>
+														<input type="file" class="form-control" id="image" name="image" />
+													</div>
+
+													<!-- maj_photo Form -->
+													<div class="text-center col-md-4 mt-3" style="justify-content: center;">
+														<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#traitement_photo">Mettre à jour</button>
+														<div class="col-md-6 col-lg-12">
+															<div class="text-center" style="color: #070b3a;">
+																<!-- Modal -->
+																<div class="modal fade" id="traitement_photo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+																	<div class="modal-dialog" role="document">
+																		<div class="modal-content">
+																			<div class="modal-header">
+																				<h5 class="modal-title" id="exampleModalLabel">Mettre à jour la photo de profil</h5>
+																				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+																				</button>
+																			</div>
+																			<div class="modal-body">
+																				<div class="row mb-3">
+																					<label for="mot_de_passe" class="col-12 col-form-label" style="color: #070b3a;">
+																						Veuiller entrer votre mot de passe pour
+																						appliquer l'action.</label>
+																					<br>
+																					<div class="col-md-8 col-lg-12">
+																						<input type="password" id="mot_de_passe" name="mot_de_passe" class="form-control" placeholder="Veuillez entrer votre mot de passe" value="">
+																					</div>
+																				</div>
+																			</div>
+																			<div class="modal-footer">
+																				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler
+																				</button>
+																				<button type="submit" name="photo_traitement" class="btn btn-danger">Valider
+																				</button>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+
+														</div>
+											</form>
+											<!--<a href="#" class="btn btn-danger btn-sm" title="Remove my profile image"><i class="bi bi-trash"></i></a>--->
 										</div>
 									</div>
 								</div>
@@ -198,7 +254,7 @@ if (!empty($_SESSION['utilisateur_connecter_membre']['0']['id']) && !empty($_SES
 											:
 										</label>
 										<div class="col-md-8 col-lg-9">
-											<input name="nom" type="text" class="form-control <?= isset($_SESSION['modifier-profil-erreur']['nom']) ? 'is-invalid' : '' ?>" id="fullName" value="<?= $_SESSION['utilisateur_connecter_bibliothecaire']['nom'] ?>">
+											<input name="nom" type="text" class="form-control <?= isset($_SESSION['modifier-profil-erreur']['nom']) ? 'is-invalid' : '' ?>" id="fullName" value="<?= $_SESSION['utilisateur_connecter_membre']['nom'] ?>">
 											<?php if (!empty($_SESSION['modifier-profil-erreur']['nom'])) { ?>
 												<div class="invalid-feedback">
 													<?= $_SESSION['modifier-profil-erreur']['nom'] ?>
@@ -214,7 +270,7 @@ if (!empty($_SESSION['utilisateur_connecter_membre']['0']['id']) && !empty($_SES
 											:
 										</label>
 										<div class="col-md-8 col-lg-9">
-											<input name="prenom" type="text" class="form-control <?= isset($_SESSION['modifier-profil-erreur']['prenom']) ? 'is-invalid' : '' ?>" id="fullname" value="<?= $_SESSION['utilisateur_connecter_bibliothecaire']['prenom'] ?>">
+											<input name="prenom" type="text" class="form-control <?= isset($_SESSION['modifier-profil-erreur']['prenom']) ? 'is-invalid' : '' ?>" id="fullname" value="<?= $_SESSION['utilisateur_connecter_membre']['prenom'] ?>">
 											<?php if (!empty($_SESSION['modifier-profil-erreur']['prenom'])) { ?>
 												<div class="invalid-feedback">
 													<?= $_SESSION['modifier-profil-erreur']['prenom'] ?>
@@ -226,7 +282,7 @@ if (!empty($_SESSION['utilisateur_connecter_membre']['0']['id']) && !empty($_SES
 									<div class="row mb-3">
 										<label for="adresse" class="col-md-4 col-lg-3 col-form-label">Adresse : </label>
 										<div class="col-md-8 col-lg-9">
-											<input name="adresse" type="text" class="form-control <?= isset($_SESSION['modifier-profil-erreur']['adresse']) ? 'is-invalid' : '' ?>" id="adresse" placeholder="Veuillez ajouter votre adresse" value="<?= $_SESSION['utilisateur_connecter_bibliothecaire']['adresse'] ?>">
+											<input name="adresse" type="text" class="form-control <?= isset($_SESSION['modifier-profil-erreur']['adresse']) ? 'is-invalid' : '' ?>" id="adresse" placeholder="Veuillez ajouter votre adresse" value="<?= $_SESSION['utilisateur_connecter_membre']['adresse'] ?>">
 											<?php if (!empty($_SESSION['modifier-profil-erreur']['adresse'])) { ?>
 												<div class="invalid-feedback">
 													<?= $_SESSION['modifier-profil-erreur']['adresse'] ?>
@@ -242,7 +298,7 @@ if (!empty($_SESSION['utilisateur_connecter_membre']['0']['id']) && !empty($_SES
 											:
 										</label>
 										<div class="col-md-8 col-lg-9">
-											<input name="nom_utilisateur" type="text" class="form-control <?= isset($_SESSION['modifier-profil-erreur']['nom_utilisateur']) ? 'is-invalid' : '' ?>" id="nom_utilisateur" value="<?= $_SESSION['utilisateur_connecter_bibliothecaire']['nom_utilisateur'] ?> ">
+											<input name="nom_utilisateur" type="text" class="form-control <?= isset($_SESSION['modifier-profil-erreur']['nom_utilisateur']) ? 'is-invalid' : '' ?>" id="nom_utilisateur" value="<?= $_SESSION['utilisateur_connecter_membre']['nom_utilisateur'] ?> ">
 											<?php if (!empty($_SESSION['modifier-profil-erreur']['nom_utilisateur'])) { ?>
 												<div class="invalid-feedback">
 													<?= $_SESSION['modifier-profil-erreur']['nom_utilisateur'] ?>
@@ -254,7 +310,7 @@ if (!empty($_SESSION['utilisateur_connecter_membre']['0']['id']) && !empty($_SES
 									<div class="row mb-3">
 										<label for="telephone" class="col-md-4 col-lg-3 col-form-label">Téléphone :</label>
 										<div class="col-md-8 col-lg-9">
-											<input name="telephone" type="text" class="form-control <?= isset($_SESSION['modifier-profil-erreur']['telephone']) ? 'is-invalid' : '' ?>" id="telephone" placeholder="Veuillez renseigner votre numéro de téléphone" value="<?= $_SESSION['utilisateur_connecter_bibliothecaire']['telephone'] ?>">
+											<input name="telephone" type="text" class="form-control <?= isset($_SESSION['modifier-profil-erreur']['telephone']) ? 'is-invalid' : '' ?>" id="telephone" placeholder="Veuillez renseigner votre numéro de téléphone" value="<?= $_SESSION['utilisateur_connecter_membre']['telephone'] ?>">
 											<?php if (!empty($_SESSION['modifier-profil-erreur']['telephone'])) { ?>
 												<div class="invalid-feedback">
 													<?= $_SESSION['modifier-profil-erreur']['telephone'] ?>
@@ -268,7 +324,7 @@ if (!empty($_SESSION['utilisateur_connecter_membre']['0']['id']) && !empty($_SES
 											Date de naissance :
 										</label>
 										<div class="col-md-8 col-lg-9">
-											<input name="date_naissance" type="date" class="form-control <?= isset($_SESSION['modifier-profil-erreur']['date_naissance']) ? 'is-invalid' : '' ?>" id="date_naissance" placeholder="Veuillez renseigner votre date de naissance" value="<?= $_SESSION['utilisateur_connecter_bibliothecaire']['date_naissance'] ?>">
+											<input name="date_naissance" type="date" class="form-control <?= isset($_SESSION['modifier-profil-erreur']['date_naissance']) ? 'is-invalid' : '' ?>" id="date_naissance" placeholder="Veuillez renseigner votre date de naissance" value="<?= $_SESSION['utilisateur_connecter_membre']['date_naissance'] ?>">
 											<?php if (!empty($_SESSION['modifier-profil-erreur']['date_naissance'])) { ?>
 												<div class="invalid-feedback">
 													<?= $_SESSION['modifier-profil-erreur']['date_naissance'] ?>
