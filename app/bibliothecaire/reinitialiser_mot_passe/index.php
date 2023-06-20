@@ -1,6 +1,6 @@
 <?php
-if (!empty($_SESSION["utilisateur_connecter_membre"])) {
-	header('location:' . PROJECT_DIR . 'membre/utilisateur/acceuil');
+if (!empty($_SESSION["utilisateur_connecter_bibliothecaire"])) {
+	header('location:' . PROJECT_DIR . 'bibliothecaire/dossier/dashboard');
 }
 
 include './app/commun/index.php';
@@ -50,7 +50,7 @@ include './app/commun/index.php';
 
                                 </div>
 
-                                <form class="row needs-validation" action="<?= PROJECT_DIR; ?>membre/reinitialiser_mot_passe/traitement" method="post">
+                                <form class="row needs-validation" action="<?= PROJECT_DIR; ?>bibliothecaire/reinitialiser_mot_passe/traitement" method="post">
 
                                     <div class="col-12 mt-3">
                                     <label for="reinitialiser_mot_de_passe" class="form-label">

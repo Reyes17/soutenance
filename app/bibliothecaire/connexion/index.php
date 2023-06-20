@@ -3,10 +3,7 @@ include 'app/commun/index.php';
 if (!empty($_SESSION["utilisateur_connecter_bibliothecaire"])) {
 	header('location:' . PROJECT_DIR . 'bibliothecaire/dossier/dashboard');
 }
-$data = [];
-if (isset($_SESSION['data']) && !empty($_SESSION['data'])) {
-	$data = $_SESSION['data'];
-}
+
 if (isset($_COOKIE['data_users']) and !empty($_COOKIE['data_users'])) {
 	$users_utilisateur = json_decode($_COOKIE['data_users']);
 }

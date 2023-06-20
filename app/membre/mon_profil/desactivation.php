@@ -1,24 +1,23 @@
 <?php
 $_SESSION['desactivation-errors'] = "";
 
-$_SESSION['donnees-utilisateur'] = [];
-
 $data = [];
 
 $errors = [];
 
 if (isset($_POST['desactivation'])) {
 
-	if (check_password_exist(($_POST['mot_de_passe']), $_SESSION['utilisateur_connecter']['id'])) {
-		if (desactiver_utilisateur($_SESSION['utilisateur_connecter']['id'])) {
+	if (check_password_exist(($_POST['mot_de_passe']), $_SESSION['utilisateur_connecter_membre']['id'])) {
+		if (desactiver_utilisateur($_SESSION['utilisateur_connecter_membre']['id'])) {
 			session_destroy();
-			header('location:' . PROJECT_DIR . 'membre/utilisateur/acceuil');
+			header('location:' . PROJECT_DIR . 'membre/connexion');
 		}
 	} else {
-		$_SESSION['desactivation-errors'] = "La desactivation à echouer. Vérifier votre mot de passe et réessayer.";
-		header('location:' . PROJECT_DIR . 'membre/utilisateur/mon-profil');
+		$_SESSION['desactivation-errors'] = "La désactivation à echouer. Vérifier votre mot de passe et réessayer.";
+		header('location:' . PROJECT_DIR . 'membre/mon_profil/mon-profil');
 	}
 } else {
-	die('no good at all');
+	$_SESSION['desactivation-errors'] = "La désactivation à echouer. Veuillez entrer un mot de passe.";
+		header('location:' . PROJECT_DIR . 'membre/mon_profil/mon-profil');
 }
 

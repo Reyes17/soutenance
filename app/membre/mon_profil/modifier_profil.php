@@ -3,7 +3,7 @@ $_SESSION['passe'] = "";
 
 $_SESSION['success'] = "";
 
-$data = $_SESSION['utilisateur_connecter'];
+$data = $_SESSION['utilisateur_connecter_membre'];
 
 $new_data = [];
 
@@ -86,4 +86,4 @@ if (empty($errors)) {
 	}
 }
 
-header('location:' . PROJECT_DIR . 'membre/utilisateur/mon-profil');
+header('location:' . PROJECT_DIR . 'membre/mon_profil/mon-profil');

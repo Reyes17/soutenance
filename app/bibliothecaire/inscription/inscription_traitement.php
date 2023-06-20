@@ -1,12 +1,9 @@
 <?php
-
-include 'app/commun/fonction/fonction.php';
-session_start();
 $data = [];
+$message_erreur_global = "";
+$message_success_global = "";
 $errors = [];
-$success = "";
-$null = null;
-$_SESSION['data'] = [];
+
 
 //Je vérifie si les informations envoyés par le visiteur sont corrrects.
 
@@ -23,22 +20,11 @@ if (verifier_info($_POST['prenom'])) {
 	$errors['prenom'] = '<p > Le champ prénom est requis. Veuillez le renseigner!</p>';
 }
 
-if (isset($_POST["sexe"]) && !empty($_POST["sexe"])) {
-	$data["sexe"] = $_POST["sexe"];
-} else {
-	$errors["sexe"] = "Le champ sexe est requis. Veuillez le renseigner.";
-}
 
 if (isset($_POST["nom_utilisateur"]) && !empty($_POST["nom_utilisateur"])) {
 	$data["nom_utilisateur"] = $_POST["nom_utilisateur"];
 } else {
 	$errors["nom_utilisateur"] = "Le champ nom utilisateur est requis. Veuillez le renseigner.";
-}
-
-if (isset($_POST["date_naissance"]) && !empty($_POST["date_naissance"])) {
-	$data["date_naissance"] = $_POST["date_naissance"];
-} else {
-	$errors["date_naissance"] = "Le champ date de naissance est requis. Veuillez le renseigner.";
 }
 
 if (isset($_POST["email"]) && !empty($_POST["email"]) && filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
@@ -56,7 +42,7 @@ if (isset($_POST["mot_de_passe"]) && !empty($_POST["mot_de_passe"]) && strlen(($
 }
 
 if (isset($_POST["mot_de_passe"]) && !empty($_POST["mot_de_passe"]) && strlen(($_POST["mot_de_passe"])) >= 8 && empty($_POST["confirmer_mot_de_passe"])) {
-	$errors["confirmer_mot_de_mot"] = "Entrez votre mot de passe à nouveau.";
+	$errors["confirmer_mot_de_passe"] = "Entrez votre mot de passe à nouveau.";
 }
 
 if ((isset($_POST["confirmer_mot_de_passe"]) && !empty($_POST["confirmer_mot_de_passe"]) && strlen(($_POST["mot_de_passe"])) >= 8 && $_POST["confirmer_mot_de_passe"] != $_POST["mot_de_passe"])) {
@@ -86,8 +72,7 @@ if ($check_user_name_exist_in_db) {
 	$errors["nom_utilisateur"] = "Ce nom d'utilisateur est déja utilisé. Veuillez le changer.";
 }
 
-
-$_SESSION['data'] = $data;
+$data["profil"] = "Bibliothecaire";
 
 
 if (empty($errors)) {

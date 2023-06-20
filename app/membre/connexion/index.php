@@ -1,8 +1,9 @@
 <?php
 include 'app/commun/index.php';
-if ($_SESSION['utilisateur_connecter_membre']) {
+if (!empty($_SESSION["utilisateur_connecter_membre"])) {
 	header('location:' . PROJECT_DIR . 'membre/utilisateur/acceuil');
 }
+
 $data = [];
 if (isset($_SESSION['data']) && !empty($_SESSION['data'])) {
 	$data = $_SESSION['data'];
