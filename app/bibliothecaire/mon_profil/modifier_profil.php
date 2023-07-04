@@ -3,7 +3,7 @@ $_SESSION['passe'] = "";
 
 $_SESSION['success'] = "";
 
-$data = $_SESSION['utilisateur_connecter_bibliothecaire'];
+$data = $_SESSION["utilisateur_connecter_bibliothecaire"];
 
 $new_data = [];
 
@@ -28,7 +28,7 @@ if (isset($_POST['telephone']) && !empty($_POST['telephone']) && $_POST['telepho
 }
 
 if (isset($_POST['nom_utilisateur']) && !empty($_POST['nom_utilisateur']) && $_POST['nom_utilisateur'] != $data['nom_utilisateur']) {
-	$new_data['nom_utilisateur'] = $_POST['nom_utilisateur'];
+	$new_data['nom_utilisateur'] = trim(htmlentities($_POST['nom_utilisateur']));
 } else {
 	$new_data['nom_utilisateur'] = $data['nom_utilisateur'];
 }
@@ -78,7 +78,9 @@ if (empty($errors)) {
 		$new_data['adresse']
 	)) {
 
-		if (recup_mettre_a_jour_informations_utilisateur($data['id'])) {
+		if (recuperer_mettre_a_jour_informations_utilisateur($data['id'])) {
+			$_SESSION["utilisateur_connecter_bibliothecaire"] = recuperer_mettre_a_jour_informations_utilisateur($data['id']);
+
 			$_SESSION['success'] = "Modification(s) effectuée(s) avec succès";
 		} else {
 			$_SESSION['passe'] = "La modification a échouée. Vérifier votre mot de passe et réessayer.";

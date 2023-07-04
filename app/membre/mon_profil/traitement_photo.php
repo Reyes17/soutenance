@@ -6,27 +6,16 @@ $_SESSION['donnees-utilisateur'] = [];
 
 $data = $_SESSION['utilisateur_connecter_membre'];
 
-$data = [];
-
 $errors = [];
 
 $new_data = [];
 
 $idUtilisateur = $_SESSION['utilisateur_connecter_membre']['nom_utilisateur'];
 
-$dossierImage = "public/image/";
+$dossierUtilisateur = "public/image/upload/";
 
-$dossierUtilisateur = $dossierImage . "upload/" . $idUtilisateur . "/";
 
-// Vérifier si le dossier "upload" existe, sinon le créer
-if (!is_dir($dossierUtilisateur)) {
-    //création du dossier image avec id de l'utilisateur
-    mkdir($dossierUtilisateur); //Crée le dossier de l'utilisateur dans "upload"
-}
-
-$_SESSION['donnees-utilisateur'] = $new_data;
-
-if (isset($_POST['photo'])) {
+if (isset($_POST['avatar'])) {
 
     if (check_password_exist(($_POST['mot_de_passe']), $_SESSION['utilisateur_connecter_membre']['id'])) {
 
@@ -50,12 +39,10 @@ if (isset($_POST['photo'])) {
 
                     if (mise_a_jour_avatar($_SESSION['utilisateur_connecter_membre']['id'], $profiledonnees["image"])) {
 
-                        $new_user_data = recup_mettre_a_jour_informations_utilisateur( $_SESSION['utilisateur_connecter_membre']['id']);
-                        if (!empty($new_user_data)) {
-
-                            $_SESSION['utilisateur_connecter_membre'] = $new_user_data;
-        
-                            header('location: ' . PROJECT_DIR . 'membre/mon_profil/mon-profil');
+                       $new_data = recup_mettre_a_jour_informations_utilisateur($_SESSION['utilisateur_connecter_membre']['id']);
+                        if (!empty($new_data)) {
+                            $_SESSION['utilisateur_connecter_membre'] = $new_data;        
+                           header('location: ' . PROJECT_DIR . 'membre/mon_profil/mon-profil');
                         }
                     } else {
 
@@ -72,7 +59,7 @@ if (isset($_POST['photo'])) {
             }
         } else {
 
-            $profiledonnees["image"] = $data["image_profil"];
+            $profiledonnees["image"] = $data["avatar"];
         }
     } else {
         $_SESSION['photo-erreurs'] = "La mise à jour à echouer. Vérifier votre mot de passe et réessayez.";

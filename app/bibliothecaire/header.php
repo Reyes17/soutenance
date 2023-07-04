@@ -63,7 +63,8 @@
 				<li class="nav-item dropdown pe-3">
 
 					<a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-					<img src="<?= $_SESSION['utilisateur_connecter_bibliothecaire']['avatar'] == 'Non defini' ? PROJECT_DIR . 'public/image/user.png' : $_SESSION['utilisateur_connecter_bibliothecaire']['avatar'] ?>" style="width: 50px;" alt="Profile" class="rounded-circle">						<span class="d-none d-md-block dropdown-toggle ps-2"><?= $_SESSION['utilisateur_connecter_bibliothecaire']['nom'] ?> <?= $_SESSION['utilisateur_connecter_bibliothecaire']['prenom'] ?></span>
+						<img src="<?= isset($_SESSION['utilisateur_connecter_bibliothecaire']) ? $_SESSION['utilisateur_connecter_bibliothecaire']['avatar'] : 'avatar' ?>" style="width: 170px;" alt="Profile" class="rounded-circle">
+						<span class="d-none d-md-block dropdown-toggle ps-2"><?= $_SESSION['utilisateur_connecter_bibliothecaire']['nom'] ?> <?= $_SESSION['utilisateur_connecter_bibliothecaire']['prenom'] ?></span>
 					</a><!-- End Profile Iamge Icon -->
 
 					<ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
@@ -149,12 +150,12 @@
 				</a>
 				<ul id="auteurs-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
 					<li>
-						<a href="<?= PROJECT_DIR; ?>bibliothecaire/dossier/liste_des_auteurs">
+						<a href="<?= PROJECT_DIR; ?>bibliothecaire/dossier/auteur/liste_des_auteurs">
 							<i class="bi bi-circle"></i><span>Liste des auteurs</span>
 						</a>
 					</li>
 					<li>
-						<a href="<?= PROJECT_DIR; ?>bibliothecaire/dossier/ajouter_auteurs">
+						<a href="<?= PROJECT_DIR; ?>bibliothecaire/dossier/auteur/ajouter_auteurs">
 							<i class="bi bi-circle"></i><span>Ajouter un auteur</span>
 						</a>
 					</li>

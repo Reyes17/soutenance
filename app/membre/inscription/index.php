@@ -11,10 +11,6 @@ if (isset($_SESSION['donnees-utilisateur']) && !empty($_SESSION['donnees-utilisa
 	$data = $_SESSION['donnees-utilisateur'];
 }
 include 'app/commun/index.php';
-if ($_SESSION["utilisateur_connecter_membre"]) {
-
-	header('location:' . PROJECT_DIR . 'membre/utilisateur/acceuil');
-}
 ?>
 
 
@@ -40,7 +36,7 @@ if ($_SESSION["utilisateur_connecter_membre"]) {
 								<?php
 								if (isset($_SESSION['inscription-message-success-global']) && !empty($_SESSION['inscription-message-success-global'])) {
 								?>
-									<div class="alert alert-primary" style="color: white; background-color: #2bc717; text-align:center; border-radius: 15px; text-align:center;">
+									<div class="alert alert-primary mt-3" style="color: white; background-color: #2bc717; text-align:center; border-radius: 15px; text-align:center;">
 										<?= $_SESSION['inscription-message-success-global'] ?>
 									</div>
 								<?php
@@ -50,7 +46,7 @@ if ($_SESSION["utilisateur_connecter_membre"]) {
 								<?php
 								if (isset($_SESSION['inscription-message-erreur-global']) && !empty($_SESSION['inscription-message-erreur-global'])) {
 								?>
-									<div class="alert alert-primary" style="color: white; background-color: #dc3545; border-radius: 15px; text-align:center;">
+									<div class="alert alert-primary mt-3" style="color: white; background-color: #dc3545; border-radius: 15px; text-align:center;">
 										<?= $_SESSION['inscription-message-erreur-global'] ?>
 									</div>
 								<?php

@@ -1,6 +1,6 @@
 <?php
 $data = [];
-$message_erreur_global = "";
+$message_errors_global = "";
 $message_success_global = "";
 $errors = [];
 
@@ -9,26 +9,26 @@ $errors = [];
 
 
 if (verifier_info($_POST['nom'])) {
-	$data['nom'] = htmlentities($_POST['nom']);
+	$data['nom'] = trim(htmlentities($_POST['nom']));
 } else {
 	$errors['nom'] = '<p> Le champ nom est requis. Veuillez le renseigner! </p>';
 }
 
 if (verifier_info($_POST['prenom'])) {
-	$data['prenom'] = htmlentities($_POST['prenom']);
+	$data['prenom'] =trim(htmlentities($_POST['prenom']));
 } else {
 	$errors['prenom'] = '<p > Le champ prénom est requis. Veuillez le renseigner!</p>';
 }
 
 
 if (isset($_POST["nom_utilisateur"]) && !empty($_POST["nom_utilisateur"])) {
-	$data["nom_utilisateur"] = $_POST["nom_utilisateur"];
+	$data["nom_utilisateur"] = trim($_POST['nom_utilisateur']);
 } else {
 	$errors["nom_utilisateur"] = "Le champ nom utilisateur est requis. Veuillez le renseigner.";
 }
 
 if (isset($_POST["email"]) && !empty($_POST["email"]) && filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
-	$data["email"] = $_POST["email"];
+	$data["email"] = trim($_POST['email']);
 } else {
 	$errors['email'] = '<p>Le champ email est requis ou est déjà utlisé. Veuillez le renseigner!</p>';
 }
@@ -50,7 +50,7 @@ if ((isset($_POST["confirmer_mot_de_passe"]) && !empty($_POST["confirmer_mot_de_
 }
 
 if ((isset($_POST["mot_de_passe"]) && !empty($_POST["mot_de_passe"]) && strlen(($_POST["mot_de_passe"])) >= 8 && $_POST["confirmer_mot_de_passe"] == $_POST["mot_de_passe"])) {
-	$data["mot_de_passe"] = $_POST['mot_de_passe'];
+	$data["mot_de_passe"] = trim($_POST['mot_de_passe']);
 }
 
 if (isset($_POST["terms"]) && !empty($_POST["terms"])) {
@@ -72,41 +72,21 @@ if ($check_user_name_exist_in_db) {
 	$errors["nom_utilisateur"] = "Ce nom d'utilisateur est déja utilisé. Veuillez le changer.";
 }
 
-$data["profil"] = "Bibliothecaire";
+$data["profil"] = "bibliothecaire";
 
 
 if (empty($errors)) {
-	$db = connect_db();
-
-
-	// Ecriture de la requête
-	$requette = 'INSERT INTO utilisateur (nom, prenom, sexe, date_naissance, email, nom_utilisateur, mot_de_passe, profil) VALUES (:nom, :prenom, :sexe, :date_naissance, :email, :nom_utilisateur, :mot_de_passe, :profil)';
-
-	// Préparation
-	$inserer_utilisateur = $db->prepare($requette);
-
-	// Exécution ! La recette est maintenant en base de données
-	$resultat = $inserer_utilisateur->execute([
-		'nom' => $data['nom'],
-		'prenom' => $data["prenom"],
-		'sexe' => $data["sexe"],
-		'date_naissance' => $data["date_naissance"],
-		'email' => $data["email"],
-		'nom_utilisateur' => $data["nom_utilisateur"],
-		'mot_de_passe' => sha1($data["mot_de_passe"]),
-		'profil' => 'bibliothecaire',
-
-	]);
+	
+	$resultat = enregistrer_utilisateur($data["nom"], $data["prenom"], $data["email"], $data["nom_utilisateur"], $data["mot_de_passe"], $data["profil"]);
 
 	if ($resultat) {
 
-		$success = "Inscription réussie!";
-		header('location:' . PROJECT_DIR . 'bibliothecaire/connexion');
+		$_SESSION['message_success_global'] = "Inscription réussie. Veuillez contacter un administateur afin qu'il puisse activer votre compte.";
 	} else {
-		echo 'pas bon';
+		$_SESSION['message_errors_global'] = "Une erreur s'est produite lors de l'inscription, veuillez réessayer.";
 	}
 } //Si les informations de l'utilisateur sont incorrects, je le redirige vers la page d'inscription avec des messages d'erreurs
 else {
-	$_SESSION['errors'] = $errors;
-	header('location:' . PROJECT_DIR . 'bibliothecaire/inscription');
+	$_SESSION['inscription-erreurs'] = $errors;
 }
+header('location:' . PROJECT_DIR . 'bibliothecaire/inscription');

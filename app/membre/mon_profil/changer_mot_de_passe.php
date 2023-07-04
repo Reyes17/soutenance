@@ -1,5 +1,5 @@
 <?php
-$_SESSION['changement-erreurs'] = [];
+$_SESSION['changement-erreurs'] = "";
 
 $data = [];
 
@@ -41,14 +41,17 @@ if (empty($errors)) {
 
 		if (update_password_in_db($_SESSION['utilisateur_connecter_membre']['id'], $data["nouveau_mot_de_passe"])) {
 			session_destroy();
-			header('location:' . PROJECT_DIR . 'membre/connexion');
+			header('location:' . PROJECT_DIR . 'membre/connexion/index');
 		} else {
-			die('no good at all');
+			$_SESSION['changement-erreurs'] = "Oups la modifications à échouer. Veuillez réessayer en vous assurant de bien remplir les champs";
+			header('location:' . PROJECT_DIR . 'membre/mon_profil/mon-profil');
 		}
 	} else {
-
+		$_SESSION['changement-erreurs'] = 'Le mot de passe que vous aviez insérer ne correspond pas à votre mot de passe actuel ';
+		header('location:' . PROJECT_DIR . 'membre/mon_profil/mon-profil');
 	}
 } else {
-	$_SESSION['errors'] = $errors;
+	$_SESSION['changement'] = $errors;
 	header('location:' . PROJECT_DIR . 'membre/mon_profil/mon-profil');
 }
+

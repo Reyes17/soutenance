@@ -27,4 +27,4 @@ if (empty($errors)) {
 } else {
 	$_SESSION['errors'] = $errors;
 }
-header('location:' . PROJECT_DIR . 'membre/connexion');
+header('location:' . PROJECT_DIR . 'membre/connexion/index');

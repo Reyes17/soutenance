@@ -29,8 +29,7 @@ if (!empty($_SESSION['utilisateur_connecter_bibliothecaire']['0']['id']) && !emp
 
 					<div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
-						<img src="<?= isset($_SESSION['utilisateur_connecter_bibliothecaire']) ? $_SESSION['utilisateur_connecter_bibliothecaire']['avatar'] : 'avatar' ?>" style="width: 170px;" alt="Profile" class="rounded-circle">
-						<h2><?= $_SESSION['utilisateur_connecter_bibliothecaire']['nom'] ?> <?= $_SESSION['utilisateur_connecter_bibliothecaire']['prenom'] ?></h2>
+					<img src="<?= $_SESSION['utilisateur_connecter_bibliothecaire']['avatar'] == 'Non defini' ? PROJECT_DIR . 'public/image/user.png' : $_SESSION['utilisateur_connecter_bibliothecaire']['avatar'] ?>" style="width: 90px;" alt="Profile" class="rounded-circle">						<h2><?= $_SESSION['utilisateur_connecter_bibliothecaire']['nom'] ?> <?= $_SESSION['utilisateur_connecter_bibliothecaire']['prenom'] ?></h2>
 						<h3 class="mt-2"><?= $_SESSION['utilisateur_connecter_bibliothecaire']['profil'] ?></h3>
 						<p class="mt-2"><?= $_SESSION['utilisateur_connecter_bibliothecaire']['email'] ?></p>
 					</div>
@@ -183,7 +182,7 @@ if (!empty($_SESSION['utilisateur_connecter_bibliothecaire']['0']['id']) && !emp
 									<label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profil
 										Image</label>
 									<div class="col-md-8 col-lg-9">
-										<img src="<?= PROJECT_DIR; ?>public/image/bliotheque.jpg" alt="Profile">
+									<img src="<?= $_SESSION['utilisateur_connecter_bibliothecaire']['avatar'] == 'Non defini' ? PROJECT_DIR . 'public/image/user.png' : $_SESSION['utilisateur_connecter_bibliothecaire']['avatar'] ?>" style="width: 70px;" alt="Profile" class="rounded-circle">
 										<div class="pt-2">
 											<a href="#" class="btn btn-primary btn-sm" title="Upload new profile image"><i class="bi bi-upload"></i></a>
 											<a href="#" class="btn btn-danger btn-sm" title="Remove my profile image"><i class="bi bi-trash"></i></a>
@@ -283,8 +282,8 @@ if (!empty($_SESSION['utilisateur_connecter_bibliothecaire']['0']['id']) && !emp
 										</label>
 										<div class="col-md-8 col-lg-9">
 											<select class="sexe form-control" id="sexe" name="sexe">
-												<option value="1">Masculin</option>
-												<option value="2">Féminin</option>
+												<option value="M">Masculin</option>
+												<option value="F">Féminin</option>
 											</select>
 											<?php if (!empty($_SESSION['modifier-profil-erreur']['sexe'])) { ?>
 												<div class="invalid-feedback">
@@ -331,50 +330,59 @@ if (!empty($_SESSION['utilisateur_connecter_bibliothecaire']['0']['id']) && !emp
 							<div class="profile-change-password">
 								<!-- Change Password Form -->
 								<h3 class="card-title">Changer votre mot de passe</h3>
-								<form action="<?= PROJECT_DIR; ?>bibliothecaire/mon_profil/changer_mot_de_passe" method="post">
+								<!----message d'erreur global à la désactivation du compte----->
+								<?php
+								if (!empty($_SESSION['changement-erreurs']) && !empty($_SESSION['changement-erreurs'])) {
+								?>
+									<div class="alert alert-danger" style="color: white; background-color:#dc3545; border-radius: 15px; text-align:center;">
+										<?= $_SESSION['changement-erreurs'] ?>
+									</div>
+								<?php
+								}
+								?>
+								<form action="<?= PROJECT_DIR; ?>membre/mon_profil/changer_mot_de_passe" method="post">
 
 									<div class="row mb-3">
 										<label for="changer_mot_de_passe" class="col-md-4 col-lg-3 col-form-label">Mot
 											de passe actuel</label>
 										<div class="col-md-8 col-lg-9">
-											<input name="mot_de_passe" type="password" class="form-control" placeholder="Entrer votre mot de passe actuel" id="mot_de_passe">
-											<span class="text-danger">
-												<?php
-												if (isset($errors["mot_de_passe"]) && !empty($errors["mot_de_passe"])) {
-													echo $errors["mot_de_passe"];
-												}
-												?>
+											<input type="password" class="form-control <?= isset($_SESSION['changement']['mot_de_passe']) ? 'is-invalid' : '' ?>" name="mot_de_passe" value="<?php if (isset($data["mot_de_passe"]) && !empty($data["mot_de_passe"])) ?>" id="changer_mot_de_passe" placeholder=" Veuillez entrer un mot de passe actuel">
+											<?php
+											if (!empty($_SESSION['changement']['mot_de_passe'])) { ?>
+												<div class="invalid-feedback">
+													<?= $_SESSION['changement']['mot_de_passe'] ?>
+												</div>
+											<?php } ?>
+
+										</div>
+									</div>
+
+									<div class="row mb-3">
+										<label for="nouveau_mot_de_passe" class="col-md-4 col-lg-3 col-form-label">Nouveau
+											mot de passe</label>
+										<div class="col-md-8 col-lg-9">
+											<input type="password" class="form-control <?= isset($_SESSION['changement']['nouveau_mot_de_passe']) ? 'is-invalid' : '' ?>" name="nouveau_mot_de_passe" id="nouveau_mot_de_passe" placeholder=" Veuillez entrer votre nouveau mot de passe">
+											<?php
+											if (!empty($_SESSION['changement']['nouveau_mot_de_passe'])) { ?>
+												<div class="invalid-feedback">
+													<?= $_SESSION['changement']['nouveau_mot_de_passe'] ?>
+												</div>
+											<?php } ?>
 											</span>
 										</div>
 									</div>
 
 									<div class="row mb-3">
-										<label for="changer_mot_de_passe" class="col-md-4 col-lg-3 col-form-label">Nouveau
+										<label for="confirmer_mot_de_passe" class="col-md-4 col-lg-3 col-form-label">Confirmer
 											mot de passe</label>
 										<div class="col-md-8 col-lg-9">
-											<input name="nouveau_mot_de_passe" type="password" class="form-control" placeholder="Entrer le nouveau mot de passe avec au moins 08 caractères" id="nouveau_mot_de_passe">
-											<span class="text-danger">
-												<?php
-												if (isset($errors["nouveau_mot_de_passe"]) && !empty($errors["nouveau_mot_de_passe"])) {
-													echo $errors["nouveau_mot_de_passe"];
-												}
-												?>
-											</span>
-										</div>
-									</div>
-
-									<div class="row mb-3">
-										<label for="changer_mot_de_passe" class="col-md-4 col-lg-3 col-form-label">Confirmer
-											mot de passe</label>
-										<div class="col-md-8 col-lg-9">
-											<input name="confirmer_mot_de_passe" type="password" class="form-control" placeholder="Entrer à nouveau le nouveau mot de passe" id="confirmer_mot_de_passe">
-											<span class="text-danger">
-												<?php
-												if (isset($errors["confirmer_mot_de_passe"]) && !empty($errors["confirmer_mot_de_passe"])) {
-													echo $errors["confirmer_mot_de_passe"];
-												}
-												?>
-											</span>
+											<input type="password" class="form-control <?= isset($_SESSION['changement']['confirmer_mot_de_passe']) ? 'is-invalid' : '' ?>" name="confirmer_mot_de_passe" id="confirmer_mot_de_passe" placeholder=" Veuillez entrer à nouveau votre nouveau mot de passe">
+											<?php
+											if (!empty($_SESSION['changement']['confirmer_mot_de_passe'])) { ?>
+												<div class="invalid-feedback">
+													<?= $_SESSION['changement']['confirmer_mot_de_passe'] ?>
+												</div>
+											<?php } ?>
 										</div>
 									</div>
 
@@ -398,6 +406,6 @@ if (!empty($_SESSION['utilisateur_connecter_bibliothecaire']['0']['id']) && !emp
 <!-- End #main -->
 
 <?php
-unset($_SESSION['desactivation-errors'], $_SESSION['passe'], $_SESSION['success']);
+unset($_SESSION['desactivation-errors'], $_SESSION['passe'], $_SESSION['success'], $_SESSION['changement']);
 include('bas.php');
 ?>

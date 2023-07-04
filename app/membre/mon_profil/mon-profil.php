@@ -22,6 +22,7 @@ if (!empty($_SESSION['utilisateur_connecter_membre']['0']['id']) && !empty($_SES
 	</div><!-- End Page Title -->
 
 	<section class="section profile">
+
 		<div class="row">
 			<div class="col-xl-4">
 
@@ -29,8 +30,7 @@ if (!empty($_SESSION['utilisateur_connecter_membre']['0']['id']) && !empty($_SES
 
 					<div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
-
-						<img src="<?= $_SESSION['utilisateur_connecter_membre']['avatar'] == 'Non defini' ? PROJECT_DIR . 'public/image/user.png' : $_SESSION['utilisateur_connecter_membre']['avatar'] ?>" style="width: 170px;" alt="Profile" class="rounded-circle">
+					<img src="<?= $_SESSION['utilisateur_connecter_membre']['avatar'] == 'Non defini' ? PROJECT_DIR . 'public/image/user.png' : $_SESSION['utilisateur_connecter_membre']['avatar'] ?>" style="width: 170px;" alt="Profile" class="rounded-circle">
 						<h2><?= $_SESSION['utilisateur_connecter_membre']['nom'] ?> <?= $_SESSION['utilisateur_connecter_membre']['prenom'] ?></h2>
 						<h3 class="mt-2"><?= $_SESSION['utilisateur_connecter_membre']['profil'] ?></h3>
 						<p class="mt-2"><?= $_SESSION['utilisateur_connecter_membre']['email'] ?></p>
@@ -41,7 +41,7 @@ if (!empty($_SESSION['utilisateur_connecter_membre']['0']['id']) && !empty($_SES
 
 					<div class="pt-2 d-flex flex-column align-items-center pb-4">
 						<h3 class="card-title">Paramètres de compte</h3>
-						<!----message de succès global à la connexion----->
+						<!----message d'erreur global à la désactivation du compte----->
 						<?php
 						if (!empty($_SESSION['desactivation-errors']) && !empty($_SESSION['desactivation-errors'])) {
 						?>
@@ -55,7 +55,7 @@ if (!empty($_SESSION['utilisateur_connecter_membre']['0']['id']) && !empty($_SES
 						<div class="row mb-3" style="display: contents; text-align:center;">
 
 							<div class="col-md-8 col-lg-9">
-								<form action="<?= PROJECT_DIR; ?>bibliothecaire/mon_profil/desactivation" method="post">
+								<form action="<?= PROJECT_DIR; ?>membre/mon_profil/desactivation" method="post">
 									<div class="row mb-3">
 										<div class="col-md-8 col-lg-12">
 											<button type="button" name="desactiver-compte" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#desactiver"><i class="bi bi-x-octagon-fill"> Désactiver le compte</i></button>
@@ -98,7 +98,7 @@ if (!empty($_SESSION['utilisateur_connecter_membre']['0']['id']) && !empty($_SES
 								</form>
 
 
-								<form action="<?= PROJECT_DIR; ?>bibliothecaire/mon_profil/supprimer" method="post">
+								<form action="<?= PROJECT_DIR; ?>membre/mon_profil/supprimer" method="post">
 									<div class="row mb-3">
 										<div class="col-md-6 col-lg-12">
 											<button type="button" name="supprimer-compte" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#supprimer"><i class="bi bi-trash-fill"> Supprimer le compte</i></button>
@@ -163,6 +163,8 @@ if (!empty($_SESSION['utilisateur_connecter_membre']['0']['id']) && !empty($_SES
 									</div>
 								<?php
 								}
+
+								//die(var_dump($_SESSION));
 								?>
 
 								<!-- Message de succès global quand la modification a réussi -->
@@ -176,77 +178,20 @@ if (!empty($_SESSION['utilisateur_connecter_membre']['0']['id']) && !empty($_SES
 								}
 								?>
 
-								<!-- Message de d'erreur global quand la modification de la photo à échouer -->
-								<?php
-								if (!empty($_SESSION['photo-erreurs']) && !empty($_SESSION['photo-erreurs'])) {
-								?>
-									<div class="alert alert-danger" style="color: white; background-color: #dc3545; border-radius: 15px; padding: 2%; text-align:center;">
-										<?= $_SESSION['photo-erreurs'] ?>
-									</div>
-								<?php
-								}
-								?>
-
 								<!-- Profile Edit Form -->
 
 								<div class="row mb-3">
 									<label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profil
-										Image
-									</label>
+										Image</label>
 									<div class="col-md-8 col-lg-9">
-										<img src="<?= $_SESSION['utilisateur_connecter_membre']['avatar'] == 'Non defini' ? PROJECT_DIR . 'public/image/user.png' : $_SESSION['utilisateur_connecter_membre']['avatar'] ?>" style="width: 170px;" alt="Profile" class="rounded-circle">
-										<div class="pb-3 pt-2">
-
-											<form action="<?= PROJECT_DIR ?>membre/mon_profil/traitement_photo" method="post">
-												<div class="row" style="text-align: center; display:flex;">
-													<div class="col-md-9">
-														<label class="form-label" for="image" style="color: #01297099;">Changer ma photo de profil</label>
-														<input type="file" class="form-control" id="image" name="image" />
-													</div>
-
-													<!-- maj_photo Form -->
-													<div class="text-center col-md-4 mt-3" style="justify-content: center;">
-														<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#traitement_photo">Mettre à jour</button>
-														<div class="col-md-6 col-lg-12">
-															<div class="text-center" style="color: #070b3a;">
-																<!-- Modal -->
-																<div class="modal fade" id="traitement_photo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-																	<div class="modal-dialog" role="document">
-																		<div class="modal-content">
-																			<div class="modal-header">
-																				<h5 class="modal-title" id="exampleModalLabel">Mettre à jour la photo de profil</h5>
-																				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-																				</button>
-																			</div>
-																			<div class="modal-body">
-																				<div class="row mb-3">
-																					<label for="mot_de_passe" class="col-12 col-form-label" style="color: #070b3a;">
-																						Veuiller entrer votre mot de passe pour
-																						appliquer l'action.</label>
-																					<br>
-																					<div class="col-md-8 col-lg-12">
-																						<input type="password" id="mot_de_passe" name="mot_de_passe" class="form-control" placeholder="Veuillez entrer votre mot de passe" value="">
-																					</div>
-																				</div>
-																			</div>
-																			<div class="modal-footer">
-																				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler
-																				</button>
-																				<button type="submit" name="photo_traitement" class="btn btn-danger">Valider
-																				</button>
-																			</div>
-																		</div>
-																	</div>
-																</div>
-															</div>
-
-														</div>
-											</form>
-											<!--<a href="#" class="btn btn-danger btn-sm" title="Remove my profile image"><i class="bi bi-trash"></i></a>--->
+									<img src="<?= $_SESSION['utilisateur_connecter_membre']['avatar'] == 'Non defini' ? PROJECT_DIR . 'public/image/user.png' : $_SESSION['utilisateur_connecter_membre']['avatar'] ?>" style="width: 80px;" alt="Profile" class="rounded-circle">
+										<div class="pt-2">
+											<a href="#" class="btn btn-primary btn-sm" title="Upload new profile image"><i class="bi bi-upload"></i></a>
+											<a href="#" class="btn btn-danger btn-sm" title="Remove my profile image"><i class="bi bi-trash"></i></a>
 										</div>
 									</div>
 								</div>
-								<form action="<?= PROJECT_DIR ?>bibliothecaire/mon_profil/modifier_profil" method="post">
+								<form action="<?= PROJECT_DIR ?>membre/mon_profil/modifier_profil" method="post">
 									<div class="row mb-3">
 										<label for="nom" class="col-md-4 col-lg-3 col-form-label">
 											Nom
@@ -387,50 +332,59 @@ if (!empty($_SESSION['utilisateur_connecter_membre']['0']['id']) && !empty($_SES
 							<div class="profile-change-password">
 								<!-- Change Password Form -->
 								<h3 class="card-title">Changer votre mot de passe</h3>
-								<form action="<?= PROJECT_DIR; ?>bibliothecaire/mon_profil/changer_mot_de_passe" method="post">
+								<!----message d'erreur global à la désactivation du compte----->
+								<?php
+								if (!empty($_SESSION['changement-erreurs']) && !empty($_SESSION['changement-erreurs'])) {
+								?>
+									<div class="alert alert-danger" style="color: white; background-color:#dc3545; border-radius: 15px; text-align:center;">
+										<?= $_SESSION['changement-erreurs'] ?>
+									</div>
+								<?php
+								}
+								?>
+								<form action="<?= PROJECT_DIR; ?>membre/mon_profil/changer_mot_de_passe" method="post">
 
 									<div class="row mb-3">
 										<label for="changer_mot_de_passe" class="col-md-4 col-lg-3 col-form-label">Mot
 											de passe actuel</label>
 										<div class="col-md-8 col-lg-9">
-											<input name="mot_de_passe" type="password" class="form-control" placeholder="Entrer votre mot de passe actuel" id="mot_de_passe">
-											<span class="text-danger">
-												<?php
-												if (isset($errors["mot_de_passe"]) && !empty($errors["mot_de_passe"])) {
-													echo $errors["mot_de_passe"];
-												}
-												?>
+											<input type="password" class="form-control <?= isset($_SESSION['changement']['mot_de_passe']) ? 'is-invalid' : '' ?>" name="mot_de_passe" value="<?php if (isset($data["mot_de_passe"]) && !empty($data["mot_de_passe"])) ?>" id="changer_mot_de_passe" placeholder=" Veuillez entrer un mot de passe actuel">
+											<?php
+											if (!empty($_SESSION['changement']['mot_de_passe'])) { ?>
+												<div class="invalid-feedback">
+													<?= $_SESSION['changement']['mot_de_passe'] ?>
+												</div>
+											<?php } ?>
+
+										</div>
+									</div>
+
+									<div class="row mb-3">
+										<label for="nouveau_mot_de_passe" class="col-md-4 col-lg-3 col-form-label">Nouveau
+											mot de passe</label>
+										<div class="col-md-8 col-lg-9">
+											<input type="password" class="form-control <?= isset($_SESSION['changement']['nouveau_mot_de_passe']) ? 'is-invalid' : '' ?>" name="nouveau_mot_de_passe" id="nouveau_mot_de_passe" placeholder=" Veuillez entrer votre nouveau mot de passe">
+											<?php
+											if (!empty($_SESSION['changement']['nouveau_mot_de_passe'])) { ?>
+												<div class="invalid-feedback">
+													<?= $_SESSION['changement']['nouveau_mot_de_passe'] ?>
+												</div>
+											<?php } ?>
 											</span>
 										</div>
 									</div>
 
 									<div class="row mb-3">
-										<label for="changer_mot_de_passe" class="col-md-4 col-lg-3 col-form-label">Nouveau
+										<label for="confirmer_mot_de_passe" class="col-md-4 col-lg-3 col-form-label">Confirmer
 											mot de passe</label>
 										<div class="col-md-8 col-lg-9">
-											<input name="nouveau_mot_de_passe" type="password" class="form-control" placeholder="Entrer le nouveau mot de passe avec au moins 08 caractères" id="nouveau_mot_de_passe">
-											<span class="text-danger">
-												<?php
-												if (isset($errors["nouveau_mot_de_passe"]) && !empty($errors["nouveau_mot_de_passe"])) {
-													echo $errors["nouveau_mot_de_passe"];
-												}
-												?>
-											</span>
-										</div>
-									</div>
-
-									<div class="row mb-3">
-										<label for="changer_mot_de_passe" class="col-md-4 col-lg-3 col-form-label">Confirmer
-											mot de passe</label>
-										<div class="col-md-8 col-lg-9">
-											<input name="confirmer_mot_de_passe" type="password" class="form-control" placeholder="Entrer à nouveau le nouveau mot de passe" id="confirmer_mot_de_passe">
-											<span class="text-danger">
-												<?php
-												if (isset($errors["confirmer_mot_de_passe"]) && !empty($errors["confirmer_mot_de_passe"])) {
-													echo $errors["confirmer_mot_de_passe"];
-												}
-												?>
-											</span>
+											<input type="password" class="form-control <?= isset($_SESSION['changement']['confirmer_mot_de_passe']) ? 'is-invalid' : '' ?>" name="confirmer_mot_de_passe" id="confirmer_mot_de_passe" placeholder=" Veuillez entrer à nouveau votre nouveau mot de passe">
+											<?php
+											if (!empty($_SESSION['changement']['confirmer_mot_de_passe'])) { ?>
+												<div class="invalid-feedback">
+													<?= $_SESSION['changement']['confirmer_mot_de_passe'] ?>
+												</div>
+											<?php } ?>
 										</div>
 									</div>
 
@@ -454,6 +408,6 @@ if (!empty($_SESSION['utilisateur_connecter_membre']['0']['id']) && !empty($_SES
 <!-- End #main -->
 
 <?php
-unset($_SESSION['desactivation-errors'], $_SESSION['passe'], $_SESSION['success']);
+unset($_SESSION['desactivation-errors'], $_SESSION['passe'], $_SESSION['success'], $_SESSION['modifier-profil-erreur'], $_SESSION['changement']);
 include('bas.php');
 ?>

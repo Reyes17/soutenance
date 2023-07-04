@@ -59,6 +59,20 @@
 
 
 				<li class="nav-item dropdown pe-3">
+				<?php
+				if (empty($_SESSION["utilisateur_connecter_membre"])) {
+				?>
+
+					<li>
+						<a href="<?= PROJECT_DIR ?>membre/connexion/index" class="nav-link scrollto" style="background: #012970; color: #fff; padding: 10px 25px; margin-left: 30px; border-radius: 50px;"><strong>SE CONNECTER</strong></a>
+					</li>
+				<?php
+				}
+				?>
+
+				<?php
+				if (!empty($_SESSION["utilisateur_connecter_membre"])) {
+				?>
 
 					<a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
 					<img src="<?= $_SESSION['utilisateur_connecter_membre']['avatar'] == 'Non defini' ? PROJECT_DIR . 'public/image/user.png' : $_SESSION['utilisateur_connecter_membre']['avatar'] ?>" style="width: 50px;" alt="Profile" class="rounded-circle">
@@ -116,11 +130,14 @@
 						</li>
 
 						<li>
-							<a class="dropdown-item d-flex align-items-center" href="<?= PROJECT_DIR; ?>membre/utilisateur/deconnexion">
+							<a class="dropdown-item d-flex align-items-center" href="<?= PROJECT_DIR; ?>membre/mon_profil/deconnexion">
 								<i class="ri-logout-box-line"></i>
 								<span>Se déconnecter</span>
 							</a>
 						</li>
+						<?php
+                    }
+                    ?>
 
 					</ul><!-- End Profile Dropdown Items -->
 				</li><!-- End Profile Nav -->

@@ -1,8 +1,9 @@
 <?php
-include 'app/commun/index.php';
 if (!empty($_SESSION["utilisateur_connecter_bibliothecaire"])) {
 	header('location:' . PROJECT_DIR . 'bibliothecaire/dossier/dashboard');
 }
+include 'app/commun/index.php';
+
 
 if (isset($_COOKIE['data_users']) and !empty($_COOKIE['data_users'])) {
 	$users_utilisateur = json_decode($_COOKIE['data_users']);
@@ -103,12 +104,12 @@ if (isset($_COOKIE['data_users']) and !empty($_COOKIE['data_users'])) {
 								</div>
 								<div class="col-md-6">
 									<p>
-										<a href="<?= PROJECT_DIR; ?>membre/inscription">Créer un compte</a>
+										<a href="<?= PROJECT_DIR; ?>bibliothecaire/inscription">Créer un compte</a>
 									</p>
 								</div>
 								<div class="col-md-6">
 									<p>
-										<a href="<?= PROJECT_DIR; ?>membre/mot_de_passe_oublie">
+										<a href="<?= PROJECT_DIR; ?>bibliothecaire/mot_de_passe_oublie">
 											Mot de passe oublié
 										</a>
 									</p>

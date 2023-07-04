@@ -35,20 +35,20 @@ include 'app/commun/index.php';
 							<div class="card-body">
 								<!----message de succès global à la connexion----->
 								<?php
-								if (isset($_SESSION['inscription-message-success-global']) && !empty($_SESSION['inscription-message-success-global'])) {
+								if (isset($_SESSION['message_success_global']) && !empty($_SESSION['message_success_global'])) {
 								?>
-									<div class="alert alert-primary" style="color: white; background-color: #2bc717; text-align:center; border-radius: 15px; text-align:center;">
-										<?= $_SESSION['inscription-message-success-global'] ?>
+									<div class="alert alert-primary mt-3" style="color: white; background-color: #2bc717; text-align:center; border-radius: 15px; text-align:center;">
+										<?= $_SESSION['message_success_global'] ?>
 									</div>
 								<?php
 								}
 								?>
 								<!----message d'erreur global à la connexion----->
 								<?php
-								if (isset($_SESSION['inscription-message-erreur-global']) && !empty($_SESSION['inscription-message-erreur-global'])) {
+								if (isset($_SESSION['message_errors_global']) && !empty($_SESSION['message_errors_global'])) {
 								?>
-									<div class="alert alert-primary" style="color: white; background-color: #dc3545; border-radius: 15px; text-align:center;">
-										<?= $_SESSION['inscription-message-erreur-global'] ?>
+									<div class="alert alert-primary mt-3" style="color: white; background-color: #dc3545; border-radius: 15px; text-align:center;">
+										<?= $_SESSION['message_errors_global'] ?>
 									</div>
 								<?php
 								}
@@ -61,7 +61,7 @@ include 'app/commun/index.php';
 								</div>
 
 								<form action="<?= PROJECT_DIR; ?>bibliothecaire/inscription/inscription_traitement" method="post" class="row g-3 needs-validation" novalidate>
-									<div class="col-12 mb-3">
+									<div class="col-12">
 										<label for="incription_nom" class="form-label">Nom
 											<span class="text-danger"> (*)</span>
 										</label>
@@ -153,7 +153,7 @@ include 'app/commun/index.php';
 																																																		echo $data["mot_de_passe"];
 																																																	} else {
 																																																		echo '';
-																																																	} ?>" id="incription_mot_de_passe" placeholder=" Veuillez entrer un mot de passe. Au moins huit (08) caractères">
+																																																	} ?>" id="incription_mot_de_passe" placeholder="Mot de passe à 08 caractères au moins">
 										<?php
 										if (isset($_SESSION['inscription-erreurs']['mot_de_passe'])) {
 										?>
