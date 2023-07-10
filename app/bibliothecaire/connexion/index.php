@@ -4,6 +4,9 @@ if (!empty($_SESSION["utilisateur_connecter_bibliothecaire"])) {
 }
 $title = 'connexion';
 include 'app/commun/index.php';
+if (isset($_COOKIE['utilisateur_connecter_bibliothecaire']) and !empty($_COOKIE['utilisateur_connecter_bibliothecaire'])) {
+	$users_mail = json_decode($_COOKIE['utilisateur_connecter_bibliothecaire']);
+}
 
 
 ?>

@@ -1,7 +1,6 @@
 <?php
 $data = [];
 $errors = [];
-$existe = false; // Variable pour indiquer si l'auteur existe déjà
 $messageErreur = '';
 
 if (verifier_info($_POST['nom_aut'])) {
@@ -23,7 +22,7 @@ if (isset($_POST['nom_aut']) && !empty($_POST['nom_aut']) && isset($_POST['preno
     }
 }
 
-if (empty($errors) && !$existe) {
+if (empty($errors)) {
     $resultat = ajout_auteur($data["nom_aut"], $data["prenom_aut"]);
 
     if ($resultat) {

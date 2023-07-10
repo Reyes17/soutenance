@@ -406,42 +406,42 @@ function check_id_utilisateur_exist_in_db(int $user_id, string $type, string $to
 }
 
 /**
- * Cette fonction permet de verifier si un utilisateur (nom utilisateur + mot de passe) existe dans la base de donnée.
- *
- * @param string $nom_utilisateur Le nom de l'utilisateur.
- * @param string $mot_de_passe Le mot de passe de l'utilisateur.
- * @param string $profil Le profil de l'utilisateur.
- * @param int $est_actif Est-ce que l'utilisateur est actif ou pas.
- *
- * @return array $user Les informations de l'utilisateur.
+ * .3++++++
+ * 
+ *recuperer_donnees_utilisateur
+
+ *Elle permet de récupérer les données de l'utilisateur dans la base de données
+ * @param string $email Email de l'utilisateur.
+ * @param string $mot_de_passe Mot de passe de l'utilisateur.
+ * @param string  $profil Profil de l'utilisateur.
+ * @param int $est_actif  Champ est_actif de l'utilisateur.
+ * @param int $est_supprimer Champ est_supprimer de l'utilisateur.
+ * @return array $data les données de l'utilisateur.
  */
-function check_if_user_exist(string $nom_utilisateur, string $mot_de_passe, string $profil, int $est_actif = 1): array
+function recuperer_donnees_utilisateur(string $nom_utilisateur, string $mot_de_passe, string $profil, int $est_actif = 1,int $est_supprimer = 0)
 {
 
-	$user = [];
+    $data = [];
 
-	$db = connect_db();
+    $db = connect_db();
 
-	$requette = "SELECT id, nom, prenom, sexe, email, nom_utilisateur, avatar, profil, telephone, adresse, date_naissance FROM utilisateur WHERE nom_utilisateur = :nom_utilisateur and mot_de_passe = :mot_de_passe and profil = :profil and est_actif = :est_actif";
+    $requette = "SELECT id, nom, prenom, sexe, email, nom_utilisateur, avatar, profil, telephone, adresse, date_naissance FROM utilisateur WHERE nom_utilisateur = :nom_utilisateur and mot_de_passe = :mot_de_passe and profil = :profil and est_actif = :est_actif and est_supprimer = :est_supprimer ";
 
-	$verifier_nom_utilisateur = $db->prepare($requette);
+    $verifier_nom_utilisateur = $db->prepare($requette);
 
-	$resultat = $verifier_nom_utilisateur->execute([
-		'nom_utilisateur' => $nom_utilisateur,
-		'mot_de_passe' => sha1($mot_de_passe),
-		'profil' => $profil,
-		'est_actif' => $est_actif,
-	]);
+    $resultat = $verifier_nom_utilisateur->execute([
+        'nom_utilisateur' => $nom_utilisateur,
+        'mot_de_passe' => sha1($mot_de_passe),
+        'profil' => $profil,
+        'est_actif' => $est_actif,
+        'est_supprimer' => $est_supprimer,
+    ]);
 
-	if ($resultat) {
-		$data = $verifier_nom_utilisateur->fetch(PDO::FETCH_ASSOC);
-		if (is_array($data) && !empty($data)){
-			$user = $data;
-		}
-	}
-	return $user;
+    if ($resultat) {
+        $data = $verifier_nom_utilisateur->fetch();
+    }
+    return $data;
 }
-
 
 /*function check_if_user_connected(): bool
 {
@@ -512,102 +512,90 @@ function update_password_in_db(int $id, string $mot_de_passe)
  *
  * @return bool
  */
-function mettre_a_jour_informations_utilisateur(int $id, string $nom = null, string $prenom = null, string $sexe = null, string $date_naissance = null, string $telephone = null, /*string $avatar = null,*/ string $nom_utilisateur = null, string $adresse = null): bool
+function mettre_a_jour_informations_utilisateur(int $id, string $nom = null, string $prenom = null, string $sexe = null, string $date_naissance = null, string $telephone = null, string $nom_utilisateur = null, string $adresse = null): bool
 {
-	$mettre_a_jour_informations_utilisateur = false;
-	$data = ["id" => $id, "maj_le" => date("Y-m-d H:i:s")];
-	$db = connect_db();
-	if (is_object($db)) {
-		$request = "UPDATE utilisateur SET";
-		if (!empty($nom)) {
-			$request .= " nom = :nom,";
-			$data["nom"] = $nom;
-		}
+    $mettre_a_jour_informations_utilisateur = false;
+    $data = ["id" => $id, "maj_le" => date("Y-m-d H:i:s")];
+    $db = connect_db();
+    if (is_object($db)) {
+        $request = "UPDATE utilisateur SET";
 
-		if (!empty($prenom)) {
-			$request .= " prenom = :prenom,";
-			$data["prenom"] = $prenom;
-		}
+        if (!empty($nom)) {
+            $request .= " nom = :nom,";
+            $data["nom"] = $nom;
+        }
 
-		if (!empty($sexe)) {
-			$request .= " sexe = :sexe,";
-			$data["sexe"] = $sexe;
-		}
+        if (!empty($prenom)) {
+            $request .= " prenom = :prenom,";
+            $data["prenom"] = $prenom;
+        }
 
-		if (!empty($date_naissance)) {
-			$request .= " date_naissance = :date_naissance,";
-			$data["date_naissance"] = $date_naissance;
-		}
+        if (!empty($sexe)) {
+            $request .= " sexe = :sexe,";
+            $data["sexe"] = $sexe;
+        }
 
-		if (!empty($telephone)) {
-			$request .= " telephone = :telephone,";
-			$data["telephone"] = $telephone;
-		}
+        if (!empty($date_naissance)) {
+            $request .= " date_naissance = :date_naissance,";
+            $data["date_naissance"] = $date_naissance;
+        }
 
-		/*if (!empty($avatar)) {
-			$request .= " avatar = :avatar,";
-			$data["avatar"] = $avatar;
-		}*/
+        if (!empty($telephone)) {
+            $request .= " telephone = :telephone,";
+            $data["telephone"] = $telephone;
+        }
 
-		if (!empty($adresse)) {
-			$request .= " adresse = :adresse,";
-			$data["adresse"] = $adresse;
-		}
+        if (!empty($adresse)) {
+            $request .= " adresse = :adresse,";
+            $data["adresse"] = $adresse;
+        }
 
-		if (!empty($nom_utilisateur)) {
-			$request .= " nom_utilisateur = :nom_utilisateur,";
-			$data["nom_utilisateur"] = $nom_utilisateur;
-		}
+        if (!empty($nom_utilisateur)) {
+            $request .= " nom_utilisateur = :nom_utilisateur,";
+            $data["nom_utilisateur"] = $nom_utilisateur;
+        }
 
-		$request .= " maj_le = :maj_le";
+        $request .= " maj_le = :maj_le";
+        $request .= " WHERE id = :id";
 
-		$request .= " WHERE id= :id";
+        $request_prepare = $db->prepare($request);
 
-		$request_prepare = $db->prepare($request);
+        $request_execution = $request_prepare->execute($data);
 
-		$request_execution = $request_prepare->execute($data);
+        if ($request_execution) {
+            $mettre_a_jour_informations_utilisateur = true;
+        }
+    }
 
-		if ($request_execution) {
-			$mettre_a_jour_informations_utilisateur = true;
-		}
-	}
-
-	return $mettre_a_jour_informations_utilisateur;
+    return $mettre_a_jour_informations_utilisateur;
 }
 
 
-/** 
-
- *  Cette fonction permet de recuperer les nouvelles infos UTILISATEUR
+/**
+ * Cette fonction permet de récupérer la mise à jour du profil de l'utilisateur.
  *
- * @param  int $id
- * @return array
+ * @param int $id L'identifiant de l'utilisateur.
+ * @return array|false Les informations mises à jour de l'utilisateur, ou false en cas d'erreur.
  */
+function recup_mettre_a_jour_informations_utilisateur($id)
+{
+    $db = connect_db();
 
- function recuperer_mettre_a_jour_informations_utilisateur($id)
- {
- 
-	 $data = [];
- 
-	 $db = connect_db();
- 
-	 if (is_object($db)) {
- 
-		 $request_recupere = $db->prepare('SELECT  id, nom, prenom, sexe, email, telephone, nom_utilisateur, avatar, adresse, date_naissance, profil FROM utilisateur WHERE id= :id');
- 
-		 $resultat = $request_recupere->execute(array(
-			 'id' => $id,
-		 ));
- 
-		 if ($resultat) {
-			$data = [];
+    $request = $db->prepare('SELECT id, nom, prenom, sexe, date_naissance, email, telephone, nom_utilisateur, avatar, adresse, profil FROM utilisateur WHERE id = :id');
 
-			 $data = $request_recupere->fetch(PDO::FETCH_ASSOC);
-		 }
-	 }
- 
-	 return $data;
- }
+    $result = $request->execute([
+        'id' => $id,
+    ]);
+
+    if ($result) {
+        $data = $request->fetch(PDO::FETCH_ASSOC);
+        return $data;
+    }
+
+    return false;
+}
+
+
 
 /**
  * Cette fonction permet de désactiver un utilisatreur en faisant passé le est_actif de la table utilisateur à zéro
@@ -904,7 +892,12 @@ function supprimer_auteur($num_aut) {
 }
 
 
-   
+/**
+ * Cett fonction permet de récupérer un auteur exitant dans la base de données via son numéro d'auteur.
+ *
+ * @param int $num_aut
+ * @return  .
+ */   
 function get_auteur_by_id(int $num_aut) {
     $db = connect_db();
 
@@ -923,3 +916,183 @@ function get_auteur_by_id(int $num_aut) {
     return $auteur;
 }
 
+
+/**
+ * Cett fonction permet de d'ajouter une langue à la base de données.
+ *
+ * @param string $langue Le nom de la langue .
+ *
+ * @return bool $ajout_langue Le resultat de l'ajout de la langue.
+ */
+function ajout_langue(string $langue): bool
+{
+
+    $ajout_langue = false;
+
+    if (isset($langue) && !empty($langue)) {
+
+        $db = connect_db();
+
+        // Ecriture de la requête
+        $requette = 'INSERT INTO langue (lib_lang) VALUES (:langue);';
+
+        // Préparation
+        $inserer_langue = $db->prepare($requette);
+
+        // Exécution ! La recette est maintenant en base de données
+        $resultat = $inserer_langue->execute([
+            'langue' => $langue
+        ]);
+
+
+        if ($resultat) {
+            $ajout_langue = true;
+        }
+
+    }
+
+    return $ajout_langue;
+
+}
+
+/** 
+*Cette fonction permet de vérifier si une langue existe dans la base de données
+ * @param string $lib_lang libellé de la langue.
+ * @return bool 
+     
+ */
+function check_if_langue_exist(string $langue)
+{
+    $users=[];
+    $liblang = false;
+    $db = connect_db();
+    $req = $db->prepare('SELECT cod_lang from langue WHERE lib_lang=?');
+    $req_exec=$req->execute([$langue]);
+    if($req_exec){
+       
+        $users = $req->fetch();
+        if(!empty($users) && is_array($users)){
+            $liblang=true;
+        }
+    }
+    return $liblang;
+    }
+
+
+	
+/**
+ * Cette fonction permet de récupérer la liste des langues de la base de donnée.
+ *
+ * @return array $liste_langues La liste des langues.
+ */
+function get_liste_langue(): array
+{
+
+    $liste_langues = array();
+
+    $db = connect_db();
+
+    // Ecriture de la requête
+    $requette = 'SELECT * FROM langue';
+
+    // Préparation
+    $verifier_liste_langues = $db->prepare($requette);
+
+    // Exécution ! La recette est maintenant en base de données
+    $resultat = $verifier_liste_langues->execute();
+
+    if ($resultat) {
+
+        $liste_langues = $verifier_liste_langues->fetchAll(PDO::FETCH_ASSOC);
+
+    }
+
+
+    return $liste_langues;
+
+}
+
+
+/**
+ * Modifie une langue dans la base de données.
+ *
+ * @param int $cod_lang Le code de la langue à modifier.
+ * @param string $langue La nouvelle langue.
+ 
+ * @return bool True si la modification a réussi, False sinon.
+ */
+function modifier_langue(int $cod_lang, string $langue): bool
+{
+    $modifier = false;
+    $date = date("Y-m-d H:i:s");
+    $db = connect_db();
+    $req_prepare = $db->prepare('UPDATE langue SET lib_lang = :lib_lang, maj_le = :maj_le WHERE cod_lang = :cod_lang');
+    $req_exec = $req_prepare->execute([
+        'cod_lang' => $cod_lang,
+		'lib_lang' => $langue,        
+        'maj_le' => $date
+
+    ]);
+
+    if ($req_exec) {
+        $modifier = true;
+    }
+    return $modifier;
+}
+
+
+/**
+ * Cett fonction permet de récupérer une langue exitant dans la base de données via son code langue.
+ *
+ * @param int $cod_lang
+ * @return  .
+ */   
+function get_langue_by_id(int $cod_lang) {
+    $db = connect_db();
+
+    // Requête pour récupérer l'auteur par son num_aut
+    $requete = 'SELECT * FROM langue WHERE cod_lang = :cod_lang';
+
+    // Préparation de la requête
+    $query = $db->prepare($requete);
+
+    // Exécution de la requête en liant le paramètre :num_aut
+    $query->execute(['cod_lang' => $cod_lang]);
+
+    // Récupération du résultat de la requête
+    $langue = $query->fetch(PDO::FETCH_ASSOC);
+
+    return $langue;
+}
+
+
+/**
+ * Cett fonction permet de supprimer  une langue exitant dans la base de données via son code langue.
+ *
+ * @param int $cod_lang
+ * @return bool .
+ */
+function supprimer_langue($cod_lang) {
+    // Vérifier si la langue existe
+    $langue = get_langue_by_id($cod_lang);
+
+    if (empty($langue)) {
+        // La langue n'existe pas, retourner false
+        return false;
+    }
+
+    // Supprimer la langue de la base de données
+    $db = connect_db();
+    $sql = "DELETE FROM langue WHERE cod_lang = :cod_lang";
+    $stmt = $db->prepare($sql);
+    $stmt->bindValue(':cod_lang', $cod_lang, PDO::PARAM_INT);
+    $result = $stmt->execute();
+
+    if ($result) {
+        // Suppression réussie
+        return true;
+    } else {
+        // Suppression échouée
+        return false;
+    }
+}

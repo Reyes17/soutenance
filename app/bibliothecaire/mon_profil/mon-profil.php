@@ -340,7 +340,7 @@ if (!empty($_SESSION['utilisateur_connecter_bibliothecaire']['0']['id']) && !emp
 								<?php
 								}
 								?>
-								<form action="<?= PROJECT_DIR; ?>membre/mon_profil/changer_mot_de_passe" method="post">
+								<form action="<?= PROJECT_DIR; ?>bibliothecaire/mon_profil/changer_mot_de_passe" method="post">
 
 									<div class="row mb-3">
 										<label for="changer_mot_de_passe" class="col-md-4 col-lg-3 col-form-label">Mot

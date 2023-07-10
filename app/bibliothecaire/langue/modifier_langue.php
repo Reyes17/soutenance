@@ -4,6 +4,14 @@ if (empty($_SESSION["utilisateur_connecter_bibliothecaire"])) {
 } 
 $title = 'Modifier langue';
 include './app/commun/header.php';
+
+if(isset($params['3']) && !empty($params['3']) && is_numeric($params['3'])){
+	$cod_lang = $params['3'];
+	$_SESSION['cod_lang']=$cod_lang;
+	$langue = get_langue_by_id($cod_lang);
+
+	}
+
 ?>
 
 	<!-- =======================================================
@@ -17,7 +25,7 @@ include './app/commun/header.php';
 				</div>
 
 				<div class="col-md-6 text-end bibliotheque-list-add-btn">
-					<a href="liste_des_langues" class="btn btn-primary">Liste des langues</a>
+					<a href="<?= PROJECT_DIR; ?>bibliothecaire/langue/liste_des_langues" class="btn btn-primary">Liste des langues</a>
 				</div>
 
 			</div>
@@ -26,21 +34,23 @@ include './app/commun/header.php';
 
 				<div class="col-md-12 col-lg-8 offset-lg-2 bd-example">
 
-					<form action="">
+					<form action="<?= PROJECT_DIR; ?>bibliothecaire/langue/modifier_langue_traitement" method="post">
 
-						<div class="mb-3 row">
-							<label for="code-langue" class="col-sm-2 col-form-label">Code:</label>
-							<div class="col-sm-7">
-								<input type="text" class="form-control" id="code-langue" name="code-langue" placeholder="Veuillez entrer le code de la langue">
-							</div>
+					<div class="mb-3 row">
+						<label for="libellé-langue" class="col-sm-2 col-form-label">Langue :</label>
+						<div class="col-sm-7">
+							<input type="text" class="form-control <?= isset($_SESSION['modifications_errors']) ? 'is-invalid' : '' ?>" id="libellé-langue" name="langue" placeholder="Veuillez entrer la langue" value="<?= isset($langue['lib_lang']) ? $langue['lib_lang'] : $data ?>">
+							<?php
+							if (isset($_SESSION['modifications_errors'])) {
+							?>
+								<div class="invalid-feedback">
+									<?= $_SESSION['modifications_errors'] ?>
+								</div>
+							<?php
+							}
+							?>
 						</div>
-
-						<div class="mb-3 row">
-							<label for="libellé-langue" class="col-sm-2 col-form-label">Libellé:</label>
-							<div class="col-sm-7">
-								<input type="text" class="form-control" id="libellé-langue" name="libellé-langue" placeholder="Veuillez entrer le libellé de la libellé">
-							</div>
-						</div>
+					</div>
 				</div>
 				<div class="row">
 					<div class="col-sm-9 text-end mt-3">

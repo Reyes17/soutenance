@@ -17,14 +17,75 @@ if (isset($_POST["mot_de_passe"]) && !empty($_POST["mot_de_passe"])) {
 $_SESSION ['data'] = $data;
 
 if (empty($errors)) {
-	$user = check_if_user_exist($data["nom_utilisateur"], $data["mot_de_passe"], "Bibliothecaire");
-	if (!empty($user)) {
-		$_SESSION["utilisateur_connecter_bibliothecaire"] = $user;
-		header('location:' . PROJECT_DIR . 'bibliothecaire/dossier/dashboard');
-	} else {
-		$_SESSION['danger'] = "Nom d'utilisateur ou mot de passe incorrect. Veuillez vérifier";
+//Je vérifie si l'utilisateur existe dans la base de données
+$data_users = recuperer_donnees_utilisateur($data['nom_utilisateur'], $data['mot_de_passe'],'bibliothecaire',1,0);
+//si oui, je le connecte et j'enregistre ses données dans une session.
+if (is_array(  $data_users)) {
+	$_SESSION['utilisateur_connecter_bibliothecaire'] = $data_users;
+	$_SESSION['data'] = "";
+
+	//Si l'utilisateur appuie sur le checkbox "se souvenir de moi"
+	if (isset($_POST['se_souvenir']) and !empty($_POST['se_souvenir'])) {
+
+		//Je crée un cookie pour enregistrer ses données.
+		setcookie(
+			"utilisateur_connecter_bibliothecaire",
+			json_encode($data['email']),
+			[
+				'expires' => time() + 365 * 24 * 3600,
+				'path' => '/',
+				'secure' => true,
+				'httponly' => true,
+
+			]
+		);
 	}
+	//S'il ne coche pas sur le checkbox "se souvenir de moi"
+	//Je modifie le cookie en le vidant
+	else {
+		setcookie(
+			"utilisateur_connecter_bibliothecaire",
+			"",
+			[
+				'expires' => time() + 365 * 24 * 3600,
+				'path' => '/',
+				'secure' => true,
+				'httponly' => true,
+
+
+			]
+		);
+	}
+
+	header('location:' . PROJECT_DIR . 'bibliothecaire/dashbord/index');
+	exit();
 } else {
-	$_SESSION['errors'] = $errors;
+	$_SESSION['danger'] = "Nom d'utilisateur ou mot de passe incorrect. Veuillez vérifier";
+
+	header('location:' . PROJECT_DIR . 'bibliothecaire/connexion');
+	exit();
+}
+} else {
+$_SESSION['errors'] = $errors;
 }
 header('location:' . PROJECT_DIR . 'bibliothecaire/connexion');
+
+
+
+
+
+
+
+/** 	
+**$user = check_if_user_exist($data["nom_utilisateur"], $data["mot_de_passe"], "Bibliothecaire");
+	*if (!empty($user)) {
+		*$_SESSION["utilisateur_connecter_bibliothecaire"] = $user;
+		*header('location:' . PROJECT_DIR . 'bibliothecaire/dossier/dashboard');
+	*} else {
+		*$_SESSION['danger'] = "Nom d'utilisateur ou mot de passe incorrect. Veuillez vérifier";
+	*}
+**} else {
+	*$_SESSION['errors'] = $errors;
+**}
+*header('location:' . PROJECT_DIR . 'bibliothecaire/connexion');*/
+

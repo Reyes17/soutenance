@@ -79,8 +79,8 @@ include './app/commun/header.php';
 					<div class="mb-3 row">
 						<label for="prenom-auteur" class="col-sm-2 col-form-label">Prénoms:</label>
 						<div class="col-sm-7">
-							<input type="text" class="form-control <?= isset($_SESSION['ajouter-auteur-erreurs']['nom_aut']) ? 'is-invalid' : '' ?>" id="prenom-auteur" name="prenom_aut" placeholder="Veuillez entrer le(s) prénom(s)" value="<?php if (isset($data["nom_aut"]) && !empty($data["nom_aut"])) {
-																																																													echo $data["nom_aut"];
+							<input type="text" class="form-control <?= isset($_SESSION['ajouter-auteur-erreurs']['prenom_aut']) ? 'is-invalid' : '' ?>" id="prenom-auteur" name="prenom_aut" placeholder="Veuillez entrer le(s) prénom(s)" value="<?php if (isset($data["prenom_aut"]) && !empty($data["prenom_aut"])) {
+																																																													echo $data["prenom_aut"];
 																																																												} else {
 																																																													echo '';
 																																																												} ?>">
