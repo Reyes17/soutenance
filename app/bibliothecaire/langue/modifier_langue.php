@@ -2,7 +2,8 @@
 if (empty($_SESSION["utilisateur_connecter_bibliothecaire"])) {
 	header('location:' . PROJECT_DIR . 'bibliothecaire/connexion');
 } 
-	include("header.php");
+$title = 'Modifier langue';
+include './app/commun/header.php';
 ?>
 
 	<!-- =======================================================
@@ -55,5 +56,5 @@ if (empty($_SESSION["utilisateur_connecter_bibliothecaire"])) {
 		</main>
 	</section>
 <?php
-	include("footer.php");
+include './app/commun/footer.php';
 ?>

@@ -2,8 +2,9 @@
 if (empty($_SESSION["utilisateur_connecter_bibliothecaire"])) {
 	header('location:' . PROJECT_DIR . 'bibliothecaire/connexion');
 } 
+$title = 'Aide';
 
-	include("header.php");
+include './app/commun/header.php';
 	?>
 
 	<main id="main" class="main">
@@ -15,6 +16,6 @@ if (empty($_SESSION["utilisateur_connecter_bibliothecaire"])) {
 		</p>
 	</main><!-- End #main -->
 	<?php
-	include("footer.php");
+	include 'app/commun/footer.php';
 
 ?>  

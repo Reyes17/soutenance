@@ -2,7 +2,8 @@
 if (empty($_SESSION["utilisateur_connecter_bibliothecaire"])) {
 	header('location:' . PROJECT_DIR . 'bibliothecaire/connexion');
 }
-	include("header.php");
+$title = 'Dashbord';
+include './app/commun/header.php';
 ?>
 
 	<section>
@@ -12,7 +13,7 @@ if (empty($_SESSION["utilisateur_connecter_bibliothecaire"])) {
 				<h1>Tableau de bord</h1>
 				<nav>
 					<ol class="breadcrumb">
-						<li class="breadcrumb-item"><a href="dashboard">Home</a></li>
+						<li class="breadcrumb-item"><a href="<?= PROJECT_DIR; ?>bibliothecaire/dashboard/index">Home</a></li>
 						<li class="breadcrumb-item active">Tableau de bord</li>
 					</ol>
 				</nav>
@@ -51,7 +52,7 @@ if (empty($_SESSION["utilisateur_connecter_bibliothecaire"])) {
 									</div>
 									<div class="ps-3">
 										<h6>145</h6>
-										<button type="button" class="btn btn-outline-primary"><a href="<?= PROJECT_DIR; ?>bibliothecaire/dossier/liste_des_langues"> Voir
+										<button type="button" class="btn btn-outline-primary"><a href="<?= PROJECT_DIR; ?>bibliothecaire/langue/liste_des_langues"> Voir
 												plus</a></button>
 									</div>
 								</div>
@@ -70,7 +71,7 @@ if (empty($_SESSION["utilisateur_connecter_bibliothecaire"])) {
 									</div>
 									<div class="ps-3">
 										<h6>145</h6>
-										<button type="button" class="btn btn-outline-primary"><a href="<?= PROJECT_DIR; ?>bibliothecaire/dossier/liste_des_domaines">
+										<button type="button" class="btn btn-outline-primary"><a href="<?= PROJECT_DIR; ?>bibliothecaire/domaine/liste_des_domaines">
 												Voir plus</a></button>
 									</div>
 								</div>
@@ -89,7 +90,7 @@ if (empty($_SESSION["utilisateur_connecter_bibliothecaire"])) {
 									</div>
 									<div class="ps-3">
 										<h6>145</h6>
-										<button type="button" class="btn btn-outline-primary"><a href="<?= PROJECT_DIR; ?>bibliothecaire/dossier/liste_des_membres"> Voir
+										<button type="button" class="btn btn-outline-primary"><a href="<?= PROJECT_DIR; ?>bibliothecaire/membre/liste_des_membres"> Voir
 												plus</a></button>
 									</div>
 								</div>
@@ -108,7 +109,7 @@ if (empty($_SESSION["utilisateur_connecter_bibliothecaire"])) {
 									</div>
 									<div class="ps-3">
 										<h6>145</h6>
-										<button type="button" class="btn btn-outline-primary"><a href="<?= PROJECT_DIR; ?>bibliothecaire/dossier/liste_des_membres_indelicats">
+										<button type="button" class="btn btn-outline-primary"><a href="<?= PROJECT_DIR; ?>bibliothecaire/membre_indelicat/liste_des_membres_indelicats">
 												Voir plus</a></button>
 									</div>
 								</div>
@@ -127,7 +128,7 @@ if (empty($_SESSION["utilisateur_connecter_bibliothecaire"])) {
 									</div>
 									<div class="ps-3">
 										<h6>145</h6>
-										<button type="button" class="btn btn-outline-primary"><a href="<?= PROJECT_DIR; ?>bibliothecaire/dossier/liste_des_emprunts">
+										<button type="button" class="btn btn-outline-primary"><a href="<?= PROJECT_DIR; ?>bibliothecaire/emprunt/liste_des_emprunts">
 												Voir plus</a></button>
 									</div>
 								</div>
@@ -146,7 +147,7 @@ if (empty($_SESSION["utilisateur_connecter_bibliothecaire"])) {
 									</div>
 									<div class="ps-3">
 										<h6>145</h6>
-										<button type="button" class="btn btn-outline-primary"><a href="<?= PROJECT_DIR; ?>bibliothecaire/dossier/liste_des_ouvrages">
+										<button type="button" class="btn btn-outline-primary"><a href="<?= PROJECT_DIR; ?>bibliothecaire/ouvrage/liste_des_ouvrages">
 												Voir plus</a></button>
 									</div>
 								</div>
@@ -165,7 +166,7 @@ if (empty($_SESSION["utilisateur_connecter_bibliothecaire"])) {
 									</div>
 									<div class="ps-3">
 										<h6>145</h6>
-										<button type="button" class="btn btn-outline-primary"><a href="<?= PROJECT_DIR; ?>bibliothecaire/dossier/liste_des_domaines_ouvrages">
+										<button type="button" class="btn btn-outline-primary"><a href="<?= PROJECT_DIR; ?>bibliothecaire/domaine_ouvrage/liste_des_domaines_ouvrages">
 												Voir plus</a></button>
 									</div>
 								</div>
@@ -184,7 +185,7 @@ if (empty($_SESSION["utilisateur_connecter_bibliothecaire"])) {
 									</div>
 									<div class="ps-3">
 										<h6>145</h6>
-										<button type="button" class="btn btn-outline-primary"><a href="<?= PROJECT_DIR; ?>bibliothecaire/dossier/liste_des_dates_parutions">
+										<button type="button" class="btn btn-outline-primary"><a href="<?= PROJECT_DIR; ?>bibliothecaire/date_parution/liste_des_dates_parutions">
 												Voir plus</a></button>
 									</div>
 								</div>
@@ -203,7 +204,7 @@ if (empty($_SESSION["utilisateur_connecter_bibliothecaire"])) {
 									</div>
 									<div class="ps-3">
 										<h6>145</h6>
-										<button type="button" class="btn btn-outline-primary"><a href="<?= PROJECT_DIR; ?>bibliothecaire/dossier/liste_des_auteurs_secondaires">
+										<button type="button" class="btn btn-outline-primary"><a href="<?= PROJECT_DIR; ?>bibliothecaire/auteur_secondaire/liste_des_auteurs_secondaires">
 												Voir plus</a></button>
 									</div>
 								</div>
@@ -214,4 +215,5 @@ if (empty($_SESSION["utilisateur_connecter_bibliothecaire"])) {
 	</section>
 
 <?php
-	include("footer.php");
+include './app/commun/footer.php';
+?>

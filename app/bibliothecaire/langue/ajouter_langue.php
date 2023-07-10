@@ -1,8 +1,9 @@
 <?php
 if (empty($_SESSION["utilisateur_connecter_bibliothecaire"])) {
 	header('location:' . PROJECT_DIR . 'bibliothecaire/connexion');
-} 
-	include("header.php");
+}
+$title = 'Ajouter une langue'; 
+include './app/commun/header.php';
 ?>
 
 	<section class="section dashboard">

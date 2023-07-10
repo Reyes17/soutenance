@@ -2,8 +2,8 @@
 if (empty($_SESSION["utilisateur_connecter_bibliothecaire"])) {
 	header('location:' . PROJECT_DIR . 'bibliothecaire/connexion');
 }
-
-include("haut.php");
+$title = 'Profil';
+include './app/commun/header.php';
 if (!empty($_SESSION['utilisateur_connecter_bibliothecaire']['0']['id']) && !empty($_SESSION['utilisateur_connecter_bibliothecaire']['0']['id'])) {
 }
 
@@ -15,7 +15,7 @@ if (!empty($_SESSION['utilisateur_connecter_bibliothecaire']['0']['id']) && !emp
 		<h1>Profil</h1>
 		<nav>
 			<ol class="breadcrumb">
-				<li class="breadcrumb-item"><a href="acceuil">Home</a></li>
+				<li class="breadcrumb-item"><a href="../dashbord">Home</a></li>
 				<li class="breadcrumb-item active">Profil</li>
 			</ol>
 		</nav>
@@ -407,5 +407,5 @@ if (!empty($_SESSION['utilisateur_connecter_bibliothecaire']['0']['id']) && !emp
 
 <?php
 unset($_SESSION['desactivation-errors'], $_SESSION['passe'], $_SESSION['success'], $_SESSION['changement']);
-include('bas.php');
+include './app/commun/footer.php';
 ?>

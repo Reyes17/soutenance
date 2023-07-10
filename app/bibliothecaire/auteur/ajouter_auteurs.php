@@ -2,7 +2,8 @@
 if (empty($_SESSION["utilisateur_connecter_bibliothecaire"])) {
 	header('location:' . PROJECT_DIR . 'bibliothecaire/connexion');
 }
-include("header.php");
+$title = 'ajouter un auteur';
+include './app/commun/header.php';
 ?>
 
 <section class="section dashboard">
@@ -45,7 +46,7 @@ include("header.php");
 			</div>
 
 			<div class="col-md-6 text-end cefp-list-add-btn">
-				<a href="auteur/liste_des_auteurs" class="btn btn-primary">Liste des auteurs</a>
+				<a href="<?= PROJECT_DIR; ?>bibliothecaire/auteur/liste_des_auteurs" class="btn btn-primary">Liste des auteurs</a>
 			</div>
 
 		</div>
@@ -54,7 +55,7 @@ include("header.php");
 
 			<div class="col-md-12 col-lg-8 offset-lg-2 bd-example">
 
-				<form action="<?= PROJECT_DIR; ?>bibliothecaire/dossier/auteur/ajout_taitement" method="post">
+				<form action="<?= PROJECT_DIR; ?>bibliothecaire/auteur/ajout_traitement" method="post">
 
 					<div class="mb-3 row">
 						<label for="nom-auteur" class="col-sm-2 col-form-label">Nom:</label>
@@ -109,5 +110,5 @@ include("header.php");
 
 <?php
 unset($_SESSION['ajouter-auteur-erreurs'], $_SESSION['ajout-errors'], $_SESSION['ajout-success'], $_SESSION['auteur-existe'] );
-include("footer.php");
+include './app/commun/footer.php';
 ?>

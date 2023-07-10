@@ -2,7 +2,8 @@
 if (empty($_SESSION["utilisateur_connecter_bibliothecaire"])) {
 	header('location:' . PROJECT_DIR . 'bibliothecaire/connexion');
 } 
-	include("header.php");
+$title = 'Aujouter un membre indélicat';
+include './app/commun/header.php';
 ?>
 	<section class="section dashboard">
 		<main id="main" class="main">
@@ -11,5 +12,5 @@ if (empty($_SESSION["utilisateur_connecter_bibliothecaire"])) {
 	</section>
 
 <?php
-	include("footer.php");
+include './app/commun/footer.php';
 ?>

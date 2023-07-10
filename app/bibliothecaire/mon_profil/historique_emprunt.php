@@ -3,7 +3,8 @@
 if (empty($_SESSION["utilisateur_connecter_bibliothecaire"])) {
 	header('location:' . PROJECT_DIR . 'bibliothecaire/connexion');
 }
-include("haut.php");
+$title = 'historique des emprunts';
+include './app/commun/header.php';
 ?>
 
 <<main id="main">
@@ -120,5 +121,5 @@ include("haut.php");
 	<!-- /.container-fluid -->
 </main>
 	<?php
-	include('bas.php')
+include './app/commun/footer.php';
 	?>

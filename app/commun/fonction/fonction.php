@@ -584,10 +584,10 @@ function mettre_a_jour_informations_utilisateur(int $id, string $nom = null, str
  * @return array
  */
 
- function recuperer_mettre_a_jour_informations_utilisateur($id): array
+ function recuperer_mettre_a_jour_informations_utilisateur($id)
  {
  
-	 $recup = [];
+	 $data = [];
  
 	 $db = connect_db();
  
@@ -600,11 +600,13 @@ function mettre_a_jour_informations_utilisateur(int $id, string $nom = null, str
 		 ));
  
 		 if ($resultat) {
-			 $recup = $request_recupere->fetch(PDO::FETCH_ASSOC);
+			$data = [];
+
+			 $data = $request_recupere->fetch(PDO::FETCH_ASSOC);
 		 }
 	 }
  
-	 return $recup;
+	 return $data;
  }
 
 /**
@@ -750,43 +752,38 @@ function mise_a_jour_avatar(int $id, string $avatar): bool
 
 
 /**
- * Cett fonction permet de d'ajouter un auteur a la base de données.
+ * Cette fonction permet d'ajouter un auteur à la base de données.
  *
- * @param string $nom_auteur Le nom de l'auteur.
+ * @param string $nom_aut Le nom de l'auteur.
+ * @param string $prenom_aut Le prénom de l'auteur.
  *
- * @return bool $ajout_auteur Le resultat de l'ajout de l'auteur.
+ * @return bool $ajout_auteur Le résultat de l'ajout de l'auteur.
  */
 function ajout_auteur(string $nom_aut, string $prenom_aut): bool
 {
-
     $ajout_auteur = false;
 
-
-    if (isset($nom_aut) && !empty($nom_aut) && isset($prenom_aut) && !empty($prenom_aut))   {
-
+    if (!empty($nom_aut) && !empty($prenom_aut)) {
         $db = connect_db();
 
         // Ecriture de la requête
-        $requette = 'INSERT INTO auteur (nom_aut, prenom_aut) VALUES (:nom_aut, :prenom_aut)';
+        $requete = 'INSERT INTO auteur (nom_aut, prenom_aut) VALUES (:nom_aut, :prenom_aut)';
 
         // Préparation
-        $inserer_auteur = $db->prepare($requette);
+        $inserer_auteur = $db->prepare($requete);
 
-        // Exécution ! La recette est maintenant en base de données
+        // Exécution ! L'auteur est maintenant en base de données
         $resultat = $inserer_auteur->execute([
             'nom_aut' => $nom_aut,
-			'prenom_aut' => $prenom_aut
+            'prenom_aut' => $prenom_aut
         ]);
-
 
         if ($resultat) {
             $ajout_auteur = true;
         }
-
     }
 
     return $ajout_auteur;
-
 }
 
 /**
@@ -823,111 +820,106 @@ function get_liste_auteurs(): array
 
 
 /**
- * Cett fonction permet de modifier un auteur exitant dans la base de données via son numéro d'auteur.
+ * Modifie un auteur dans la base de données.
  *
- * @param int $num_auteur Le numéro de l'auteur.
- * @param string $nom_auteur Le nom de l'auteur.
- *
- * @return bool $modifier_auteur Le resultat de l'ajout de l'auteur.
+ * @param int $num_aut Le numéro de l'auteur à modifier.
+ * @param string $nom_aut Le nouveau nom de l'auteur.
+ * @param string $prenom_aut Le nouveau prénom de l'auteur.
+ * @return bool True si la modification a réussi, False sinon.
  */
 function modifier_auteur(int $num_aut, string $nom_aut, string $prenom_aut): bool
 {
-
-    $modifier_auteur = false;
-	$date = date("Y-m-d H:i:s");
-
-	if (isset($nom_aut) && !empty($nom_aut) && isset($prenom_aut) && !empty($prenom_aut)) {
-
-        $db = connect_db();
-
-        // Ecriture de la requête
-        $requette = 'UPDATE auteur SET nom_aut = :nom_aut, prenom_aut = :prenom_aut, maj_le = :maj_le WHERE num_aut = :num_aut;';
-
-        // Préparation
-        $modifier_auteur = $db->prepare($requette);
-
-        // Exécution ! La recette est maintenant en base de données
-        $resultat = $modifier_auteur->execute([
-            'num_aut' => $num_aut,
-			'nom_aut' => $nom_aut,
-			'prenom_aut' => $prenom_aut,
-            'maj_le' => $date
-        ]);
-
-        if ($resultat) {
-
-            $modifier_auteur = true;
-
-        }
-
-    }
-
-    return $modifier_auteur;
-
-}
-
-
-function check_if_auteur_exist(string $nom_aut, string $prenom_aut): bool
-{
-    $auteur_existe = false;
-
+    $modifier = false;
+    $date = date("Y-m-d H:i:s");
     $db = connect_db();
-
-    // Écriture de la requête
-    $requette = 'SELECT COUNT(*) AS nbr_auteur FROM auteur WHERE nom_aut = :nom_aut AND prenom_aut = :prenom_aut AND est_supprimer = :est_supprimer';
-
-    // Préparation
-    $verifier_auteur = $db->prepare($requette);
-
-    // Exécution
-    $verifier_auteur->execute([
+    $req_prepare = $db->prepare('UPDATE auteur SET nom_aut = :nom_aut, prenom_aut = :prenom_aut, maj_le = :maj_le WHERE num_aut = :num_aut');
+    $req_exec = $req_prepare->execute([
         'nom_aut' => $nom_aut,
         'prenom_aut' => $prenom_aut,
-        'est_supprimer' => 0
+        'maj_le' => $date,
+        'num_aut' => $num_aut
     ]);
 
-    $nbr_auteur = $verifier_auteur->fetch(PDO::FETCH_ASSOC)["nbr_auteur"];
-    $auteur_existe = ($nbr_auteur > 0);
-
-    return $auteur_existe;
+    if ($req_exec) {
+        $modifier = true;
+    }
+    return $modifier;
 }
+
+
+/**
+ * Vérifie si un auteur existe dans la base de données.
+ * @param string $nom Nom de l'auteur.
+ * @param string $prenom Prénom de l'auteur.
+ * @return string|bool Message d'erreur si l'auteur existe, False sinon.
+ */
+function check_if_auteur_exist(string $nom, string $prenom)
+{
+    $db = connect_db();
+    $req = $db->prepare('SELECT num_aut FROM auteur WHERE nom_aut = ? AND prenom_aut = ?');
+    $req_exec = $req->execute([$nom, $prenom]);
+
+    if ($req_exec) {
+        $auteur = $req->fetch();
+        if ($auteur !== false) {
+            return 'Cet auteur existe déjà';
+        }
+    }
+
+    return false;
+}
+
+
 
 
 /**
  * Cett fonction permet de supprimer  un auteur exitant dans la base de données via son numéro d'auteur.
  *
- * @param string $nom_aut Le nom de l'auteur.
- * @param string $prenom_aut Le prenom de l'auteur.
- *
- * @return bool $modifier_auteur Le resultat de l'ajout de l'auteur.
+ * @param int $num_aut
+ * @return bool .
  */
-function delete_auteur(string $nom_aut, string $prenom_aut): bool
-{
-	$auteur_est_supprimer = false;
-    
-
+function supprimer_auteur($num_aut) {
     // Vérifier si l'auteur existe
-    if (isset($nom_aut) && !empty($nom_aut) && isset($prenom_aut) && !empty($prenom_aut)) {
-		$db = connect_db();
-        // Écriture de la requête
-        $requete = 'DELETE FROM auteur WHERE nom_aut = :nom_aut AND prenom_aut = :prenom_aut';
+    $auteur = get_auteur_by_id($num_aut);
 
-        // Préparation
-        $supprimer_auteur = $db->prepare($requete);
+    if (empty($auteur)) {
+        // L'auteur n'existe pas, retourner false ou gérer l'erreur selon vos besoins
+        return false;
+    }
 
-        // Exécution
-        $resultat = $supprimer_auteur->execute([
-            'nom_aut' => $nom_aut,
-            'prenom_aut' => $prenom_aut
-        ]);
+    // Supprimer l'auteur de la base de données
+    $db = connect_db();
+    $sql = "DELETE FROM auteur WHERE num_aut = :num_aut";
+    $stmt = $db->prepare($sql);
+    $stmt->bindValue(':num_aut', $num_aut, PDO::PARAM_INT);
+    $result = $stmt->execute();
 
-        if ($resultat) {
-            $auteur_est_supprimer = true;
+    if ($result) {
+        // Suppression réussie
+        return true;
+    } else {
+        // Suppression échouée, gérer l'erreur selon vos besoins
+        return false;
     }
 }
-return $auteur_est_supprimer;
-}
+
 
    
+function get_auteur_by_id(int $num_aut) {
+    $db = connect_db();
 
+    // Requête pour récupérer l'auteur par son num_aut
+    $requete = 'SELECT * FROM auteur WHERE num_aut = :num_aut';
+
+    // Préparation de la requête
+    $query = $db->prepare($requete);
+
+    // Exécution de la requête en liant le paramètre :num_aut
+    $query->execute(['num_aut' => $num_aut]);
+
+    // Récupération du résultat de la requête
+    $auteur = $query->fetch(PDO::FETCH_ASSOC);
+
+    return $auteur;
+}
 

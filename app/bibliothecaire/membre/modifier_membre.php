@@ -2,7 +2,8 @@
 if (empty($_SESSION["utilisateur_connecter_bibliothecaire"])) {
 	header('location:' . PROJECT_DIR . 'bibliothecaire/connexion');
 } 
-	include("header.php");
+$title = 'Modifier membre';
+include './app/commun/header.php';
 ?>
 
 	<section class="section dashboard">
@@ -59,5 +60,5 @@ if (empty($_SESSION["utilisateur_connecter_bibliothecaire"])) {
 	</section>
 
 <?php
-	include("footer.php");
+include './app/commun/footer.php';
 ?>

@@ -1,13 +1,10 @@
 <?php
 if (!empty($_SESSION["utilisateur_connecter_bibliothecaire"])) {
-	header('location:' . PROJECT_DIR . 'bibliothecaire/dossier/dashboard');
+	header('location:' . PROJECT_DIR . 'bibliothecaire/dashboard');
 }
+$title = 'connexion';
 include 'app/commun/index.php';
 
-
-if (isset($_COOKIE['data_users']) and !empty($_COOKIE['data_users'])) {
-	$users_utilisateur = json_decode($_COOKIE['data_users']);
-}
 
 ?>
 <div class="container">

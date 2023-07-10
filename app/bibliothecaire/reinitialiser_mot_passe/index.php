@@ -2,7 +2,7 @@
 if (!empty($_SESSION["utilisateur_connecter_bibliothecaire"])) {
 	header('location:' . PROJECT_DIR . 'bibliothecaire/dossier/dashboard');
 }
-
+$title = 'Réinitialiser mot de passe';
 include './app/commun/index.php';
 ?>
 <main>

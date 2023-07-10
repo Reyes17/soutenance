@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-	<title>Tableau de bord</title>
+	<title><?= $title?></title>
 	<meta content="" name="description">
 	<meta content="" name="keywords">
 
@@ -108,7 +108,7 @@
 						</li>
 
 						<li>
-							<a class="dropdown-item d-flex align-items-center" href="<?= PROJECT_DIR; ?>bibliothecaire/dossier/aide">
+							<a class="dropdown-item d-flex align-items-center" href="<?= PROJECT_DIR; ?>bibliothecaire/aide/index">
 								<i class="bi bi-question-circle"></i>
 								<span>Besoin d'aide?</span>
 							</a>
@@ -138,7 +138,7 @@
 		<ul class="sidebar-nav" id="sidebar-nav">
 
 			<li class="nav-item">
-				<a class="nav-link collapsed" href="dashboard">
+				<a class="nav-link collapsed" href="<?= PROJECT_DIR; ?>bibliothecaire/dashboard/index">
 					<i class="bi bi-grid"></i>
 					<span>Tableau de bord</span>
 				</a>
@@ -150,12 +150,12 @@
 				</a>
 				<ul id="auteurs-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
 					<li>
-						<a href="<?= PROJECT_DIR; ?>bibliothecaire/dossier/auteur/liste_des_auteurs">
+						<a href="<?= PROJECT_DIR; ?>bibliothecaire/auteur/liste_des_auteurs">
 							<i class="bi bi-circle"></i><span>Liste des auteurs</span>
 						</a>
 					</li>
 					<li>
-						<a href="<?= PROJECT_DIR; ?>bibliothecaire/dossier/auteur/ajouter_auteurs">
+						<a href="<?= PROJECT_DIR; ?>bibliothecaire/auteur/ajouter_auteurs">
 							<i class="bi bi-circle"></i><span>Ajouter un auteur</span>
 						</a>
 					</li>
@@ -170,12 +170,12 @@
 				</a>
 				<ul id="ouvrages-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
 					<li>
-						<a href="<?= PROJECT_DIR; ?>bibliothecaire/dossier/liste_des_ouvrages">
+						<a href="<?= PROJECT_DIR; ?>bibliothecaire/ouvrage/liste_des_ouvrages">
 							<i class="bi bi-circle"></i><span>Liste des ouvrages</span>
 						</a>
 					</li>
 					<li>
-						<a href="<?= PROJECT_DIR; ?>bibliothecaire/dossier/ajouter_ouvrage">
+						<a href="<?= PROJECT_DIR; ?>bibliothecaire/ouvrage/ajouter_ouvrage">
 							<i class="bi bi-circle"></i><span>Ajouter un ouvrage </span>
 						</a>
 					</li>
@@ -189,12 +189,12 @@
 				</a>
 				<ul id="langues-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
 					<li>
-						<a href="<?= PROJECT_DIR; ?>bibliothecaire/dossier/liste_des_langues">
+						<a href="<?= PROJECT_DIR; ?>bibliothecaire/langue/liste_des_langues">
 							<i class="bi bi-circle"></i><span>Liste des langues</span>
 						</a>
 					</li>
 					<li>
-						<a href="<?= PROJECT_DIR; ?>bibliothecaire/dossier/ajouter_langue">
+						<a href="<?= PROJECT_DIR; ?>bibliothecaire/langue/ajouter_langue">
 							<i class="bi bi-circle"></i><span>Ajouter une langue</span>
 						</a>
 					</li>
@@ -208,12 +208,12 @@
 				</a>
 				<ul id="emprunts-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
 					<li>
-						<a href="<?= PROJECT_DIR; ?>bibliothecaire/dossier/liste_des_emprunts">
+						<a href="<?= PROJECT_DIR; ?>bibliothecaire/emprunt/liste_des_emprunts">
 							<i class="bi bi-circle"></i><span>Liste des emprunts</span>
 						</a>
 					</li>
 					<li>
-						<a href="<?= PROJECT_DIR; ?>bibliothecaire/dossier/ajouter_emprunt">
+						<a href="<?= PROJECT_DIR; ?>bibliothecaire/emprunt/ajouter_emprunt">
 							<i class="bi bi-circle"></i><span>Ajouter un emprunt</span>
 						</a>
 					</li>
@@ -226,12 +226,12 @@
 				</a>
 				<ul id="membres-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
 					<li>
-						<a href="<?= PROJECT_DIR; ?>bibliothecaire/dossier/liste_des_membres">
+						<a href="<?= PROJECT_DIR; ?>bibliothecaire/membre/liste_des_membres">
 							<i class="bi bi-circle"></i><span>Liste des membres</span>
 						</a>
 					</li>
 					<li>
-						<a href="<?= PROJECT_DIR; ?>bibliothecaire/dossier/ajouter_membre">
+						<a href="<?= PROJECT_DIR; ?>bibliothecaire/membre/ajouter_membre">
 							<i class="bi bi-circle"></i><span>Ajouter un membre</span>
 						</a>
 					</li>
@@ -244,12 +244,12 @@
 				</a>
 				<ul id="membres_indelicats-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
 					<li>
-						<a href="<?= PROJECT_DIR; ?>bibliothecaire/dossier/liste_des_membres_indelicats">
+						<a href="<?= PROJECT_DIR; ?>bibliothecaire/membre_indelicat/liste_des_membres_indelicats">
 							<i class="bi bi-circle"></i><span>Liste des membres indélicats</span>
 						</a>
 					</li>
 					<li>
-						<a href="<?= PROJECT_DIR; ?>bibliothecaire/dossier/ajouter_membre_indelicat">
+						<a href="<?= PROJECT_DIR; ?>bibliothecaire/membre_indelicat/ajouter_membre_indelicat">
 							<i class="bi bi-circle"></i><span>Ajouter un membre indélicat</span>
 						</a>
 					</li>
@@ -262,12 +262,12 @@
 				</a>
 				<ul id="domaines-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
 					<li>
-						<a href="<?= PROJECT_DIR; ?>bibliothecaire/dossier/liste_des_domaines">
+						<a href="<?= PROJECT_DIR; ?>bibliothecaire/domaine/liste_des_domaines">
 							<i class="bi bi-circle"></i><span>Liste des domaines</span>
 						</a>
 					</li>
 					<li>
-						<a href="<?= PROJECT_DIR; ?>bibliothecaire/dossier/ajouter_domaine">
+						<a href="<?= PROJECT_DIR; ?>bibliothecaire/domaine/ajouter_domaine">
 							<i class="bi bi-circle"></i><span>Ajouter un domaine</span>
 						</a>
 					</li>
@@ -280,12 +280,12 @@
 				</a>
 				<ul id="domaines_ouvrages-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
 					<li>
-						<a href="<?= PROJECT_DIR; ?>bibliothecaire/dossier/liste_des_domaines_ouvrages">
+						<a href="<?= PROJECT_DIR; ?>bibliothecaire/domaine_ouvrage/liste_des_domaines_ouvrages">
 							<i class="bi bi-circle"></i><span>Liste des domaines ouvrages</span>
 						</a>
 					</li>
 					<li>
-						<a href="<?= PROJECT_DIR; ?>bibliothecaire/dossier/ajouter_domaine_ouvrage">
+						<a href="<?= PROJECT_DIR; ?>bibliothecaire/domaine_ouvrage/ajouter_domaine_ouvrage">
 							<i class="bi bi-circle"></i><span>Ajouter un domaine ouvrage</span>
 						</a>
 					</li>
@@ -298,12 +298,12 @@
 				</a>
 				<ul id="date_parution-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
 					<li>
-						<a href="<?= PROJECT_DIR; ?>bibliothecaire/dossier/liste_des_dates_parutions">
+						<a href="<?= PROJECT_DIR; ?>bibliothecaire/date_parution/liste_des_dates_parutions">
 							<i class="bi bi-circle"></i><span>Liste des dates parutions</span>
 						</a>
 					</li>
 					<li>
-						<a href="<?= PROJECT_DIR; ?>bibliothecaire/dossier/ajouter_date_parution">
+						<a href="<?= PROJECT_DIR; ?>bibliothecaire/date_parution/ajouter_date_parution">
 							<i class="bi bi-circle"></i><span>Ajouter une date parution</span>
 						</a>
 					</li>
@@ -316,12 +316,12 @@
 				</a>
 				<ul id="auteurs_secondaires-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
 					<li>
-						<a href="<?= PROJECT_DIR; ?>bibliothecaire/dossier/liste_des_auteurs_secondaires">
+						<a href="<?= PROJECT_DIR; ?>bibliothecaire/auteur_secondaire/liste_des_auteurs_secondaires">
 							<i class="bi bi-circle"></i><span>Liste des auteurs secondaire</span>
 						</a>
 					</li>
 					<li>
-						<a href="<?= PROJECT_DIR; ?>bibliothecaire/dossier/ajouter_auteur_secondaire">
+						<a href="<?= PROJECT_DIR; ?>bibliothecaire/auteur_secondaire/ajouter_auteur_secondaire">
 							<i class="bi bi-circle"></i><span>Ajouter un auteur secondaire </span>
 						</a>
 					</li>
@@ -331,7 +331,7 @@
 			<li class="nav-heading">Pages</li>
 
 			<li class="nav-item">
-				<a class="nav-link collapsed" href="<?= PROJECT_DIR; ?>bibliothecaire/dossier/contact">
+				<a class="nav-link collapsed" href="<?= PROJECT_DIR; ?>bibliothecaire/contact/index">
 					<i class="bi bi-envelope"></i>
 					<span>Contact</span>
 				</a>

@@ -10,6 +10,7 @@ if (isset($_SESSION['inscription-erreurs']) && !empty($_SESSION['inscription-err
 if (isset($_SESSION['donnees-utilisateur']) && !empty($_SESSION['donnees-utilisateur'])) {
 	$data = $_SESSION['donnees-utilisateur'];
 }
+$title ='Inscription';
 include 'app/commun/index.php';
 
 ?>

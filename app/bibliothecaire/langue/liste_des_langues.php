@@ -1,8 +1,9 @@
 <?php
 if (empty($_SESSION["utilisateur_connecter_bibliothecaire"])) {
 	header('location:' . PROJECT_DIR . 'bibliothecaire/connexion');
-} 
-	include("header.php");
+}
+$title = 'Listes des langues'; 
+include './app/commun/header.php';
 ?>
 
 	<section class="section dashboard">
@@ -94,5 +95,5 @@ if (empty($_SESSION["utilisateur_connecter_bibliothecaire"])) {
 	</div>
 
 <?php
-	include("footer.php");
+include './app/commun/footer.php';
 ?>
