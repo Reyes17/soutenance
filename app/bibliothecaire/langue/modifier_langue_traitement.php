@@ -10,10 +10,10 @@ if (empty($errors)) {
 	$cod_lang = $_SESSION['cod_lang'];
 	$langue = trim(htmlentities($_POST['langue']));
 
-	// Mettez à jour les informations de l'auteur dans la base de données en utilisant votre fonction appropriée
+	// Mettez à jour les informations de la langue dans la base de données en utilisant votre fonction appropriée
 	modifier_langue($cod_lang, $langue);
 
-	// Redirigez vers la page de liste des auteurs avec un message de succès global
+	// Redirigez vers la page de liste des langues avec un message de succès global
     $_SESSION['modification_succès'] = 'Modification de la langue effectuée avec succès';
 	header('location: ' . PROJECT_DIR . 'bibliothecaire/langue/liste_des_langues');
 	exit();
