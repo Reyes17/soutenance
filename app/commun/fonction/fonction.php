@@ -1096,3 +1096,185 @@ function supprimer_langue($cod_lang) {
         return false;
     }
 }
+
+
+
+/**
+ * Cett fonction permet de d'ajouter un domaine à la base de données.
+ *
+ * @param string $domaine Le nom du domaine .
+ *
+ * @return bool $ajout_domaine Le resultat de l'ajout du domaine.
+ */
+function ajout_domaine(string $domaine): bool
+{
+
+    $ajout_domaine = false;
+
+    if (isset($domaine) && !empty($domaine)) {
+
+        $db = connect_db();
+
+        // Ecriture de la requête
+        $requette = 'INSERT INTO domaine (lib_dom) VALUES (:domaine);';
+
+        // Préparation
+        $inserer_domaine = $db->prepare($requette);
+
+        // Exécution ! La recette est maintenant en base de données
+        $resultat = $inserer_domaine->execute([
+            'domaine' => $domaine
+        ]);
+
+
+        if ($resultat) {
+            $ajout_domaine = true;
+        }
+
+    }
+
+    return $ajout_domaine;
+
+}
+
+
+/** 
+*Cette fonction permet de vérifier si un domaine existe dans la base de données
+ * @param string $lib_dom libellé de la domaine.
+ * @return bool 
+     
+ */
+function check_if_domaine_exist(string $domaine)
+{
+    $users=[];
+    $libdom = false;
+    $db = connect_db();
+    $req = $db->prepare('SELECT cod_dom from domaine WHERE lib_dom=?');
+    $req_exec=$req->execute([$domaine]);
+    if($req_exec){
+       
+        $users = $req->fetch();
+        if(!empty($users) && is_array($users)){
+            $libdom=true;
+        }
+    }
+    return $libdom;
+    }
+
+
+	
+/**
+ * Cette fonction permet de récupérer la liste des domaines de la base de donnée.
+ *
+ * @return array $liste_domaines La liste des domaines.
+ */
+function get_liste_domaine(): array
+{
+
+    $liste_domaines = array();
+
+    $db = connect_db();
+
+    // Ecriture de la requête
+    $requette = 'SELECT * FROM domaine';
+
+    // Préparation
+    $verifier_liste_domaines = $db->prepare($requette);
+
+    // Exécution ! La recette est maintenant en base de données
+    $resultat = $verifier_liste_domaines->execute();
+
+    if ($resultat) {
+
+        $liste_domaines = $verifier_liste_domaines->fetchAll(PDO::FETCH_ASSOC);
+
+    }
+
+
+    return $liste_domaines;
+
+}
+
+
+/**
+ * Modifie un domaine dans la base de données.
+ *
+ * @param int $cod_dom Le code de la langue à modifier.
+ * @param string $domaine La nouvelle langue.
+ 
+ * @return bool True si la modification a réussi, False sinon.
+ */
+function modifier_domaine(int $cod_dom, string $domaine): bool
+{
+    $modifier = false;
+    $date = date("Y-m-d H:i:s");
+    $db = connect_db();
+    $req_prepare = $db->prepare('UPDATE domaine SET lib_dom = :lib_dom, maj_le = :maj_le WHERE cod_dom = :cod_dom');
+    $req_exec = $req_prepare->execute([
+        'cod_dom' => $cod_dom,
+		'lib_dom' => $domaine,        
+        'maj_le' => $date
+
+    ]);
+
+    if ($req_exec) {
+        $modifier = true;
+    }
+    return $modifier;
+}
+
+
+/**
+ * Cett fonction permet de récupérer un domaine exitant dans la base de données via son code domaine.
+ *
+ * @param int $cod_dom
+ * @return  .
+ */   
+function get_domaine_by_id(int $cod_dom) {
+    $db = connect_db();
+    // Requête pour récupérer le domaine par son cod_dom
+    $requete = 'SELECT * FROM domaine WHERE cod_dom = :cod_dom';
+
+    // Préparation de la requête
+    $query = $db->prepare($requete);
+
+    // Exécution de la requête en liant le paramètre :num_aut
+    $query->execute(['cod_dom' => $cod_dom]);
+
+    // Récupération du résultat de la requête
+    $domaine = $query->fetch(PDO::FETCH_ASSOC);
+
+    return $domaine;
+}
+
+
+/**
+ * Cett fonction permet de supprimer  un domaine exitant dans la base de données via son code domaine.
+ *
+ * @param int $cod_dom
+ * @return bool .
+ */
+function supprimer_domaine($cod_dom) {
+    // Vérifier si le domaine existe
+    $domaine = get_domaine_by_id($cod_dom);
+
+    if (empty($domaine)) {
+        // Le domaine n'existe pas, retourner false
+        return false;
+    }
+
+    // Supprimer le domaine de la base de données
+    $db = connect_db();
+    $sql = "DELETE FROM domaine WHERE cod_dom = :cod_dom";
+    $stmt = $db->prepare($sql);
+    $stmt->bindValue(':cod_dom', $cod_dom, PDO::PARAM_INT);
+    $result = $stmt->execute();
+
+    if ($result) {
+        // Suppression réussie
+        return true;
+    } else {
+        // Suppression échouée
+        return false;
+    }
+}

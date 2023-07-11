@@ -30,7 +30,7 @@ $liste_auteur = get_liste_auteurs();
 					<?= $_SESSION['suppression_succes'] ?>
 				</div>
 			<?php
-			unset($_SESSION['suppression_succes']);
+				unset($_SESSION['suppression_succes']);
 			}
 			?>
 			<!---message d'erreur global lors de la suppression de l'auteur---->
@@ -41,7 +41,7 @@ $liste_auteur = get_liste_auteurs();
 					<?= $_SESSION['suppression_erreur'] ?>
 				</div>
 			<?php
-			unset($_SESSION['suppression_erreur']);
+				unset($_SESSION['suppression_erreur']);
 			}
 			?>
 			<div class="col-md-6">
@@ -78,6 +78,24 @@ $liste_auteur = get_liste_auteurs();
 									<a href="#" class="btn btn-danger mb-3" data-bs-toggle="modal" data-bs-target="#cefp-ouvrage-supprimer-<?= $auteur['num_aut'] ?>">Supprimer</a>
 								</td>
 							</tr>
+							<!-- Modal pour le boutton details-->
+							<div class="modal fade" id="cefp-ouvrage-modifier" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title" id="exampleModalLabel">Détails sur l'ouvrage </h5>
+											<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+										</div>
+										<div class="modal-body">
+											<p> <?$auteur['nom_aut'] ?></p>
+											
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+										</div>
+									</div>
+								</div>
+							</div>
 							<!-- Modal pour le bouton supprimer -->
 							<div class="modal fade" id="cefp-ouvrage-supprimer-<?= $auteur['num_aut'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 								<div class="modal-dialog">
