@@ -162,8 +162,17 @@ if (!empty($_SESSION['utilisateur_connecter_bibliothecaire']['0']['id']) && !emp
 									</div>
 								<?php
 								}
+								?>
 
-								//die(var_dump($_SESSION));
+								<!-- Message d'erreur global quand la modification de la photo a échoué -->
+								<?php
+								if (!empty($_SESSION['photo-erreurs']) && !empty($_SESSION['photo-erreurs'])) {
+								?>
+									<div class="alert alert-danger" style="color: white; background-color: #dc3545; border-radius: 15px; padding: 2%; text-align:center;">
+										<?= $_SESSION['photo-erreurs'] ?>
+									</div>
+								<?php
+								}
 								?>
 
 								<!-- Message de succès global quand la modification a réussi -->
@@ -177,6 +186,17 @@ if (!empty($_SESSION['utilisateur_connecter_bibliothecaire']['0']['id']) && !emp
 								}
 								?>
 
+								<!-- Message de succès global quand la modification de la photo a réussi -->
+								<?php
+								if (!empty($_SESSION['photo_success']) && !empty($_SESSION['photo_success'])) {
+								?>
+									<div class="alert alert-danger" style="color: white; background-color:#2bc717 ; border-radius: 15px; padding: 2%; text-align:center;">
+										<?= $_SESSION['photo_success'] ?>
+									</div>
+								<?php
+								}
+								?>
+
 								<!-- Profile Edit Form -->
 
 								<div class="row mb-3">
@@ -185,7 +205,7 @@ if (!empty($_SESSION['utilisateur_connecter_bibliothecaire']['0']['id']) && !emp
 									<div class="col-md-8 col-lg-9">
 										<img src="<?= $_SESSION['utilisateur_connecter_bibliothecaire']['avatar'] == 'Non defini' ? PROJECT_DIR . 'public/image/user.png' : $_SESSION['utilisateur_connecter_bibliothecaire']['avatar'] ?>" style="width: 70px;" alt="Profile" class="rounded-circle">
 										<div class="pt-2">
-											<form action=" <? PROJECT_DIR ?> bibliothecaire/mon_profil/traitement_photo" method="post">
+											<form action="<?= PROJECT_DIR ?>bibliothecaire/mon_profil/traitement_photo" method="post">
 												<div class="row" style="text-align: center; display:flex;">
 													<div class="col-sm-9 text-secondary">
 														<label class="form-label" for="customFile" style="color: gray;">Changer ma photo de profil</label>

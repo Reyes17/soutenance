@@ -739,6 +739,39 @@ function mise_a_jour_avatar(int $id, string $avatar): bool
 }
 
 
+//Fonction pour récupérer l'avatar du profil
+
+/**
+ * Cette fonction permet de récupérer la photo du profil .
+ * @param int $id l'id de l'utilisateur.
+ *
+ * @return array $data
+ */
+function recup_update_avatar($id)
+{
+
+    $data="";
+    $data_avatar="";
+
+    $db = database_login();
+
+    $request = $db->prepare('SELECT  avatar FROM utilisateur WHERE id = :id');
+
+    $resultat = $request->execute(array(
+        'id' => $id,
+    ));
+
+    if ($resultat) {
+        $data = $request->fetch(PDO::FETCH_ASSOC);
+        
+        $data_avatar=implode($data);
+
+    }
+    return $data_avatar;
+}
+
+
+
 /**
  * Cette fonction permet d'ajouter un auteur à la base de données.
  *
