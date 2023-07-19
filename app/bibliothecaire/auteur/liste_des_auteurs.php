@@ -5,58 +5,37 @@ if (empty($_SESSION["utilisateur_connecter_bibliothecaire"])) {
 $title = 'Liste des auteurs';
 include './app/commun/header.php';
 $liste_auteur = get_liste_auteurs();
-
 ?>
 
 <section class="section dashboard">
-
 	<main id="main" class="main">
 		<div class="row">
-			<!----message de succès global lors de la modification de l'auteur---->
-			<?php
-			if (isset($_SESSION['modification_succès']) && !empty($_SESSION['modification_succès'])) {
-			?>
+			<?php if (isset($_SESSION['modification_succès']) && !empty($_SESSION['modification_succès'])) { ?>
 				<div class="alert alert-primary mt-3" style="color: white; background-color: #2bc717; text-align:center; border-radius: 15px; text-align:center;">
 					<?= $_SESSION['modification_succès'] ?>
 				</div>
-			<?php
-			}
-			?>
-			<!---message de succès global lors de la suppression de l'auteur---->
-			<?php
-			if (isset($_SESSION['suppression_succes']) && !empty($_SESSION['suppression_succes'])) {
-			?>
+			<?php } ?>
+			<?php if (isset($_SESSION['suppression_succes']) && !empty($_SESSION['suppression_succes'])) { ?>
 				<div class="alert alert-primary mt-3" style="color: white; background-color: #2bc717; text-align:center; border-radius: 15px; text-align:center;">
 					<?= $_SESSION['suppression_succes'] ?>
 				</div>
-			<?php
-				unset($_SESSION['suppression_succes']);
-			}
-			?>
-			<!---message d'erreur global lors de la suppression de l'auteur---->
-			<?php
-			if (isset($_SESSION['suppression_erreur']) && !empty($_SESSION['suppression_erreur'])) {
-			?>
+			<?php unset($_SESSION['suppression_succes']);
+			} ?>
+			<?php if (isset($_SESSION['suppression_erreur']) && !empty($_SESSION['suppression_erreur'])) { ?>
 				<div class="alert alert-primary mt-3" style="color: white; background-color: #dc3545; text-align:center; border-radius: 15px; text-align:center;">
 					<?= $_SESSION['suppression_erreur'] ?>
 				</div>
-			<?php
-				unset($_SESSION['suppression_erreur']);
-			}
-			?>
+			<?php unset($_SESSION['suppression_erreur']);
+			} ?>
 			<div class="col-md-6">
 				<h1>Liste des auteurs</h1>
 			</div>
-
 			<div class="col-md-6 text-end bibliothèque-list-add-btn">
 				<a href="<?= PROJECT_DIR; ?>bibliothecaire/auteur/ajouter_auteurs" class="btn btn-primary">Ajouter un auteur</a>
 			</div>
-
 		</div>
 		<div class="row mt-5">
-			<?php
-			if (!empty($liste_auteur)) {
-			?>
+			<?php if (!empty($liste_auteur)) { ?>
 				<table class="table table-hover">
 					<thead>
 						<tr>
@@ -66,38 +45,37 @@ $liste_auteur = get_liste_auteurs();
 						</tr>
 					</thead>
 					<tbody>
-						<?php
-						foreach ($liste_auteur as $key => $auteur) {
-						?>
+						<?php foreach ($liste_auteur as $key => $auteur) { ?>
 							<tr>
-								<td><?php echo $auteur['nom_aut'] ?></td>
-								<td><?php echo $auteur['prenom_aut'] ?></td>
+								<td><?= $auteur['nom_aut'] ?></td>
+								<td><?= $auteur['prenom_aut'] ?></td>
 								<td>
-									<a href="#" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#cefp-ouvrage-modifier">Détails</a>
+									<a href="#" class="btn btn-primary mb-3 btn-details" data-bs-toggle="modal" data-bs-target="#modal-details-<?= $auteur['num_aut'] ?>" data-numaut="<?= $auteur['num_aut'] ?>">Détails</a>
 									<a href="<?= PROJECT_DIR; ?>bibliothecaire/auteur/modifier_auteur/<?= $auteur['num_aut'] ?>" class="btn btn-warning mb-3">Modifier</a>
-									<a href="#" class="btn btn-danger mb-3" data-bs-toggle="modal" data-bs-target="#cefp-ouvrage-supprimer-<?= $auteur['num_aut'] ?>">Supprimer</a>
+									<a href="#" class="btn btn-danger mb-3" data-bs-toggle="modal" data-bs-target="#modal-supprimer-<?= $auteur['num_aut'] ?>">Supprimer</a>
 								</td>
 							</tr>
-							<!-- Modal pour le boutton details-->
-							<div class="modal fade" id="cefp-ouvrage-modifier" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							<!-- Modal pour le bouton "Détails" -->
+							<div class="modal fade" id="modal-details-<?= $auteur['num_aut'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 								<div class="modal-dialog">
 									<div class="modal-content">
 										<div class="modal-header">
-											<h5 class="modal-title" id="exampleModalLabel">Détails sur l'ouvrage </h5>
+											<h5 class="modal-title" id="exampleModalLabel">Détails sur l'auteur</h5>
 											<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 										</div>
 										<div class="modal-body">
-											<p> <?$auteur['nom_aut'] ?></p>
-											
+											<p>Nom: <span id="nom-aut-<?= $auteur['num_aut'] ?>"></span></p>
+											<p>Prénoms: <span id="prenom-aut-<?= $auteur['num_aut'] ?>"></span></p>
+											<!-- Ajoutez d'autres informations de l'auteur ici -->
 										</div>
 										<div class="modal-footer">
-											<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+											<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
 										</div>
 									</div>
 								</div>
 							</div>
-							<!-- Modal pour le bouton supprimer -->
-							<div class="modal fade" id="cefp-ouvrage-supprimer-<?= $auteur['num_aut'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							<!-- Modal pour le bouton "Supprimer" -->
+							<div class="modal fade" id="modal-supprimer-<?= $auteur['num_aut'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 								<div class="modal-dialog">
 									<div class="modal-content">
 										<div class="modal-header">
@@ -114,21 +92,56 @@ $liste_auteur = get_liste_auteurs();
 									</div>
 								</div>
 							</div>
-						<?php
-						}
-						?>
+						<?php } ?>
 					</tbody>
 				</table>
-			<?php
-			} else {
+			<?php } else {
 				echo 'Aucun auteur disponible pour le moment';
-			}
-			?>
+			} ?>
 		</div>
 	</main>
 </section>
 
+<!-- ======= Footer ======= -->
+<footer id="footer" class="footer">
+	<div class="copyright">
+		&copy; Copyright <strong><span>Bibliothèque AKAITSUKI 2023</span></strong>. All Rights Reserved
+	</div>
+</footer><!-- End Footer -->
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+<!-- Vendor JS Files -->
+<script src="<?= PROJECT_DIR; ?>public/vendor/apexcharts/apexcharts.min.js"></script>
+<script src="<?= PROJECT_DIR; ?>public/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="<?= PROJECT_DIR; ?>public/vendor/chart.js/chart.umd.js"></script>
+<script src="<?= PROJECT_DIR; ?>public/vendor/echarts/echarts.min.js"></script>
+<script src="<?= PROJECT_DIR; ?>public/vendor/quill/quill.min.js"></script>
+<script src="<?= PROJECT_DIR; ?>public/vendor/simple-datatables/simple-datatables.js"></script>
+<script src="<?= PROJECT_DIR; ?>public/vendor/tinymce/tinymce.min.js"></script>
+<script src="<?= PROJECT_DIR; ?>public/vendor/php-email-form/validate.js"></script>
+
+<!-- Template Main JS File -->
+<script src="<?= PROJECT_DIR; ?>public/js/main.js"></script>
+<script>
+	$(document).ready(function() {
+		$('.btn-details').on('click', function() {
+			var numAut = $(this).data('numaut');
+			var modal = $('#modal-details-' + numAut);
+
+			// Récupérer les informations de l'auteur à partir de votre source de données
+			var nomAut = "<?= $auteur['nom_aut'] ?>";
+			var prenomAut = "<?= $auteur['prenom_aut'] ?>";
+
+			modal.find('#nom-aut-' + numAut).text(nomAut);
+			modal.find('#prenom-aut-' + numAut).text(prenomAut);
+		});
+	});
+</script>
+
+</body>
+
+</html>
 <?php
-include './app/commun/footer.php';
 unset($_SESSION['modification_succès']);
 ?>

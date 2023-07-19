@@ -753,7 +753,7 @@ function recup_update_avatar($id)
     $data="";
     $data_avatar="";
 
-    $db = database_login();
+    $db = connect_db();
 
     $request = $db->prepare('SELECT  avatar FROM utilisateur WHERE id = :id');
 
@@ -769,6 +769,33 @@ function recup_update_avatar($id)
     }
     return $data_avatar;
 }
+
+/**
+* .3++++++
+* 
+*delete_avatar
+
+
+*Elle permet de supprimer la photo du champ avatar dans la base de donnée
+* @param $id identifiant de l'utilisateur.
+* @return bool
+*/
+function delete_avatar(int $id){
+    $delete_avatar=false;
+    $db =connect_db();
+ 
+    $req=$db->prepare('UPDATE utilisateur set avatar=:avatar where id = :id ');
+    $req_exec=$req->execute(array(
+        'id'=>$id,
+        'avatar'=>'Non defini'
+    ));
+ 
+    if($req_exec){
+        $delete_avatar=true;
+    }
+    return $delete_avatar;
+    
+ }
 
 
 

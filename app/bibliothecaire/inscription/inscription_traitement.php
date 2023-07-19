@@ -72,7 +72,7 @@ if ($check_user_name_exist_in_db) {
 	$errors["nom_utilisateur"] = "Ce nom d'utilisateur est déja utilisé. Veuillez le changer.";
 }
 
-$data["profil"] = "bibliothecaire";
+$data["profil"] = "Bibliothecaire";
 
 
 if (empty($errors)) {

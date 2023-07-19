@@ -205,7 +205,7 @@ if (!empty($_SESSION['utilisateur_connecter_bibliothecaire']['0']['id']) && !emp
 									<div class="col-md-8 col-lg-9">
 										<img src="<?= $_SESSION['utilisateur_connecter_bibliothecaire']['avatar'] == 'Non defini' ? PROJECT_DIR . 'public/image/user.png' : $_SESSION['utilisateur_connecter_bibliothecaire']['avatar'] ?>" style="width: 70px;" alt="Profile" class="rounded-circle">
 										<div class="pt-2">
-											<form action="<?= PROJECT_DIR ?>bibliothecaire/mon_profil/traitement_photo" method="post">
+											<form action="<?= PROJECT_DIR ?>bibliothecaire/mon_profil/traitement_photo" method="post" enctype="multipart/form-data">
 												<div class="row" style="text-align: center; display:flex;">
 													<div class="col-sm-9 text-secondary">
 														<label class="form-label" for="customFile" style="color: gray;">Changer ma photo de profil</label>
@@ -252,40 +252,40 @@ if (!empty($_SESSION['utilisateur_connecter_bibliothecaire']['0']['id']) && !emp
 												</div>
 											</form>
 											<!-- suppression_photo Form -->
-											<form action="<?= PROJECT_DIR ?>bibliothecaire/profil/traitement_suppression_photo" method="post"  style="display: flex; justify-content: center; align-items: center;">
+											<form action="<?= PROJECT_DIR ?>bibliothecaire/profil/traitement_suppression_photo" method="post" style="display: flex; justify-content: center; align-items: center;">
 												<div class="row">
-													<button type="reset" class="btn btn-secondary mt-3" data-bs-toggle="modal" data-bs-target="#supprimer_photo"><i class="fa fa-trash"></i> Supprimer</button>
+													<button type="reset" class="btn btn-danger mt-3" data-bs-toggle="modal" data-bs-target="#supprimer_photo"><i class="bi bi-trash-fill"> Supprimer la photo</i></button>
 													<div class="col-md-8 col-lg-12">
 														<div class="text-center" style="color: #070b3a;">
 															<!-- Modal -->
 															<div class="modal fade" id="supprimer_photo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-																	<div class="modal-dialog" role="document">
-																		<div class="modal-content">
-																			<div class="modal-header">
-																				<h5 class="modal-title" id="exampleModalLabel">Supprimer la photo de profil</h5>
-																				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-																				</button>
-																			</div>
-																			<div class="modal-body">
-																				<div class="row mb-3">
-																					<label for="mot_de_passe" class="col-12 col-form-label" style="color: #070b3a;">
-																						Veuiller entrer votre mot de passe pour
-																						appliquer l'action.</label>
-																					<br>
-																					<div class="col-md-8 col-lg-12">
-																						<input type="password" id="mot_de_passe" name="mot_de_passe" class="form-control" placeholder="Veuillez entrer votre mot de passe" value="">
-																					</div>
+																<div class="modal-dialog" role="document">
+																	<div class="modal-content">
+																		<div class="modal-header">
+																			<h5 class="modal-title" id="exampleModalLabel">Supprimer la photo de profil</h5>
+																			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+																			</button>
+																		</div>
+																		<div class="modal-body">
+																			<div class="row mb-3">
+																				<label for="mot_de_passe" class="col-12 col-form-label" style="color: #070b3a;">
+																					Veuiller entrer votre mot de passe pour
+																					appliquer l'action.</label>
+																				<br>
+																				<div class="col-md-8 col-lg-12">
+																					<input type="password" id="mot_de_passe" name="mot_de_passe" class="form-control" placeholder="Veuillez entrer votre mot de passe" value="">
 																				</div>
 																			</div>
-																			<div class="modal-footer">
-																				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler
-																				</button>
-																				<button type="submit" name="avatar" class="btn btn-danger">Valider
-																				</button>
-																			</div>
+																		</div>
+																		<div class="modal-footer">
+																			<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler
+																			</button>
+																			<button type="submit" name="avatar" class="btn btn-danger">Valider
+																			</button>
 																		</div>
 																	</div>
 																</div>
+															</div>
 														</div>
 
 													</div>
@@ -512,6 +512,6 @@ if (!empty($_SESSION['utilisateur_connecter_bibliothecaire']['0']['id']) && !emp
 <!-- End #main -->
 
 <?php
-unset($_SESSION['desactivation-errors'], $_SESSION['passe'], $_SESSION['success'], $_SESSION['changement']);
+unset($_SESSION['desactivation-errors'], $_SESSION['passe'], $_SESSION['success'], $_SESSION['changement'], $_SESSION['photo_success'], $_SESSION['photo-erreurs']);
 include './app/commun/footer.php';
 ?>

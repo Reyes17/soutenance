@@ -20,6 +20,20 @@
 
 <!-- Template Main JS File -->
 <script src="<?= PROJECT_DIR; ?>public/js/main.js"></script>
+<script>
+	$(document).ready(function() {
+		$('.btn-details').on('click', function() {
+			var numAut = $(this).data('numaut');
+			var modal = $('#modal-details-' + numAut);
+
+			var nomAut = modal.find('#nom-aut-' + numAut).text();
+			var prenomAut = modal.find('#prenom-aut-' + numAut).text();
+
+			modal.find('#nom-aut-' + numAut).text(nomAut);
+			modal.find('#prenom-aut-' + numAut).text(prenomAut);
+		});
+	});
+</script>
 
 </body>
 

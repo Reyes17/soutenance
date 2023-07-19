@@ -2,7 +2,7 @@
 if (!empty($_SESSION["utilisateur_connecter_membre"])) {
 	header('location:' . PROJECT_DIR . 'membre/utilisateur/acceuil');
 }
-
+$title = "Mot de passe oublié";
 include './app/commun/index.php';
 ?>
 

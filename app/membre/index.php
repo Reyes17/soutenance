@@ -4,8 +4,8 @@ include 'app/commun/fonction/fonction.php';
 
 $params = explode('/', $_GET['p']);
 $profile = "membre";
-$default_ressource = "utilisateur";
-$default_action = "acceuil";
+$default_ressource = "accueil";
+$default_action = "index";
 $default_action_folder = "app/" . $profile . "/" . $default_ressource . "/" . $default_action . ".php";
 
 if (isset($_GET['p']) && !empty($_GET['p'])) {

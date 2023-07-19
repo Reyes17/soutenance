@@ -19,7 +19,7 @@ $url = str_replace('{token}', $token, $url);
     <title>Email de gestion de bibliothèque</title>
     <style>
         body {
-            font-family: "Poppins", sans-serif;
+            font-family: Poppins, sans-serif;
             background-color: #ffffff;
         }
 
@@ -37,13 +37,13 @@ $url = str_replace('{token}', $token, $url);
             font-size: 24px;
             margin: 0;
             color: #012970;
-            font-family: "Nunito", sans-serif;
+            font-family: Nunito, sans-serif;
         }
 
         h2 {
             font-size: 19px;
             color:#012970;
-            font-family: "Poppins" , sans-serif;
+            font-family: Nunito , sans-serif;
 
         }
 

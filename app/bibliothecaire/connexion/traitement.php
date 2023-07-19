@@ -72,20 +72,3 @@ header('location:' . PROJECT_DIR . 'bibliothecaire/connexion');
 
 
 
-
-
-
-
-/** 	
-**$user = check_if_user_exist($data["nom_utilisateur"], $data["mot_de_passe"], "Bibliothecaire");
-	*if (!empty($user)) {
-		*$_SESSION["utilisateur_connecter_bibliothecaire"] = $user;
-		*header('location:' . PROJECT_DIR . 'bibliothecaire/dossier/dashboard');
-	*} else {
-		*$_SESSION['danger'] = "Nom d'utilisateur ou mot de passe incorrect. Veuillez vérifier";
-	*}
-**} else {
-	*$_SESSION['errors'] = $errors;
-**}
-*header('location:' . PROJECT_DIR . 'bibliothecaire/connexion');*/
-

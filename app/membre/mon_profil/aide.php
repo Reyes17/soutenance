@@ -2,7 +2,8 @@
 if (empty($_SESSION["utilisateur_connecter_membre"])) {
 	header('location:' . PROJECT_DIR . 'membre/connexion');
 }
-include("haut.php");
+include './app/commun/header_membre.php';
+
 ?>
 
 <main id="main">
@@ -14,5 +15,5 @@ include("haut.php");
 	</p>
 </main><!-- End #main -->
 <?php
-include("bas.php");
+include './app/commun/footer_membre.php';
 ?>  

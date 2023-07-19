@@ -3,10 +3,13 @@
 if (empty($_SESSION["utilisateur_connecter_membre"])) {
 	header('location:' . PROJECT_DIR . 'membre/connexion');
 }
-include("haut.php");
+$title = 'Historique des emprunts';
+
+include './app/commun/header_membre.php';
+
 ?>
 
-<<main id="main">
+<main id="main" style="margin-left: 0px;">
 
 
 	<div class="container-fluid" style="text-align: center;">
@@ -120,5 +123,6 @@ include("haut.php");
 	<!-- /.container-fluid -->
 </main>
 	<?php
-	include('bas.php')
+	include './app/commun/footer_membre.php';
+
 	?>

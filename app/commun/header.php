@@ -28,6 +28,7 @@
 
 	<!-- =======================================================
 	======================================================== -->
+	
 </head>
 
 <body>
@@ -59,11 +60,14 @@
 					</a>
 				</li><!-- End Search Icon-->
 
+				
+
+
 
 				<li class="nav-item dropdown pe-3">
 
 					<a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-						<img src="<?= isset($_SESSION['utilisateur_connecter_bibliothecaire']) ? $_SESSION['utilisateur_connecter_bibliothecaire']['avatar'] : 'avatar' ?>" style="width: 170px;" alt="Profile" class="rounded-circle">
+						<img src="<?= isset($_SESSION['utilisateur_connecter_bibliothecaire']) ? $_SESSION['utilisateur_connecter_bibliothecaire']['avatar'] : 'avatar' ?>" style="width: 50px;" alt="Profile" class="rounded-circle">
 						<span class="d-none d-md-block dropdown-toggle ps-2"><?= $_SESSION['utilisateur_connecter_bibliothecaire']['nom'] ?> <?= $_SESSION['utilisateur_connecter_bibliothecaire']['prenom'] ?></span>
 					</a><!-- End Profile Iamge Icon -->
 
@@ -87,12 +91,6 @@
 							<hr class="dropdown-divider">
 						</li>
 
-						<li>
-							<a class="dropdown-item d-flex align-items-center" href="<?= PROJECT_DIR; ?>bibliothecaire/mon_profil/historique_emprunt">
-								<i class="bi bi-h-circle"></i>
-								<span>Historique des emprunts</span>
-							</a>
-						</li>
 						<li>
 							<hr class="dropdown-divider">
 						</li>
