@@ -17,6 +17,7 @@
 <script src="<?= PROJECT_DIR; ?>public/vendor/simple-datatables/simple-datatables.js"></script>
 <script src="<?= PROJECT_DIR; ?>public/vendor/tinymce/tinymce.min.js"></script>
 <script src="<?= PROJECT_DIR; ?>public/vendor/php-email-form/validate.js"></script>
+<script src="<?= PROJECT_DIR; ?>public/vendor/lib/noty.min.js"></script>
 
 <!-- Template Main JS File -->
 <script src="<?= PROJECT_DIR; ?>public/js/main.js"></script>

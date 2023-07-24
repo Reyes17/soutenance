@@ -25,7 +25,7 @@
 
 	<!-- Template Main CSS File -->
 	<link href="<?= PROJECT_DIR; ?>public/css/style.css" rel="stylesheet">
-
+	
 	<!-- =======================================================
 	======================================================== -->
 </head>

@@ -18,14 +18,6 @@ body {
   color: #444444;
 }
 
-header{
-  padding-top: 60px;
-  width: auto;
-}
-
-
-
-
 a {
   color: #4154f1;
   text-decoration: none;
@@ -375,8 +367,6 @@ h6 {
   border-bottom: 2px solid #4154f1;
 }
 
-
-
 /*--------------------------------------------------------------
 # Header
 --------------------------------------------------------------*/
@@ -659,7 +649,7 @@ h6 {
 
   #main,
   #footer {
-   margin-left: 300px;
+    margin-left: 300px;
   }
 }
 
@@ -982,11 +972,6 @@ h6 {
 .dashboard .top-selling img {
   border-radius: 5px;
   max-width: 60px;
-}
-
-.section {
-  background-image: url("/public/image/bliotheque.jpg");
-
 }
 
 /*--------------------------------------------------------------

@@ -1338,3 +1338,439 @@ function supprimer_domaine($cod_dom) {
         return false;
     }
 }
+
+
+/**
+ * Cette fonction permet d'ajouter un auteur secondaire à la base de données.
+ *
+ * @param string $nom_aut_secondaire Le nom de l'auteur.
+ * @param string $prenom_aut_secondaire Le prénom de l'auteur.
+ *
+ * @return bool $ajout_auteur_secondaire Le résultat de l'ajout de l'auteur secondaire.
+ */
+function ajout_auteur_secondaire(string $nom_aut_secondaire, string $prenom_aut_secondaire): bool
+{
+    $ajout_auteur_secondaire = false;
+
+    if (!empty($nom_aut_secondaire) && !empty($prenom_aut_secondaire)) {
+        $db = connect_db();
+
+        // Ecriture de la requête
+        $requete = 'INSERT INTO auteur_secondaire (nom_aut_secondaire, prenom_aut_secondaire) VALUES (:nom_aut_secondaire, :prenom_aut_secondaire)';
+
+        // Préparation
+        $inserer_auteur_secondaire = $db->prepare($requete);
+
+        // Exécution ! L'auteur est maintenant en base de données
+        $resultat = $inserer_auteur_secondaire->execute([
+            'nom_aut_secondaire' => $nom_aut_secondaire,
+            'prenom_aut_secondaire' => $prenom_aut_secondaire
+        ]);
+
+        if ($resultat) {
+            $ajout_auteur_secondaire = true;
+        }
+    }
+
+    return $ajout_auteur_secondaire;
+}
+
+/**
+ * Cette fonction permet de récupérer la liste des auteurs secondaires de la base de donnée.
+ *
+ * @return array $liste_auteurs_secondaires La liste des auteurs.
+ */
+function get_liste_auteurs_secondaire(): array
+{
+
+    $liste_auteurs_secondaires = array();
+
+    $db = connect_db();
+
+    // Ecriture de la requête
+    $requette = 'SELECT * FROM auteur_secondaire';
+
+    // Préparation
+    $verifier_liste_auteurs_secondaires = $db->prepare($requette);
+
+    // Exécution ! La recette est maintenant en base de données
+    $resultat = $verifier_liste_auteurs_secondaires->execute();
+
+    if ($resultat) {
+
+        $liste_auteurs_secondaires = $verifier_liste_auteurs_secondaires->fetchAll(PDO::FETCH_ASSOC);
+
+    }
+
+
+    return $liste_auteurs_secondaires;
+
+}
+
+
+/**
+ * Modifie un auteurnsecondaire dans la base de données.
+ *
+ * @param int $id Le numéro de l'auteur à modifier.
+ * @param string $nom_aut_secondaire Le nouveau nom de l'auteur secondaire.
+ * @param string $prenom_aut_secondaire Le nouveau prénom de l'auteur secondaire.
+ * @return bool True si la modification a réussi, False sinon.
+ */
+function modifier_auteur_secondaire(int $id, string $nom_aut_secondaire, string $prenom_aut_secondaire): bool
+{
+    $modifier = false;
+    $date = date("Y-m-d H:i:s");
+    $db = connect_db();
+    $req_prepare = $db->prepare('UPDATE auteur_secondaire SET nom_aut_secondaire = :nom_aut_secondaire, prenom_aut_secondaire = :prenom_aut_secondaire, maj_le = :maj_le WHERE id = :id');
+    $req_exec = $req_prepare->execute([
+        'nom_aut_secondaire' => $nom_aut_secondaire,
+        'prenom_aut_secondaire' => $prenom_aut_secondaire,
+        'maj_le' => $date,
+        'id' => $id
+    ]);
+
+    if ($req_exec) {
+        $modifier = true;
+    }
+    return $modifier;
+}
+
+
+/**
+ * Vérifie si un auteur secondaire existe dans la base de données.
+ * @param string $nom Nom de l'auteur.
+ * @param string $prenom Prénom de l'auteur.
+ * @return string|bool Message d'erreur si l'auteur existe, False sinon.
+ */
+function check_if_auteur_secondaire_exist(string $nom, string $prenom)
+{
+    $db = connect_db();
+    $req = $db->prepare('SELECT id FROM auteur_secondaire WHERE nom_aut_secondaire = ? AND prenom_aut_secondaire = ?');
+    $req_exec = $req->execute([$nom, $prenom]);
+
+    if ($req_exec) {
+        $auteur_secondaire = $req->fetch();
+        if ($auteur_secondaire !== false) {
+            return 'Cet auteur existe déjà';
+        }
+    }
+
+    return false;
+}
+
+
+
+
+/**
+ * Cett fonction permet de supprimer  un auteur secondaire exitant dans la base de données via son id d'auteur.
+ *
+ * @param int $id
+ * @return bool .
+ */
+function supprimer_auteur_secondaire($id) {
+    // Vérifier si l'auteur existe
+    $auteur_secondaire = get_auteur_secondaire_by_id($id);
+
+    if (empty($auteur_secondaire)) {
+        // L'auteur n'existe pas, retourner false ou gérer l'erreur selon vos besoins
+        return false;
+    }
+
+    // Supprimer l'auteur de la base de données
+    $db = connect_db();
+    $sql = "DELETE FROM auteur_secondaire WHERE id = :id";
+    $stmt = $db->prepare($sql);
+    $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+    $result = $stmt->execute();
+
+    if ($result) {
+        // Suppression réussie
+        return true;
+    } else {
+        // Suppression échouée, gérer l'erreur selon vos besoins
+        return false;
+    }
+}
+
+
+/**
+ * Cett fonction permet de récupérer un auteur exitant dans la base de données via son numéro d'auteur.
+ *
+ * @param int $num_aut
+ * @return  .
+ */   
+function get_auteur_secondaire_by_id(int $id) {
+    $db = connect_db();
+
+    // Requête pour récupérer l'auteur par son num_aut
+    $requete = 'SELECT * FROM auteur_secondaire WHERE id = :id';
+
+    // Préparation de la requête
+    $query = $db->prepare($requete);
+
+    // Exécution de la requête en liant le paramètre :num_aut
+    $query->execute(['id' => $id]);
+
+    // Récupération du résultat de la requête
+    $auteur_secondaire = $query->fetch(PDO::FETCH_ASSOC);
+
+    return $auteur_secondaire;
+}
+
+
+/**
+ * Cette fonction permet de récupérer la liste des membres de la base de données avec le profil "membre".
+ *
+ * @return array|null La liste des membres s'il y en a, sinon null.
+ */
+function get_liste_membres(): ?array
+{
+    $liste_membres = array();
+
+    try {
+        
+        $db = connect_db();
+
+        // Assurez-vous de remplacer "votre_table_utilisateur" par le nom réel de votre table "utilisateur"
+        $sql = "SELECT * FROM utilisateur WHERE profil = 'membre'";
+
+        // Préparation de la requête
+        $verifier_liste_membres = $db->prepare($sql);
+
+        // Exécution de la requête
+        $verifier_liste_membres->execute();
+
+        // Récupération des résultats
+        $liste_membres = $verifier_liste_membres->fetchAll(PDO::FETCH_ASSOC);
+
+        // Fermeture de la connexion à la base de données
+        $db = null;
+    } catch (PDOException $e) {
+        // Gérer les erreurs éventuelles (facultatif)
+        // Vous pouvez afficher un message d'erreur ou enregistrer les erreurs dans un fichier journal par exemple.
+        // echo "Erreur : " . $e->getMessage();
+    }
+
+    // Retourner la liste des membres ou null si aucun membre n'est trouvé
+    return !empty($liste_membres) ? $liste_membres : null;
+}
+
+
+/**
+ * Cette fonction permet de récupérer les informations d'un membre par son ID.
+ *
+ * @param int $id L'identifiant du membre à récupérer.
+ * @return array|null Les informations du membre s'il existe, sinon null.
+ */
+function obtenir_membre_par_id($id): ?array
+{
+    try {
+        $db = connect_db();
+
+        // Assurez-vous de remplacer "votre_table_utilisateur" par le nom réel de votre table "utilisateur"
+        $sql = "SELECT * FROM utilisateur WHERE id = :id AND profil = 'membre' LIMIT 1";
+
+        // Préparation de la requête
+        $requete = $db->prepare($sql);
+
+        // Liaison des paramètres de la requête
+        $requete->bindParam(':id', $id, PDO::PARAM_INT);
+
+        // Exécution de la requête
+        $requete->execute();
+
+        // Récupération du membre
+        $membre = $requete->fetch(PDO::FETCH_ASSOC);
+
+        // Fermeture de la connexion à la base de données
+        $db = null;
+
+        // Retourner les informations du membre ou null s'il n'existe pas
+        return $membre ? $membre : null;
+    } catch (PDOException $e) {
+       
+        return null;
+    }
+}
+
+
+/**
+ * Cett fonction permet de d'ajouter une categorie à la base de données.
+ *
+ * @param string $categorie Le nom de la catégorie.
+ *
+ * @return bool $ajout_categorie Le resultat de l'ajout de la categorie.
+ */
+function ajout_categorie(string $nom_cat): bool
+{
+
+    $ajout_categorie = false;
+
+    if (isset($nom_cat) && !empty($nom_cat)) {
+
+        $db = connect_db();
+
+        // Ecriture de la requête
+        $requette = 'INSERT INTO categorie (nom_cat) VALUES (:nom_cat);';
+
+        // Préparation
+        $inserer_categorie = $db->prepare($requette);
+
+        // Exécution ! La recette est maintenant en base de données
+        $resultat = $inserer_categorie->execute([
+            'nom_cat' => $nom_cat
+        ]);
+
+
+        if ($resultat) {
+            $ajout_categorie = true;
+        }
+
+    }
+
+    return $ajout_categorie;
+
+}
+
+
+/** 
+*Cette fonction permet de vérifier si une catégorie existe dans la base de données
+ * @param string $nom_cat nom de la catégorie.
+ * @return bool 
+     
+ */
+function check_if_categorie_exist(string $nom_cat)
+{
+    $users=[];
+    $nomcat = false;
+    $db = connect_db();
+    $req = $db->prepare('SELECT cod_cat from categorie WHERE nom_cat=?');
+    $req_exec=$req->execute([$nom_cat]);
+    if($req_exec){
+       
+        $users = $req->fetch();
+        if(!empty($users) && is_array($users)){
+            $nom_cat=true;
+        }
+    }
+    return $nomcat;
+    }
+
+
+	
+/**
+ * Cette fonction permet de récupérer la liste des catégories de la base de donnée.
+ *
+ * @return array $liste_categorie La liste des categories.
+ */
+function get_liste_categorie(): array
+{
+
+    $liste_categorie = array();
+
+    $db = connect_db();
+
+    // Ecriture de la requête
+    $requette = 'SELECT * FROM categorie';
+
+    // Préparation
+    $verifier_liste_categorie = $db->prepare($requette);
+
+    // Exécution ! La recette est maintenant en base de données
+    $resultat = $verifier_liste_categorie->execute();
+
+    if ($resultat) {
+
+        $liste_categorie = $verifier_liste_categorie->fetchAll(PDO::FETCH_ASSOC);
+
+    }
+
+
+    return $liste_categorie;
+
+}
+
+
+/**
+ * Modifie une catégorie dans la base de données.
+ *
+ * @param int $cod_cat Le code de la catégorie à modifier.
+ * @param string $nom_cat La nouvelle catégorie.
+ 
+ * @return bool True si la modification a réussi, False sinon.
+ */
+function modifier_categorie(int $cod_cat, string $nom_cat): bool
+{
+    $modifier = false;
+    $date = date("Y-m-d H:i:s");
+    $db = connect_db();
+    $req_prepare = $db->prepare('UPDATE categorie SET nom_cat = :nom_cat, maj_le = :maj_le WHERE cod_cat = :cod_cat');
+    $req_exec = $req_prepare->execute([
+        'cod_cat' => $cod_cat,
+		'nom_cat' => $nom_cat,        
+        'maj_le' => $date
+
+    ]);
+
+    if ($req_exec) {
+        $modifier = true;
+    }
+    return $modifier;
+}
+
+
+/**
+ * Cett fonction permet de récupérer une categorie exitant dans la base de données via son code categorie.
+ *
+ * @param int $cod_dom
+ * @return  .
+ */   
+function get_categorie_by_id(int $cod_cat) {
+    $db = connect_db();
+    // Requête pour récupérer le domaine par son cod_dom
+    $requete = 'SELECT * FROM categorie WHERE cod_cat = :cod_cat';
+
+    // Préparation de la requête
+    $query = $db->prepare($requete);
+
+    // Exécution de la requête en liant le paramètre :num_aut
+    $query->execute(['cod_cat' => $cod_cat]);
+
+    // Récupération du résultat de la requête
+    $categorie = $query->fetch(PDO::FETCH_ASSOC);
+
+    return $categorie;
+}
+
+
+/**
+ * Cett fonction permet de supprimer  une categorie exitant dans la base de données via son code categorie.
+ *
+ * @param int $cod_dom
+ * @return bool .
+ */
+function supprimer_categorie($cod_cat) {
+    // Vérifier si le domaine existe
+    $categorie = get_categorie_by_id($cod_cat);
+
+    if (empty($categorie)) {
+        // Le domaine n'existe pas, retourner false
+        return false;
+    }
+
+    // Supprimer le domaine de la base de données
+    $db = connect_db();
+    $sql = "DELETE FROM categorie WHERE cod_cat = :cod_cat";
+    $stmt = $db->prepare($sql);
+    $stmt->bindValue(':cod_cat', $cod_cat, PDO::PARAM_INT);
+    $result = $stmt->execute();
+
+    if ($result) {
+        // Suppression réussie
+        return true;
+    } else {
+        // Suppression échouée
+        return false;
+    }
+}
+

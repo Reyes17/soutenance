@@ -2,7 +2,7 @@
 <html lang="fr">
 
 <head>
-	<meta charset="utf-8">
+	<meta charset="UTF-8">
 	<meta content="width=device-width, initial-scale=1.0" name="viewport">
 
 	<title><?= $title?></title>
@@ -22,9 +22,16 @@
 	<link href="<?= PROJECT_DIR; ?>public/vendor/quill/quill.bubble.css" rel="stylesheet">
 	<link href="<?= PROJECT_DIR; ?>public/vendor/remixicon/remixicon.css" rel="stylesheet">
 	<link href="<?= PROJECT_DIR; ?>public/vendor/simple-datatables/style.css" rel="stylesheet">
-
+	<link href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" rel="stylesheet">
 	<!-- Template Main CSS File -->
 	<link href="<?= PROJECT_DIR; ?>public/css/style.css" rel="stylesheet">
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Inclure le fichier CSS de Toastify -->
+
+
+<!-- Inclure le fichier JavaScript de Toastify -->
+<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
 
 	<!-- =======================================================
 	======================================================== -->
@@ -228,11 +235,6 @@
 							<i class="bi bi-circle"></i><span>Liste des membres</span>
 						</a>
 					</li>
-					<li>
-						<a href="<?= PROJECT_DIR; ?>bibliothecaire/membre/ajouter_membre">
-							<i class="bi bi-circle"></i><span>Ajouter un membre</span>
-						</a>
-					</li>
 				</ul>
 			</li><!-- Fin menu membre -->
 
@@ -273,18 +275,18 @@
 			</li><!-- Fin  menu domaine -->
 
 			<li class="nav-item">
-				<a class="nav-link collapsed" data-bs-target="#domaines_ouvrages-nav" data-bs-toggle="collapse" href="#">
-					<i class="ri-book-open-line"></i><span>DOMAINES OUVRAGES</span><i class="bi bi-chevron-down ms-auto"></i>
+				<a class="nav-link collapsed" data-bs-target="#categorie-nav" data-bs-toggle="collapse" href="#">
+					<i class="ri-book-open-line"></i><span>CATEGORIES</span><i class="bi bi-chevron-down ms-auto"></i>
 				</a>
-				<ul id="domaines_ouvrages-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+				<ul id="categorie-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
 					<li>
-						<a href="<?= PROJECT_DIR; ?>bibliothecaire/domaine_ouvrage/liste_des_domaines_ouvrages">
-							<i class="bi bi-circle"></i><span>Liste des domaines ouvrages</span>
+						<a href="<?= PROJECT_DIR; ?>bibliothecaire/categorie/liste_des_categories">
+							<i class="bi bi-circle"></i><span>Liste des catégories</span>
 						</a>
 					</li>
 					<li>
-						<a href="<?= PROJECT_DIR; ?>bibliothecaire/domaine_ouvrage/ajouter_domaine_ouvrage">
-							<i class="bi bi-circle"></i><span>Ajouter un domaine ouvrage</span>
+						<a href="<?= PROJECT_DIR; ?>bibliothecaire/categorie/ajouter_categorie">
+							<i class="bi bi-circle"></i><span>Ajouter une catégorie</span>
 						</a>
 					</li>
 				</ul>

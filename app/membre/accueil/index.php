@@ -1,6 +1,29 @@
 <?php
-$title = 'Acceuil';
+// Vérifier si le compte du membre a été supprimé ou désactivé par le bibliothécaire
+if (isset($_SESSION['utilisateur_membre_connecter'])) {
+  $idMembreConnecte = $_SESSION['utilisateur_membre_connecter']['id'];
+  $membre = obtenir_membre_par_id($idMembreConnecte);
+  
+  if (!$membre || $membre['est_supprimer'] || !$membre['est_actif']) {
+      // Le compte du membre a été supprimé ou désactivé, détruire la session
+      session_destroy($_SESSION['utilisateur_membre_connecter']['id']);
+
+      // Rediriger vers la page de connexion avec le message
+      header("Location: " . PROJECT_DIR . "membre/connexion/index?compte_supprime=1");
+      exit;
+  }
+}
+// Vérifier si le cookie avec le message de compte supprimé est présent
+if (isset($_COOKIE['compte_supprime_message'])) {
+    // Afficher le message avec le style appliqué
+    echo '<div class="alert alert-danger mt-3" style="color: white; background-color: #dc3545; border: 5px; text-align: center;">' . $_COOKIE['compte_supprime_message'] . '</div>';
+
+    // Supprimer le cookie après l'avoir affiché
+    setcookie("compte_supprime_message", "", time() - 3600, "/");
+}
+
 ?>
+
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -8,7 +31,7 @@ $title = 'Acceuil';
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title><?= $title ?></title>
+  <title> Accueil </title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -32,6 +55,48 @@ $title = 'Acceuil';
   <!-- =======================================================
 	======================================================== -->
 </head>
+<style>
+  /* Ajoutez ici la taille par défaut du conteneur */
+  #contentContainer {
+    width: 350px;
+    min-height: 324px;
+    /* Autres styles du conteneur */
+  }
+
+  #contentList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    color: white
+  }
+
+  a#toggleLink {
+    text-align: right;
+  }
+
+  .container-center {
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+  }
+
+  .card-title {
+    margin-right: auto;
+    font-size: 25px;
+  }
+
+  a#dom:hover,
+  a#toggleLink:hover {
+    text-decoration: underline;
+    color: #012970;
+  }
+
+  a#dom,
+  a#toggleLink {
+    color: #fff;
+    font-size: 20px;
+  }
+</style>
 
 <body>
   <!-- ======= Header ======= -->
@@ -204,103 +269,108 @@ $title = 'Acceuil';
     </div><!-- End Slides with captions -->
   </header><!-- End Header -->
 
-  <main id="main" style="margin-left: 0px; padding: 50px;">
+  <!-- ... Autres parties de votre code HTML ... -->
 
-    <section class="section card">
+  <main id="main" style="margin-left: 0px; padding: 30px;">
+    <section class="section" style="background-color: #fff;">
       <div class="row">
-        <div class="col-md-4">
-          <div class="card-body mt-3" style= background-color:black>
-            <h5 class="card-title">Domaines</h5>
-            <ul>
-              <li><a href="#">Cuisine</a></li>
-              <li>Cuisine</li>
-              <li>Cuisine</li>
-              <li>Cuisine</li>
-              <li>Cuisine</li>
-              <li>Cuisine</li>
-              <li>Cuisine</li>
-              <li>Cuisine</li>
-              <li>Cuisine</li>
-              <li>Cuisine</li>
-              <li>Cuisine</li>
+        <div class="col-md-4 p-4">
+            <div class="card-body overflow-hidden" style="background-color:#b97a56;" id="contentContainer">
+              <div class="container-center">
+                <h1 class="card-title">Domaines</h1>
+                <ul id="contentList">
+                  <li><a href="#" id="dom">Cuisine</a></li>
+                  <li><a href="#" id="dom">Cuisine</a></li>
+                  <li><a href="#" id="dom">Cuisine</a></li>
+                  <li><a href="#" id="dom">Cuisine</a></li>
+                  <li><a href="#" id="dom">Cuisine</a></li>
+                  <li><a href="#" id="dom">Cuisine</a></li>
+                  <li><a href="#" id="dom">Cuisine</a></li>
+                  <li><a href="#" id="dom">Cuisine</a></li>
 
-            </ul>
-          </div>
-        </div>
 
-        <div class="col-md-4">
-          <div class="card-body mt-3" style= background-color:black>
-            <h5 class="card-title">Domaines</h5>
-            <ul>
-              <li><a href="#">Cuisine</a></li>
-              <li>Cuisine</li>
-              <li>Cuisine</li>
-              <li>Cuisine</li>
-              <li>Cuisine</li>
-            </ul>
-          </div>
-        </div>
 
-        <div class="col-md-4">
-          <div class="card-body mt-3" style= background-color:black>
-            <h5 class="card-title">Domaines</h5>
-            <ul>
-              <li><a href="#">Cuisine</a></li>
-              <li>Cuisine</li>
-              <li>Cuisine</li>
-              <li>Cuisine</li>
-              <li>Cuisine</li>
-            </ul>
-          </div>
+                  <!-- ... Autres éléments de la liste ... -->
+                </ul>
+                <a href="#" id="toggleLink">Voir plus</a>
+              </div>
+            </div>
         </div>
       </div>
-      <div class="row">
-      <div class="col-md-4">
-          <div class="card-body mt-3" style= background-color:black>
-            <h5 class="card-title">Domaines</h5>
-            <ul>
-              <li><a href="#">Cuisine</a></li>
-              <li>Cuisine</li>
-              <li>Cuisine</li>
-              <li>Cuisine</li>
-              <li>Cuisine</li>
-              <li>Cuisine</li>
-              <li>Cuisine</li>
-              <li>Cuisine</li>
-
-            </ul>
-          </div>
-        </div>
-
-        <div class="col-md-4">
-          <div class="card-body mt-3" style= background-color:black>
-            <h5 class="card-title">Domaines</h5>
-            <ul>
-              <li><a href="#">Cuisine</a></li>
-              <li>Cuisine</li>
-              <li>Cuisine</li>
-              <li>Cuisine</li>
-              <li>Cuisine</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="col-md-4">
-          <div class="card-body mt-3" style= background-color:black>
-            <h5 class="card-title">Domaines</h5>
-            <ul>
-              <li><a href="#">Cuisine</a></li>
-              <li>Cuisine</li>
-              <li>Cuisine</li>
-              <li>Cuisine</li>
-              <li>Cuisine</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
     </section>
   </main>
+
+  <script>
+    // Récupérer l'élément du conteneur de contenu
+    const contentContainer = document.getElementById('contentContainer');
+
+
+    // Récupérer la hauteur du contenu initial
+    let initialContentHeight;
+
+    // Fonction pour ajuster la taille de l'arrière-plan en fonction de la hauteur réelle du contenu
+    function ajusterTailleArrierePlan() {
+      const contentHeight = contentContainer.scrollHeight;
+      contentContainer1.style.minHeight = contentHeight + "px";
+
+    }
+
+    // Fonction pour masquer tous les éléments de la liste au-delà du cinquième élément
+    function masquerContenu() {
+      const listeElements = contentContainer.querySelectorAll('li');
+      for (let i = 5; i < listeElements.length; i++) {
+        listeElements[i].style.display = "none";
+      }
+    }
+
+    // Fonction pour afficher tous les éléments de la liste
+    function afficherContenu() {
+      const listeElements = contentContainer.querySelectorAll('li');
+      for (let i = 5; i < listeElements.length; i++) {
+        listeElements[i].style.display = "list-item";
+      }
+    }
+
+    // Fonction pour gérer l'affichage du lien "Voir plus" en fonction du nombre d'éléments de la liste
+    function gererAffichageLienVoirPlus() {
+      const listeElements = contentContainer.querySelectorAll('li');
+      const toggleLink = document.getElementById('toggleLink');
+
+      if (listeElements.length > 5) {
+        toggleLink.style.display = "inline"; // Afficher le lien si plus de 5 éléments
+      } else {
+        toggleLink.style.display = "none"; // Masquer le lien s'il y a 5 éléments ou moins
+      }
+    }
+
+    // Fonction pour basculer l'affichage du contenu lors du clic sur le lien
+    function basculerContenu() {
+      const toggleLink = document.getElementById('toggleLink');
+      const lienTexte = toggleLink.innerText;
+
+      if (lienTexte === "Voir plus") {
+        afficherContenu();
+        toggleLink.innerText = "Réduire";
+      } else {
+        masquerContenu();
+        toggleLink.innerText = "Voir plus";
+      }
+
+      ajusterTailleArrierePlan();
+      gererAffichageLienVoirPlus();
+    }
+
+    // Ajouter un gestionnaire d'événement au lien "Voir plus"
+    toggleLink.addEventListener('click', basculerContenu);
+
+    // Masquer le contenu excédentaire et gérer l'affichage du lien "Voir plus" au chargement de la page
+    masquerContenu();
+    gererAffichageLienVoirPlus();
+  </script>
+
+  <!-- ... Autres parties de votre code HTML ... -->
+
+
 
   <?php
   include 'app/commun/footer_membre.php';

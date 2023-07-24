@@ -4,15 +4,22 @@ include 'app/commun/index.php';
 if (!empty($_SESSION["utilisateur_connecter_membre"])) {
 	header('location:' . PROJECT_DIR . 'membre/accueil/index');
 }
+$compteSupprime = isset($_GET['compte_supprime']) ? $_GET['compte_supprime'] : null;
 
-$data = [];
-if (isset($_SESSION['data']) && !empty($_SESSION['data'])) {
-	$data = $_SESSION['data'];
+if ($compteSupprime == 1) {
+    echo '<div class="alert alert-warning">Votre compte a été supprimé par le bibliothécaire.</div>';
 }
+// Vérifier si le cookie existe
+if (isset($_COOKIE['compte_supprime_message'])) {
+    // Afficher le message d'alerte
+	echo '<div class="alert alert-danger mt-3" style="color: white; background-color: #dc3545; border: 5px; text-align: center;">' . $_COOKIE['compte_supprime_message'] . '</div>';
+    // Supprimer le cookie
+    setcookie("compte_supprime_message", "", time() - 3600, "/");
+}
+
 if (isset($_COOKIE['utilisateur_connecter_membre']) and !empty($_COOKIE['utilisateur_connecter_membre'])) {
 	$users_utilisateur = json_decode($_COOKIE['utilisateur_connecter_membre']);
 }
-
 ?>
 <div class="container">
 <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
