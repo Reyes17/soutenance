@@ -44,16 +44,45 @@ include './app/commun/header.php';
 			<div class="col-md-12 col-lg-8 offset-lg-2 bd-example">
 
 				<form action="<?= PROJECT_DIR; ?>bibliothecaire/categorie/ajout_categorie_traitement" method="post">
+				<div class="mb-3 row">
+							<label for="libellé-domaine" class="col-sm-2 col-form-label">Domaine:</label>
+							<div class="col-sm-7">
+							<select class="form-select <?= isset($_SESSION['ajouter-categorie-errors']['domaine']) ? 'is-invalid' : '' ?>" id="libellé-domaine" name="domaine">
+                                <option value="0"></option>
+                                <?php
+                                // Appeler la fonction pour récupérer la liste des domaines
+                                $liste_domaine = get_liste_domaine();
+
+                                // Afficher les domaines dans le menu déroulant
+                                foreach ($liste_domaine as $domaine_item) {
+                                    $selected = $domaine === $domaine_item['cod_dom'] ? 'selected' : '';
+                                    echo '<option value="' . $domaine_item['cod_dom'] . '" ' . $selected . '>' . $domaine_item['lib_dom'] . '</option>';
+                                }
+                                ?>
+                            </select>
+								<?php
+							if (isset($_SESSION['ajouter-categorie-errors']['domaine'])) {
+							?>
+								<div class="invalid-feedback">
+									<?= $_SESSION['ajouter-categorie-errors']['domaine'] ?>
+								</div>
+							<?php
+							}
+							?>
+							</div>
+						</div>
+
+
 
 					<div class="mb-3 row">
 						<label for="libellé-categorie" class="col-sm-2 col-form-label">Categorie :</label>
 						<div class="col-sm-7">
-							<input type="text" class="form-control <?= isset($_SESSION['ajouter-categorie-errors']) ? 'is-invalid' : '' ?>" id="libellé-categorie" name="nom_cat" placeholder="Veuillez entrer la catégorie">
+							<input type="text" class="form-control <?= isset($_SESSION['ajouter-categorie-errors']['nom_cat']) ? 'is-invalid' : '' ?>" id="libellé-categorie" name="nom_cat" placeholder="Veuillez entrer la catégorie">
 							<?php
-							if (isset($_SESSION['ajouter-categorie-errors'])) {
+							if (isset($_SESSION['ajouter-categorie-errors']['nom_cat'])) {
 							?>
 								<div class="invalid-feedback">
-									<?= $_SESSION['ajouter-categorie-errors'] ?>
+									<?= $_SESSION['ajouter-categorie-errors']['nom_cat'] ?>
 								</div>
 							<?php
 							}

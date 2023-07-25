@@ -1594,43 +1594,33 @@ function obtenir_membre_par_id($id): ?array
 }
 
 
-/**
- * Cett fonction permet de d'ajouter une categorie à la base de données.
- *
- * @param string $categorie Le nom de la catégorie.
- *
- * @return bool $ajout_categorie Le resultat de l'ajout de la categorie.
- */
-function ajout_categorie(string $nom_cat): bool
+function ajout_categorie(string $nom_cat, int $domaine): bool
 {
-
     $ajout_categorie = false;
 
-    if (isset($nom_cat) && !empty($nom_cat)) {
-
+    if (isset($nom_cat) && !empty($nom_cat) && $domaine > 0) {
         $db = connect_db();
 
-        // Ecriture de la requête
-        $requette = 'INSERT INTO categorie (nom_cat) VALUES (:nom_cat);';
+        // Ecriture de la requête avec l'id du domaine
+        $requete = 'INSERT INTO categorie (cod_dom, nom_cat) VALUES (:cod_dom, :nom_cat);';
 
         // Préparation
-        $inserer_categorie = $db->prepare($requette);
+        $inserer_categorie = $db->prepare($requete);
 
-        // Exécution ! La recette est maintenant en base de données
+        // Exécution ! La catégorie est maintenant en base de données
         $resultat = $inserer_categorie->execute([
+            'cod_dom' => $domaine,
             'nom_cat' => $nom_cat
         ]);
-
 
         if ($resultat) {
             $ajout_categorie = true;
         }
-
     }
 
     return $ajout_categorie;
-
 }
+
 
 
 /** 
@@ -1650,7 +1640,7 @@ function check_if_categorie_exist(string $nom_cat)
        
         $users = $req->fetch();
         if(!empty($users) && is_array($users)){
-            $nom_cat=true;
+            $nomcat=true;
         }
     }
     return $nomcat;
@@ -1722,7 +1712,7 @@ function modifier_categorie(int $cod_cat, string $nom_cat): bool
 /**
  * Cett fonction permet de récupérer une categorie exitant dans la base de données via son code categorie.
  *
- * @param int $cod_dom
+ * @param int $cod_cat
  * @return  .
  */   
 function get_categorie_by_id(int $cod_cat) {
@@ -1773,4 +1763,123 @@ function supprimer_categorie($cod_cat) {
         return false;
     }
 }
+
+
+function ajout_ouvrage(string $titre, int $nb_ex, int $auteur_principal, ?int $auteur_secondaire, int $domaine, int $langue, int $categorie, ?string $annee_publication, ?string $image): bool
+{
+    $ajout_ouvrage = false;
+
+    if (!empty($titre) && $nb_ex > 0 && $auteur_principal > 0 && $domaine > 0 && $langue > 0 && $categorie > 0) {
+        $db = connect_db();
+
+        // Début de la transaction pour effectuer toutes les requêtes en une fois
+        $db->beginTransaction();
+
+        try {
+            // Vérifier si l'auteur principal existe déjà dans la base de données
+            $auteur_principal_existe = get_auteur_by_id($auteur_principal);
+
+            // Si l'auteur principal n'existe pas, annuler la transaction
+            if (!$auteur_principal_existe) {
+                $db->rollBack();
+                return false;
+            }
+
+            // Si l'auteur secondaire est spécifié, vérifier s'il existe dans la base de données
+            if ($auteur_secondaire) {
+                $auteur_secondaire_existe = get_auteur_secondaire_by_id($auteur_secondaire);
+
+                // Si l'auteur secondaire n'existe pas, annuler la transaction
+                if (!$auteur_secondaire_existe) {
+                    $db->rollBack();
+                    return false;
+                }
+            }
+
+            // Ajouter l'ouvrage dans la base de données
+            $requete_ouvrage = 'INSERT INTO ouvrage (titre, nb_ex, num_aut, image) VALUES (:titre, :nb_ex, :num_aut, :image)';
+            $inserer_ouvrage = $db->prepare($requete_ouvrage);
+            $resultat_ouvrage = $inserer_ouvrage->execute([
+                'titre' => $titre,
+                'nb_ex' => $nb_ex,
+                'num_aut' => $auteur_principal,
+                'image' => $image
+            ]);
+
+            // Vérifier si l'ajout de l'ouvrage a réussi
+            if (!$resultat_ouvrage) {
+                $db->rollBack();
+                return false;
+            }
+
+            // Récupérer le numéro de l'ouvrage ajouté
+            $cod_ouv = $db->lastInsertId();
+
+            // Ajouter le domaine de l'ouvrage dans la table "domaine_ouvrage"
+            $requete_domaine_ouvrage = 'INSERT INTO domaine_ouvrage (cod_ouv, cod_dom, cod_cat) VALUES (:cod_ouv, :cod_dom, :cod_cat)';
+            $inserer_domaine_ouvrage = $db->prepare($requete_domaine_ouvrage);
+            $resultat_domaine_ouvrage = $inserer_domaine_ouvrage->execute([
+                'cod_ouv' => $cod_ouv,
+                'cod_dom' => $domaine,
+                'cod_cat' => $categorie
+            ]);
+
+            // Vérifier si l'ajout du domaine de l'ouvrage a réussi
+            if (!$resultat_domaine_ouvrage) {
+                $db->rollBack();
+                return false;
+            }
+
+            // Ajouter la langue de l'ouvrage dans la table "date_parution"
+            if ($annee_publication) {
+                $requete_date_parution = 'INSERT INTO date_parution (cod_ouv, cod_lang, dat_par) VALUES (:cod_ouv, :cod_lang, :dat_par)';
+                $inserer_date_parution = $db->prepare($requete_date_parution);
+                $resultat_date_parution = $inserer_date_parution->execute([
+                    'cod_ouv' => $cod_ouv,
+                    'cod_lang' => $langue,
+                    'dat_par' => $annee_publication
+                ]);
+
+                // Vérifier si l'ajout de la date de parution a réussi
+                if (!$resultat_date_parution) {
+                    $db->rollBack();
+                    return false;
+                }
+            }
+
+            // Commit de la transaction si toutes les requêtes ont réussi
+            $db->commit();
+            $ajout_ouvrage = true;
+        } catch (Exception $e) {
+            // En cas d'erreur, annuler la transaction
+            $db->rollBack();
+            return false;
+        }
+    }
+
+    return $ajout_ouvrage;
+}
+
+
+/**
+ * Cette fonction vérifie si une catégorie appartient à un domaine donné.
+ *
+ * @param int $categorie L'ID de la catégorie à vérifier.
+ * @param int $domaine L'ID du domaine auquel la catégorie doit appartenir.
+ * @return bool True si la catégorie appartient au domaine, False sinon.
+ */
+function check_categorie_domaine(int $categorie, int $domaine): bool
+{
+    $db = connect_db();
+    $requete = 'SELECT COUNT(*) FROM categorie WHERE cod_cat = :categorie AND cod_dom = :domaine';
+    $query = $db->prepare($requete);
+    $query->execute(['categorie' => $categorie, 'domaine' => $domaine]);
+    $result = $query->fetchColumn();
+
+    return ($result > 0);
+}
+
+
+
+
 
