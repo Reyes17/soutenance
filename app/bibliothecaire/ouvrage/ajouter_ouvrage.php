@@ -244,17 +244,16 @@ $image_error = '';
 </section>
 
 <script>
-function get_categories_by_domaine(domaineId) {
-  // Vous pouvez utiliser AJAX pour appeler votre serveur PHP et récupérer les catégories en fonction de l'ID du domaine.
+function get_categories_by_domaine(domaine) {
+  // Utilisez AJAX pour appeler votre serveur PHP et récupérer les catégories en fonction de l'ID du domaine.
   // Par exemple, vous pouvez utiliser fetch() pour effectuer une requête AJAX.
   // Assurez-vous que votre serveur PHP renvoie les données au format JSON.
 
-  // Exemple de code pour récupérer les catégories (assurez-vous de remplacer 'votre_url' par l'URL de votre script PHP) :
-  fetch('<?= PROJECT_DIR . 'bibliothecaire/ouvrage/recuperer_categorie' ?>?domaine_id=' + domaineId)
+  // Exemple de code pour récupérer les catégories :
+  fetch('<?= PROJECT_DIR . 'bibliothecaire/ouvrage/recuperer_categorie'?>?domaine=' + domaine)
     .then(response => response.json())
     .then(data => {
-
-        console.log(data);
+      console.log(data);
       // Une fois que vous avez récupéré les catégories au format JSON, vous pouvez les utiliser pour générer les options de la liste déroulante des catégories.
       const categorieListe = document.getElementById('categorieListe');
       categorieListe.innerHTML = ''; // Vide la liste déroulante des catégories actuelle.
@@ -268,25 +267,26 @@ function get_categories_by_domaine(domaineId) {
       });
     })
     .catch(error => console.error('Erreur lors de la récupération des catégories :', error));
-    document.addEventListener('DOMContentLoaded', function() {
-  const domaineListe = document.getElementById('domaineListe');
-  const premierDomaineId = domaineListe.options[1].value; // Supposons que le premier domaine a un ID de 1.
-
-  get_categories_by_domaine(premierDomaineId);
-});
 }
 
 function updateCategories() {
   // Récupère l'ID du domaine sélectionné dans la liste déroulante des domaines.
   const domaineListe = document.getElementById('domaineListe');
-  const domaineId = domaineListe.value;
+  const domaine = domaineListe.value;
 
   // Appelle la fonction pour récupérer et mettre à jour les catégories en fonction du domaine sélectionné.
-  get_categories_by_domaine(domaineId);
+  get_categories_by_domaine(domaine);
 }
 
 // Assurez-vous que les options des domaines sont chargées avant d'appeler updateCategories() pour la première fois.
-// Vous pouvez également appeler updateCategories() lorsque la page est complètement chargée pour afficher les catégories du premier domaine par défaut.
+document.addEventListener('DOMContentLoaded', function() {
+  const domaineListe = document.getElementById('domaineListe');
+  const premierDomaine = domaineListe.options[1].value; // Supposons que le premier domaine a un ID de 1.
+
+  // Appelle updateCategories() pour afficher les catégories du premier domaine par défaut.
+  updateCategories();
+});
+
 </script>
 
 
