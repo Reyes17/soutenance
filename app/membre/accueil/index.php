@@ -279,7 +279,7 @@ if (isset($_COOKIE['compte_supprime_message'])) {
               <div class="container-center">
                 <h1 class="card-title">Domaines</h1>
                 <ul id="contentList">
-                  <li><a href="#" id="dom">Cuisine</a></li>
+                  <li><a href="<?= PROJECT_DIR; ?>membre/domaine_ouvrage/index" id="dom">Cuisine</a></li>
                   <li><a href="#" id="dom">Cuisine</a></li>
                   <li><a href="#" id="dom">Cuisine</a></li>
                   <li><a href="#" id="dom">Cuisine</a></li>

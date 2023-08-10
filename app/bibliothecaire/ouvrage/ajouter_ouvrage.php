@@ -75,7 +75,7 @@ $image_error = '';
                     </div>
 
                     <div class="mb-3 row">
-                        <label for="auteur-principal-ouvrage" class="col-sm-2 col-form-label">Auteur principal:</label>
+                        <label for="auteur-principal-ouvrage" class="col-sm-2 col-form-label">Auteur :</label>
                         <div class="col-sm-10">
                             <select class="form-select <?= isset($_SESSION['ajout-ouvrage-errors']['auteur-principal-ouvrage']) ? 'is-invalid' : '' ?>" id="auteur-principal-ouvrage" name="auteur-principal-ouvrage">
                                 <option value="0"></option>
@@ -98,20 +98,30 @@ $image_error = '';
                         </div>
                     </div>
 
+                    <div class="mb-3 row">
+                        <label for="image-ouvrage" class="col-sm-2 col-form-label">Image de la page de garde:</label>
+                        <div class="col-sm-10">
+                            <input type="file" class="form-control <?= isset($_SESSION['ajout-ouvrage-errors']['image-ouvrage']) ? 'is-invalid' : '' ?>" id="image-ouvrage" name="image-ouvrage">
+                            <?php if (isset($_SESSION['ajout-ouvrage-errors']['image-ouvrage'])) : ?>
+                                <div class="invalid-feedback">
+                                    <?= $_SESSION['ajout-ouvrage-errors']['image-ouvrage'] ?>
+                                </div>
+                            <?php endif; ?>
 
+                        </div>
+                    </div>
                     <div class="mb-3 row">
                         <label for="auteurs-secondaires-ouvrage" class="col-sm-2 col-form-label">Auteurs secondaires:</label>
                         <div class="col-sm-10">
-                            <select class="form-select <?= isset($_SESSION['ajout-ouvrage-errors']['auteurs-secondaires-ouvrage']) ? 'is-invalid' : '' ?>" id="auteurs-secondaires-ouvrage" name="auteurs-secondaires-ouvrage">
-                                <option value="0"></option>
+                            <select class="form-select <?= isset($_SESSION['ajout-ouvrage-errors']['auteurs-secondaires-ouvrage']) ? 'is-invalid' : '' ?>" id="auteurs-secondaires-ouvrage" name="auteurs-secondaires-ouvrage[]" multiple>
                                 <?php
                                 // Appeler la fonction pour récupérer la liste des auteurs secondaires
-                                $liste_auteur_secondaire = get_liste_auteurs_secondaire();
+                                $liste_auteur = get_liste_auteurs();
 
                                 // Afficher les auteurs secondaires dans le menu déroulant
-                                foreach ($liste_auteur_secondaire as $auteur_secondaire) {
-                                    $selected = $auteur_secondaire === $auteur_secondaire['id'] ? 'selected' : '';
-                                    echo '<option value="' . $auteur_secondaire['id'] . '" ' . $selected . '>' . $auteur_secondaire['nom_aut_secondaire'] . ' ' . $auteur_secondaire['prenom_aut_secondaire'] . '</option>';
+                                foreach ($liste_auteur as $auteur) {
+                                    $selected = $auteur === $auteur['num_aut'] ? 'selected' : '';
+                                    echo '<option value="' . $auteur['num_aut'] . '" ' . $selected . '>' . $auteur['nom_aut'] . ' ' . $auteur['prenom_aut'] . '</option>';
                                 }
                                 ?>
                             </select>
@@ -126,7 +136,7 @@ $image_error = '';
                     <div class="mb-3 row">
                         <label for="domaineListe" class="col-sm-2 col-form-label">Domaine:</label>
                         <div class="col-sm-10">
-                            <select class="form-select <?= isset($_SESSION['ajout-ouvrage-errors']['domaine-ouvrage']) ? 'is-invalid' : '' ?>" id="domaineListe" name="domaine-ouvrage"   onchange="updateCategories()">
+                            <select class="form-select <?= isset($_SESSION['ajout-ouvrage-errors']['domaine-ouvrage']) ? 'is-invalid' : '' ?>" id="domaine-ouvrage" name="domaine-ouvrage[]" multiple>
                                 <option value="0"></option>
                                 <?php
                                 // Appeler la fonction pour récupérer la liste des domaines
@@ -147,44 +157,21 @@ $image_error = '';
                         </div>
                     </div>
 
-                    <div class="mb-3 row">
-                        <label for="categorieListe" class="col-sm-2 col-form-label">Catégorie:</label>
-                        <div class="col-sm-10">
-                            <select class="form-select <?= isset($_SESSION['ajout-ouvrage-errors']['categorie-ouvrage']) ? 'is-invalid' : '' ?>" id="categorieListe" name="categorie-ouvrage" >
+
+
+                    <div class="row mt-3">
+                        <label for="langue-et-annnee" class="col-sm-2 col-form-label">Langue et année de publication:</label>
+                        <div class="col-md-5">
+                            <select class="form-select langue-select <?= isset($_SESSION['ajout-ouvrage-errors']['langue-ouvrage']) ? 'is-invalid' : '' ?>" id="langue et annnee" name="langue[]" required data-index="0">
                                 <option value="0"></option>
                                 <?php
-                                // Appeler la fonction pour récupérer la liste des catégories
-                                $liste_categorie = get_liste_categorie();
-
-                                // Afficher les catégories dans le menu déroulant
-                                foreach ($liste_categorie as $categorie_item) {
-                                    $selected = ($categorie === $categorie_item['cod_cat']) ? 'selected' : '';
-
-                                    echo '<option value="' . $categorie_item['cod_cat'] . '" ' . $selected . '>' . $categorie_item['nom_cat'] . '</option>';
-                                }
-                                ?>
-                            </select>
-                            <?php if (isset($_SESSION['ajout-ouvrage-errors']['categorie-ouvrage'])) : ?>
-                                <div class="invalid-feedback">
-                                    <?= $_SESSION['ajout-ouvrage-errors']['categorie-ouvrage'] ?>
-                                </div>
-                            <?php endif; ?>
-                        </div>
-                    </div>
-
-                    <div class="mb-3 row">
-                        <label for="langue-ouvrage" class="col-sm-2 col-form-label">Langue:</label>
-                        <div class="col-sm-10">
-                            <select class="form-select <?= isset($_SESSION['ajout-ouvrage-errors']['langue-ouvrage']) ? 'is-invalid' : '' ?>" id="langue-ouvrage" name="langue-ouvrage">
-                                <option value="0"></option>
-                                <?php
-                                // Appeler la fonction pour récupérer la liste des langues
+                                // Appeler la fonction pour récupérer la liste des domaines
                                 $liste_langue = get_liste_langue();
 
-                                // Afficher les langues dans le menu déroulant
-                                foreach ($liste_langue as $langue_item) {
-                                    $selected = $langue === $langue_item['cod_lang'] ? 'selected' : '';
-                                    echo '<option value="' . $langue_item['cod_lang'] . '" ' . $selected . '>' . $langue_item['lib_lang'] . '</option>';
+                                // Afficher les domaines dans le menu déroulant
+                                foreach ($liste_langue as $langue) {
+                                    $selected = $langue === $langue['cod_lang'] ? 'selected' : '';
+                                    echo '<option value="' . $langue['cod_lang'] . '" ' . $selected . '>' . $langue['lib_lang'] . '</option>';
                                 }
                                 ?>
                             </select>
@@ -194,47 +181,39 @@ $image_error = '';
                                 </div>
                             <?php endif; ?>
                         </div>
-                    </div>
-                    
-
-                    <div class="mb-3 row">
-                        <label for="annee-publication" class="col-sm-2 col-form-label">Année de publication:</label>
-                        <div class="col-sm-10">
-                            <select class="form-select <?= isset($_SESSION['ajout-ouvrage-errors']['annee-publication']) ? 'is-invalid' : '' ?>" id="annee-publication" name="annee-publication">
+                        <div class="col-md-4">
+                            <select class="form-select annee-publication-select <?= isset($_SESSION['ajout-ouvrage-errors']['annee_publication']) ? 'is-invalid' : '' ?>" id="langue et annnee" name="annee_publication[]" required data-index="0">
                                 <option value="0"></option>
                                 <?php
                                 $anneeActuelle = date("Y");
-                                for ($annee = 1870; $annee <= 2024; $annee++) {
-                                    $selected = $annee_publication === strval($annee) ? 'selected' : '';
+                                $anneeDebut = 1700; // Année de départ
+                                $anneeFin = $anneeActuelle; // Année de fin (utilise $anneeActuelle ou une autre valeur si nécessaire)
+
+                                for ($annee = $anneeDebut; $annee <= $anneeFin; $annee++) {
+                                    $selected = in_array(strval($annee), $annee_publication) ? 'selected' : '';
                                     echo '<option value="' . $annee . '" ' . $selected . '>' . $annee . '</option>';
                                 }
                                 ?>
                             </select>
-                            <?php if (isset($_SESSION['ajout-ouvrage-errors']['annee-publication'])) : ?>
+                            <?php if (isset($_SESSION['ajout-ouvrage-errors']['langue-ouvrage'])) : ?>
                                 <div class="invalid-feedback">
-                                    <?= $_SESSION['ajout-ouvrage-errors']['annee-publication'] ?>
+                                    <?= $_SESSION['ajout-ouvrage-errors']['langue-ouvrage'] ?>
                                 </div>
                             <?php endif; ?>
                         </div>
-                    </div>
-
-                    <div class="mb-3 row">
-                        <label for="image-ouvrage" class="col-sm-2 col-form-label">Image de la page de garde:</label>
-                        <div class="col-sm-10">
-                            <input type="file" class="form-control <?= isset($_SESSION['ajout-ouvrage-errors']['image-ouvrage']) ? 'is-invalid' : '' ?>" id="image-ouvrage" name="image-ouvrage">
-                            <?php if (isset($_SESSION['ajout-ouvrage-errors']['image-ouvrage'])) : ?>
-                                <div class="invalid-feedback">
-                                    <?= $_SESSION['ajout-ouvrage-errors']['image-ouvrage'] ?>
-                                </div>
-                            <?php endif; ?>
-
+                        <div class="col-md-1">
+                            <button type="button" class="btn btn-success btn-add">+</button>
                         </div>
+                        <div id="form-container"></div>
                     </div>
-                    
+
+
+
                     <div class="row">
                         <div class="col-sm-12 text-center mt-3">
                             <button type="submit" class="btn btn-success w-50"> Ajouter</button>
                         </div>
+
                     </div>
                 </form>
 
@@ -242,54 +221,94 @@ $image_error = '';
         </div>
     </main>
 </section>
-
 <script>
-function get_categories_by_domaine(domaine) {
-  // Utilisez AJAX pour appeler votre serveur PHP et récupérer les catégories en fonction de l'ID du domaine.
-  // Par exemple, vous pouvez utiliser fetch() pour effectuer une requête AJAX.
-  // Assurez-vous que votre serveur PHP renvoie les données au format JSON.
+    document.addEventListener('DOMContentLoaded', function() {
+        // Compteur pour identifier les champs ajoutés
+        let counter = 1;
 
-  // Exemple de code pour récupérer les catégories :
-  fetch('<?= PROJECT_DIR . 'bibliothecaire/ouvrage/recuperer_categorie'?>?domaine=' + domaine)
-    .then(response => response.json())
-    .then(data => {
-      console.log(data);
-      // Une fois que vous avez récupéré les catégories au format JSON, vous pouvez les utiliser pour générer les options de la liste déroulante des catégories.
-      const categorieListe = document.getElementById('categorieListe');
-      categorieListe.innerHTML = ''; // Vide la liste déroulante des catégories actuelle.
+        // Fonction pour créer un nouveau champ "Langue et année de publication"
+        function createNewField() {
+            const row = document.createElement('div');
+            row.classList.add('row', 'mt-3');
 
-      // Génère les nouvelles options de la liste déroulante des catégories.
-      data.forEach(categorie => {
-        const option = document.createElement('option');
-        option.value = categorie.cod_cat;
-        option.textContent = categorie.nom_cat;
-        categorieListe.appendChild(option);
-      });
-    })
-    .catch(error => console.error('Erreur lors de la récupération des catégories :', error));
-}
+            const label = document.createElement('label');
+            label.classList.add('col-sm-2', 'col-form-label');
+            label.textContent = 'Langue et année de publication:';
 
-function updateCategories() {
-  // Récupère l'ID du domaine sélectionné dans la liste déroulante des domaines.
-  const domaineListe = document.getElementById('domaineListe');
-  const domaine = domaineListe.value;
+            const col1 = document.createElement('div');
+            col1.classList.add('col-md-5');
 
-  // Appelle la fonction pour récupérer et mettre à jour les catégories en fonction du domaine sélectionné.
-  get_categories_by_domaine(domaine);
-}
+            const selectLangue = document.createElement('select');
+            selectLangue.classList.add('form-select', 'langue-select');
+            selectLangue.name = 'langue[]';
+            selectLangue.required = true;
+            selectLangue.dataset.index = counter;
+            selectLangue.innerHTML = `
+            <option value="0"></option>
+            <?php
+            // Code PHP pour afficher les langues (comme dans ton code d'origine)
+            ?>
+        `;
 
-// Assurez-vous que les options des domaines sont chargées avant d'appeler updateCategories() pour la première fois.
-document.addEventListener('DOMContentLoaded', function() {
-  const domaineListe = document.getElementById('domaineListe');
-  const premierDomaine = domaineListe.options[1].value; // Supposons que le premier domaine a un ID de 1.
+            const col2 = document.createElement('div');
+            col2.classList.add('col-md-4');
 
-  // Appelle updateCategories() pour afficher les catégories du premier domaine par défaut.
-  updateCategories();
-});
+            const selectAnnee = document.createElement('select');
+            selectAnnee.classList.add('form-select', 'annee-publication-select');
+            selectAnnee.name = 'annee_publication[]';
+            selectAnnee.required = true;
+            selectAnnee.dataset.index = counter;
+            selectAnnee.innerHTML = `
+            <option value="0"></option>
+            <?php
+            // Code PHP pour afficher les années (comme dans ton code d'origine)
+            ?>
+        `;
 
+            const col3 = document.createElement('div');
+            col3.classList.add('col-md-1');
+
+            const btnRemove = document.createElement('button');
+            btnRemove.type = 'button';
+            btnRemove.classList.add('btn', 'btn-danger', 'btn-remove');
+            btnRemove.textContent = '-';
+            btnRemove.dataset.index = counter;
+
+            col1.appendChild(selectLangue);
+            col2.appendChild(selectAnnee);
+            col3.appendChild(btnRemove);
+
+            row.appendChild(label);
+            row.appendChild(col1);
+            row.appendChild(col2);
+            row.appendChild(col3);
+
+            document.getElementById('form-container').appendChild(row);
+
+            // Incrémenter le compteur pour les futurs champs ajoutés
+            counter++;
+        }
+
+        // Fonction pour supprimer un champ "Langue et année de publication"
+        function removeField(index) {
+            const fieldToRemove = document.querySelector(`[data-index="${index}"]`).closest('.row');
+            fieldToRemove.remove();
+        }
+
+        // Gérer le clic sur le bouton "+"
+        document.querySelector('.btn-add').addEventListener('click', function() {
+            createNewField();
+        });
+
+        // Gérer le clic sur le bouton "-"
+        document.addEventListener('click', function(event) {
+            if (event.target.classList.contains('btn-remove')) {
+                const indexToRemove = event.target.dataset.index;
+                removeField(indexToRemove);
+            }
+        });
+    });
 </script>
-
-
 
 <?php
 include './app/commun/footer.php';

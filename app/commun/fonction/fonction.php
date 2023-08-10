@@ -1198,6 +1198,7 @@ function ajout_domaine(string $domaine): bool
 }
 
 
+
 /** 
 *Cette fonction permet de vérifier si un domaine existe dans la base de données
  * @param string $lib_dom libellé de la domaine.
@@ -1340,157 +1341,6 @@ function supprimer_domaine($cod_dom) {
 }
 
 
-/**
- * Cette fonction permet d'ajouter un auteur secondaire à la base de données.
- *
- * @param string $nom_aut_secondaire Le nom de l'auteur.
- * @param string $prenom_aut_secondaire Le prénom de l'auteur.
- *
- * @return bool $ajout_auteur_secondaire Le résultat de l'ajout de l'auteur secondaire.
- */
-function ajout_auteur_secondaire(string $nom_aut_secondaire, string $prenom_aut_secondaire): bool
-{
-    $ajout_auteur_secondaire = false;
-
-    if (!empty($nom_aut_secondaire) && !empty($prenom_aut_secondaire)) {
-        $db = connect_db();
-
-        // Ecriture de la requête
-        $requete = 'INSERT INTO auteur_secondaire (nom_aut_secondaire, prenom_aut_secondaire) VALUES (:nom_aut_secondaire, :prenom_aut_secondaire)';
-
-        // Préparation
-        $inserer_auteur_secondaire = $db->prepare($requete);
-
-        // Exécution ! L'auteur est maintenant en base de données
-        $resultat = $inserer_auteur_secondaire->execute([
-            'nom_aut_secondaire' => $nom_aut_secondaire,
-            'prenom_aut_secondaire' => $prenom_aut_secondaire
-        ]);
-
-        if ($resultat) {
-            $ajout_auteur_secondaire = true;
-        }
-    }
-
-    return $ajout_auteur_secondaire;
-}
-
-/**
- * Cette fonction permet de récupérer la liste des auteurs secondaires de la base de donnée.
- *
- * @return array $liste_auteurs_secondaires La liste des auteurs.
- */
-function get_liste_auteurs_secondaire(): array
-{
-
-    $liste_auteurs_secondaires = array();
-
-    $db = connect_db();
-
-    // Ecriture de la requête
-    $requette = 'SELECT * FROM auteur_secondaire';
-
-    // Préparation
-    $verifier_liste_auteurs_secondaires = $db->prepare($requette);
-
-    // Exécution ! La recette est maintenant en base de données
-    $resultat = $verifier_liste_auteurs_secondaires->execute();
-
-    if ($resultat) {
-
-        $liste_auteurs_secondaires = $verifier_liste_auteurs_secondaires->fetchAll(PDO::FETCH_ASSOC);
-
-    }
-
-
-    return $liste_auteurs_secondaires;
-
-}
-
-
-/**
- * Modifie un auteurnsecondaire dans la base de données.
- *
- * @param int $id Le numéro de l'auteur à modifier.
- * @param string $nom_aut_secondaire Le nouveau nom de l'auteur secondaire.
- * @param string $prenom_aut_secondaire Le nouveau prénom de l'auteur secondaire.
- * @return bool True si la modification a réussi, False sinon.
- */
-function modifier_auteur_secondaire(int $id, string $nom_aut_secondaire, string $prenom_aut_secondaire): bool
-{
-    $modifier = false;
-    $date = date("Y-m-d H:i:s");
-    $db = connect_db();
-    $req_prepare = $db->prepare('UPDATE auteur_secondaire SET nom_aut_secondaire = :nom_aut_secondaire, prenom_aut_secondaire = :prenom_aut_secondaire, maj_le = :maj_le WHERE id = :id');
-    $req_exec = $req_prepare->execute([
-        'nom_aut_secondaire' => $nom_aut_secondaire,
-        'prenom_aut_secondaire' => $prenom_aut_secondaire,
-        'maj_le' => $date,
-        'id' => $id
-    ]);
-
-    if ($req_exec) {
-        $modifier = true;
-    }
-    return $modifier;
-}
-
-
-/**
- * Vérifie si un auteur secondaire existe dans la base de données.
- * @param string $nom Nom de l'auteur.
- * @param string $prenom Prénom de l'auteur.
- * @return string|bool Message d'erreur si l'auteur existe, False sinon.
- */
-function check_if_auteur_secondaire_exist(string $nom, string $prenom)
-{
-    $db = connect_db();
-    $req = $db->prepare('SELECT id FROM auteur_secondaire WHERE nom_aut_secondaire = ? AND prenom_aut_secondaire = ?');
-    $req_exec = $req->execute([$nom, $prenom]);
-
-    if ($req_exec) {
-        $auteur_secondaire = $req->fetch();
-        if ($auteur_secondaire !== false) {
-            return 'Cet auteur existe déjà';
-        }
-    }
-
-    return false;
-}
-
-
-
-
-/**
- * Cett fonction permet de supprimer  un auteur secondaire exitant dans la base de données via son id d'auteur.
- *
- * @param int $id
- * @return bool .
- */
-function supprimer_auteur_secondaire($id) {
-    // Vérifier si l'auteur existe
-    $auteur_secondaire = get_auteur_secondaire_by_id($id);
-
-    if (empty($auteur_secondaire)) {
-        // L'auteur n'existe pas, retourner false ou gérer l'erreur selon vos besoins
-        return false;
-    }
-
-    // Supprimer l'auteur de la base de données
-    $db = connect_db();
-    $sql = "DELETE FROM auteur_secondaire WHERE id = :id";
-    $stmt = $db->prepare($sql);
-    $stmt->bindValue(':id', $id, PDO::PARAM_INT);
-    $result = $stmt->execute();
-
-    if ($result) {
-        // Suppression réussie
-        return true;
-    } else {
-        // Suppression échouée, gérer l'erreur selon vos besoins
-        return false;
-    }
-}
 
 
 /**
@@ -1593,293 +1443,146 @@ function obtenir_membre_par_id($id): ?array
     }
 }
 
-
-function ajout_categorie(string $nom_cat, int $domaine): bool
-{
-    $ajout_categorie = false;
-
-    if (isset($nom_cat) && !empty($nom_cat) && $domaine > 0) {
-        $db = connect_db();
-
-        // Ecriture de la requête avec l'id du domaine
-        $requete = 'INSERT INTO categorie (cod_dom, nom_cat) VALUES (:cod_dom, :nom_cat);';
-
-        // Préparation
-        $inserer_categorie = $db->prepare($requete);
-
-        // Exécution ! La catégorie est maintenant en base de données
-        $resultat = $inserer_categorie->execute([
-            'cod_dom' => $domaine,
-            'nom_cat' => $nom_cat
-        ]);
-
-        if ($resultat) {
-            $ajout_categorie = true;
-        }
-    }
-
-    return $ajout_categorie;
-}
-
-
-
-/** 
-*Cette fonction permet de vérifier si une catégorie existe dans la base de données
- * @param string $nom_cat nom de la catégorie.
- * @return bool 
-     
- */
-function check_if_categorie_exist(string $nom_cat)
-{
-    $users=[];
-    $nomcat = false;
-    $db = connect_db();
-    $req = $db->prepare('SELECT cod_cat from categorie WHERE nom_cat=?');
-    $req_exec=$req->execute([$nom_cat]);
-    if($req_exec){
-       
-        $users = $req->fetch();
-        if(!empty($users) && is_array($users)){
-            $nomcat=true;
-        }
-    }
-    return $nomcat;
-    }
-
-
-	
 /**
- * Cette fonction permet de récupérer la liste des catégories de la base de donnée.
+ * Cette fonction permet d'ajouter un ouvrage à la base de données.
  *
- * @return array $liste_categorie La liste des categories.
+ * @param string $titre Le titre de l'ouvrage.
+ * @param int $nb_exemplaire Le nombre d'exemplaires.
+ * @param int $auteur_principal_id L'ID de l'auteur principal.
+ * @param string $image_path Le chemin de l'image.
+ *
+ * @return int|bool L'ID de la dernière ligne insérée ou false en cas d'erreur.
  */
-function get_liste_categorie(): array
+function ajouterOuvrage(string $titre, int $nb_exemplaire, int $auteur_principal_id, string $image_path)
 {
-
-    $liste_categorie = array();
-
-    $db = connect_db();
-
-    // Ecriture de la requête
-    $requette = 'SELECT * FROM categorie';
-
-    // Préparation
-    $verifier_liste_categorie = $db->prepare($requette);
-
-    // Exécution ! La recette est maintenant en base de données
-    $resultat = $verifier_liste_categorie->execute();
-
-    if ($resultat) {
-
-        $liste_categorie = $verifier_liste_categorie->fetchAll(PDO::FETCH_ASSOC);
-
-    }
-
-
-    return $liste_categorie;
-
-}
-
-
-/**
- * Modifie une catégorie dans la base de données.
- *
- * @param int $cod_cat Le code de la catégorie à modifier.
- * @param string $nom_cat La nouvelle catégorie.
- 
- * @return bool True si la modification a réussi, False sinon.
- */
-function modifier_categorie(int $cod_cat, string $nom_cat): bool
-{
-    $modifier = false;
-    $date = date("Y-m-d H:i:s");
-    $db = connect_db();
-    $req_prepare = $db->prepare('UPDATE categorie SET nom_cat = :nom_cat, maj_le = :maj_le WHERE cod_cat = :cod_cat');
-    $req_exec = $req_prepare->execute([
-        'cod_cat' => $cod_cat,
-		'nom_cat' => $nom_cat,        
-        'maj_le' => $date
-
-    ]);
-
-    if ($req_exec) {
-        $modifier = true;
-    }
-    return $modifier;
-}
-
-
-/**
- * Cett fonction permet de récupérer une categorie exitant dans la base de données via son code categorie.
- *
- * @param int $cod_cat
- * @return  .
- */   
-function get_categorie_by_id(int $cod_cat) {
-    $db = connect_db();
-    // Requête pour récupérer le domaine par son cod_dom
-    $requete = 'SELECT * FROM categorie WHERE cod_cat = :cod_cat';
-
-    // Préparation de la requête
-    $query = $db->prepare($requete);
-
-    // Exécution de la requête en liant le paramètre :num_aut
-    $query->execute(['cod_cat' => $cod_cat]);
-
-    // Récupération du résultat de la requête
-    $categorie = $query->fetch(PDO::FETCH_ASSOC);
-
-    return $categorie;
-}
-
-
-/**
- * Cett fonction permet de supprimer  une categorie exitant dans la base de données via son code categorie.
- *
- * @param int $cod_dom
- * @return bool .
- */
-function supprimer_categorie($cod_cat) {
-    // Vérifier si le domaine existe
-    $categorie = get_categorie_by_id($cod_cat);
-
-    if (empty($categorie)) {
-        // Le domaine n'existe pas, retourner false
+    if (empty($titre) || $nb_exemplaire <= 0 || empty($image_path) || !file_exists($image_path)) {
         return false;
     }
 
-    // Supprimer le domaine de la base de données
     $db = connect_db();
-    $sql = "DELETE FROM categorie WHERE cod_cat = :cod_cat";
-    $stmt = $db->prepare($sql);
-    $stmt->bindValue(':cod_cat', $cod_cat, PDO::PARAM_INT);
-    $result = $stmt->execute();
+    $sql_insert_ouvrage = "INSERT INTO ouvrage (titre, nb_ex, num_aut, img) VALUES (:titre, :nb_exemplaire, :auteur_principal_id, :image_path)";
 
-    if ($result) {
-        // Suppression réussie
-        return true;
-    } else {
-        // Suppression échouée
-        return false;
-    }
-}
+    try {
+        $requete = $db->prepare($sql_insert_ouvrage);
+        $requete->bindParam(':titre', $titre);
+        $requete->bindParam(':nb_exemplaire', $nb_exemplaire);
+        $requete->bindParam(':auteur_principal_id', $auteur_principal_id);
+        $requete->bindParam(':image_path', $image_path);
 
-
-function ajout_ouvrage(string $titre, int $nb_ex, int $auteur_principal, ?int $auteur_secondaire, int $domaine, int $langue, int $categorie, ?string $annee_publication, ?string $image): bool
-{
-    $ajout_ouvrage = false;
-
-    if (!empty($titre) && $nb_ex > 0 && $auteur_principal > 0 && $domaine > 0 && $langue > 0 && $categorie > 0) {
-        $db = connect_db();
-
-        // Début de la transaction pour effectuer toutes les requêtes en une fois
-        $db->beginTransaction();
-
-        try {
-            // Vérifier si l'auteur principal existe déjà dans la base de données
-            $auteur_principal_existe = get_auteur_by_id($auteur_principal);
-
-            // Si l'auteur principal n'existe pas, annuler la transaction
-            if (!$auteur_principal_existe) {
-                $db->rollBack();
-                return false;
-            }
-
-            // Si l'auteur secondaire est spécifié, vérifier s'il existe dans la base de données
-            if ($auteur_secondaire) {
-                $auteur_secondaire_existe = get_auteur_secondaire_by_id($auteur_secondaire);
-
-                // Si l'auteur secondaire n'existe pas, annuler la transaction
-                if (!$auteur_secondaire_existe) {
-                    $db->rollBack();
-                    return false;
-                }
-            }
-
-            // Ajouter l'ouvrage dans la base de données
-            $requete_ouvrage = 'INSERT INTO ouvrage (titre, nb_ex, num_aut, image) VALUES (:titre, :nb_ex, :num_aut, :image)';
-            $inserer_ouvrage = $db->prepare($requete_ouvrage);
-            $resultat_ouvrage = $inserer_ouvrage->execute([
-                'titre' => $titre,
-                'nb_ex' => $nb_ex,
-                'num_aut' => $auteur_principal,
-                'image' => $image
-            ]);
-
-            // Vérifier si l'ajout de l'ouvrage a réussi
-            if (!$resultat_ouvrage) {
-                $db->rollBack();
-                return false;
-            }
-
-            // Récupérer le numéro de l'ouvrage ajouté
-            $cod_ouv = $db->lastInsertId();
-
-            // Ajouter le domaine de l'ouvrage dans la table "domaine_ouvrage"
-            $requete_domaine_ouvrage = 'INSERT INTO domaine_ouvrage (cod_ouv, cod_dom, cod_cat) VALUES (:cod_ouv, :cod_dom, :cod_cat)';
-            $inserer_domaine_ouvrage = $db->prepare($requete_domaine_ouvrage);
-            $resultat_domaine_ouvrage = $inserer_domaine_ouvrage->execute([
-                'cod_ouv' => $cod_ouv,
-                'cod_dom' => $domaine,
-                'cod_cat' => $categorie
-            ]);
-
-            // Vérifier si l'ajout du domaine de l'ouvrage a réussi
-            if (!$resultat_domaine_ouvrage) {
-                $db->rollBack();
-                return false;
-            }
-
-            // Ajouter la langue de l'ouvrage dans la table "date_parution"
-            if ($annee_publication) {
-                $requete_date_parution = 'INSERT INTO date_parution (cod_ouv, cod_lang, dat_par) VALUES (:cod_ouv, :cod_lang, :dat_par)';
-                $inserer_date_parution = $db->prepare($requete_date_parution);
-                $resultat_date_parution = $inserer_date_parution->execute([
-                    'cod_ouv' => $cod_ouv,
-                    'cod_lang' => $langue,
-                    'dat_par' => $annee_publication
-                ]);
-
-                // Vérifier si l'ajout de la date de parution a réussi
-                if (!$resultat_date_parution) {
-                    $db->rollBack();
-                    return false;
-                }
-            }
-
-            // Commit de la transaction si toutes les requêtes ont réussi
-            $db->commit();
-            $ajout_ouvrage = true;
-        } catch (Exception $e) {
-            // En cas d'erreur, annuler la transaction
-            $db->rollBack();
+        if ($requete->execute()) {
+            return $db->lastInsertId();
+        } else {
             return false;
         }
+    } catch (PDOException $e) {
+        return false;
     }
-
-    return $ajout_ouvrage;
 }
 
 
 /**
- * Cette fonction vérifie si une catégorie appartient à un domaine donné.
+ * Cette fonction permet d'associer les auteurs secondaires à un ouvrage dans la table auteur_secondaire.
  *
- * @param int $categorie L'ID de la catégorie à vérifier.
- * @param int $domaine L'ID du domaine auquel la catégorie doit appartenir.
- * @return bool True si la catégorie appartient au domaine, False sinon.
+ * @param int $id_ouvrage L'identifiant de l'ouvrage auquel les auteurs secondaires seront associés.
+ * @param array $id_auteurs_secondaires Un tableau contenant les identifiants des auteurs secondaires à associer.
+ *
+ * @return bool Renvoie true si l'opération s'est déroulée avec succès, sinon renvoie false.
  */
-function check_categorie_domaine(int $categorie, int $domaine): bool
+function associerAuteursSecondairesOuvrage(int $id_ouvrage, array $id_auteurs_secondaires): bool
 {
-    $db = connect_db();
-    $requete = 'SELECT COUNT(*) FROM categorie WHERE cod_cat = :categorie AND cod_dom = :domaine';
-    $query = $db->prepare($requete);
-    $query->execute(['categorie' => $categorie, 'domaine' => $domaine]);
-    $result = $query->fetchColumn();
+    if (empty($id_auteurs_secondaires)) {
+        return false;
+    }
 
-    return ($result > 0);
+    $db = connect_db();
+    $sql_insert_auteurs_secondaires = "INSERT INTO auteur_secondaire (cod_ouv, num_aut) VALUES (:id_ouvrage, :num_aut)";
+
+    try {
+        $stmt_insert = $db->prepare($sql_insert_auteurs_secondaires);
+
+        foreach ($id_auteurs_secondaires as $num_aut) {
+            $stmt_insert->execute([
+                'id_ouvrage' => $id_ouvrage,
+                'num_aut' => $num_aut
+            ]);
+        }
+
+        return true;
+    } catch (PDOException $e) {
+        return false;
+    }
 }
 
 
 
+/**
+ * Cette fonction permet d'ajouter les domaines liés à un ouvrage dans la table domaine_ouvrage.
+ *
+ * @param int $id_ouvrage L'identifiant de l'ouvrage auquel lier les domaines.
+ * @param array $id_domaines Les identifiants des domaines à lier.
+ *
+ * @return bool Indique si l'opération d'ajout a réussi ou non.
+ */
+function ajouterDomainesOuvrage(int $id_ouvrage, array $id_domaines): bool
+{
+    if (empty($id_domaines)) {
+        return false;
+    }
+
+    $db = connect_db();
+    $sql_insert_domaine_ouvrage = "INSERT INTO domaine_ouvrage (cod_ouv, cod_dom) VALUES (:id_ouvrage, :cod_dom)";
+
+    try {
+        $stmt_insert = $db->prepare($sql_insert_domaine_ouvrage);
+
+        foreach ($id_domaines as $cod_dom) {
+            $stmt_insert->execute([
+                'id_ouvrage' => $id_ouvrage,
+                'cod_dom' => $cod_dom
+            ]);
+        }
+
+        return true; // Indiquer que l'ajout a réussi
+    } catch (PDOException $e) {
+        return false; // Indiquer qu'il y a eu une erreur
+    }
+}
+
+
+/**
+ * Cette fonction permet d'associer les langues et les dates de parution à un ouvrage dans la table date_parution.
+ *
+ * @param int $id_ouvrage L'identifiant de l'ouvrage auquel lier les langues et les dates de parution.
+ * @param array $langues Les identifiants des langues à lier.
+ * @param array $dates_parution Les dates de parution associées à chaque langue.
+ *
+ * @return bool Indique si l'opération d'association a réussi ou non.
+ */
+function associerLanguesDatesParutionOuvrage(int $id_ouvrage, array $langues, array $dates_parution): bool
+{
+    if (count($langues) !== count($dates_parution)) {
+        return false;
+    }
+
+    $db = connect_db();
+    $sql_assoc_langues_dates = "INSERT INTO date_parution (cod_ouv, cod_lang, date_par) VALUES (:id_ouvrage, :cod_lang, :date_parution)";
+
+    try {
+        $stmt_assoc = $db->prepare($sql_assoc_langues_dates);
+
+        foreach ($langues as $index => $cod_lang) {
+            $date_parution = $dates_parution[$index];
+            $stmt_assoc->execute([
+                'id_ouvrage' => $id_ouvrage,
+                'cod_lang' => $cod_lang,
+                'date_parution' => $date_parution
+            ]);
+        }
+
+        return true; // Indiquer que l'association a réussi
+    } catch (PDOException $e) {
+        return false; // Indiquer qu'il y a eu une erreur
+    }
+}
 
 

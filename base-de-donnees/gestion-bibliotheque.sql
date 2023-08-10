@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : mar. 25 juil. 2023 à 12:06
+-- Généré le : mer. 26 juil. 2023 à 13:14
 -- Version du serveur :  5.7.31
 -- Version de PHP : 7.3.21
 
@@ -37,17 +37,14 @@ CREATE TABLE IF NOT EXISTS `auteur` (
   `est_supprimer` int(11) NOT NULL DEFAULT '0',
   `maj_le` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`num_aut`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `auteur`
 --
 
 INSERT INTO `auteur` (`num_aut`, `nom_aut`, `prenom_aut`, `creer_le`, `est_actif`, `est_supprimer`, `maj_le`) VALUES
-(24, 'Fontaine', 'Francis', '2023-07-13 12:23:18', 1, 0, NULL),
-(25, 'Du Bois', 'Francis', '2023-07-13 13:50:45', 1, 0, NULL),
-(26, 'Victor', 'Hugo', '2023-07-19 20:31:44', 1, 0, NULL),
-(28, 'Victor', 'Herv&eacute;', '2023-07-24 09:51:02', 1, 0, NULL);
+(29, 'Th&eacute;riault', 'Sabrina', '2023-07-25 14:54:24', 1, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -60,8 +57,6 @@ CREATE TABLE IF NOT EXISTS `auteur_secondaire` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `cod_ouv` int(11) DEFAULT NULL,
   `num_aut` int(11) DEFAULT NULL,
-  `nom_aut_secondaire` varchar(255) DEFAULT NULL,
-  `prenom_aut_secondaire` varchar(255) DEFAULT NULL,
   `creer_le` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `est_actif` int(11) NOT NULL DEFAULT '1',
   `est_supprimer` int(11) NOT NULL DEFAULT '0',
@@ -70,39 +65,6 @@ CREATE TABLE IF NOT EXISTS `auteur_secondaire` (
   KEY `num_aut` (`num_aut`),
   KEY `cod_ouv` (`cod_ouv`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
-
---
--- Déchargement des données de la table `auteur_secondaire`
---
-
-INSERT INTO `auteur_secondaire` (`id`, `cod_ouv`, `num_aut`, `nom_aut_secondaire`, `prenom_aut_secondaire`, `creer_le`, `est_actif`, `est_supprimer`, `maj_le`) VALUES
-(2, NULL, NULL, 'EMEH', 'Restarick', '2023-07-20 19:03:25', 1, 0, NULL);
-
--- --------------------------------------------------------
-
---
--- Structure de la table `categorie`
---
-
-DROP TABLE IF EXISTS `categorie`;
-CREATE TABLE IF NOT EXISTS `categorie` (
-  `cod_cat` int(11) NOT NULL AUTO_INCREMENT,
-  `cod_dom` int(11) NOT NULL,
-  `nom_cat` varchar(255) NOT NULL,
-  `creer_le` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `supprimer_le` int(1) NOT NULL DEFAULT '0',
-  `maj_le` timestamp NULL DEFAULT NULL,
-  `est_actif` int(1) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`cod_cat`),
-  KEY `categorie_domaine_cod_dom` (`cod_dom`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
-
---
--- Déchargement des données de la table `categorie`
---
-
-INSERT INTO `categorie` (`cod_cat`, `cod_dom`, `nom_cat`, `creer_le`, `supprimer_le`, `maj_le`, `est_actif`) VALUES
-(8, 6, 'Decoration', '2023-07-25 10:53:59', 0, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -140,7 +102,7 @@ CREATE TABLE IF NOT EXISTS `domaine` (
   `est_supprimer` int(11) NOT NULL DEFAULT '0',
   `maj_le` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`cod_dom`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `domaine`
@@ -148,7 +110,11 @@ CREATE TABLE IF NOT EXISTS `domaine` (
 
 INSERT INTO `domaine` (`cod_dom`, `lib_dom`, `creer_le`, `est_actif`, `est_supprimer`, `maj_le`) VALUES
 (5, 'Enfance et Jeunesse', '2023-07-24 09:35:54', 1, 0, '2023-07-24 07:36:05'),
-(6, 'Arts, soci&eacute;t&eacute; &amp; sciences humaines', '2023-07-24 09:49:15', 1, 0, '2023-07-24 07:50:41');
+(6, 'Arts, soci&eacute;t&eacute; &amp; sciences humaines', '2023-07-24 09:49:15', 1, 0, '2023-07-24 07:50:41'),
+(7, 'Bien-&ecirc;tre &amp; vie pratique', '2023-07-25 13:35:37', 1, 0, '2023-07-25 13:35:37'),
+(8, 'M&eacute;decine, sciences, techniques', '2023-07-25 13:36:32', 1, 0, '2023-07-25 13:36:32'),
+(9, 'Litt&eacute;rature', '2023-07-25 13:37:08', 1, 0, '2023-07-25 13:37:08'),
+(10, 'Scolaire &amp; p&eacute;dagogie', '2023-07-25 13:38:05', 1, 0, '2023-07-25 13:38:05');
 
 -- --------------------------------------------------------
 
@@ -161,15 +127,13 @@ CREATE TABLE IF NOT EXISTS `domaine_ouvrage` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `cod_ouv` int(11) NOT NULL,
   `cod_dom` int(11) NOT NULL,
-  `cod_cat` int(11) DEFAULT NULL,
   `creer_le` int(11) NOT NULL,
   `est_actif` int(11) NOT NULL,
   `est_supprimer` int(11) NOT NULL,
   `maj_le` timestamp NOT NULL,
   PRIMARY KEY (`id`),
   KEY `cod_ouv` (`cod_ouv`),
-  KEY `cod_dom` (`cod_dom`),
-  KEY `domaine_ouvrage_categorie_cod_cat` (`cod_cat`)
+  KEY `cod_dom` (`cod_dom`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -340,12 +304,6 @@ ALTER TABLE `auteur_secondaire`
   ADD CONSTRAINT `auteur_secondaire_ouvrage_cod_ouv` FOREIGN KEY (`cod_ouv`) REFERENCES `ouvrage` (`cod_ouv`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Contraintes pour la table `categorie`
---
-ALTER TABLE `categorie`
-  ADD CONSTRAINT `categorie_domaine_cod_dom` FOREIGN KEY (`cod_dom`) REFERENCES `domaine` (`cod_dom`) ON UPDATE CASCADE;
-
---
 -- Contraintes pour la table `date_parution`
 --
 ALTER TABLE `date_parution`
@@ -356,7 +314,6 @@ ALTER TABLE `date_parution`
 -- Contraintes pour la table `domaine_ouvrage`
 --
 ALTER TABLE `domaine_ouvrage`
-  ADD CONSTRAINT `domaine_ouvrage_categorie_cod_cat` FOREIGN KEY (`cod_cat`) REFERENCES `categorie` (`cod_cat`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `domaine_ouvrage_cod_ouv` FOREIGN KEY (`cod_ouv`) REFERENCES `ouvrage` (`cod_ouv`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `domaine_ouvrage_domaine_cod_dom` FOREIGN KEY (`cod_dom`) REFERENCES `domaine` (`cod_dom`) ON DELETE CASCADE ON UPDATE CASCADE;
 

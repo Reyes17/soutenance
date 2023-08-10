@@ -154,63 +154,6 @@ include './app/commun/header.php';
 							</div>
 						</div>
 					</div><!-- End table Card -->
-
-					<!-- table Card -->
-					<div class="col-lg-4 col-md-6">
-						<div class="card info-card sales-card">
-							<div class="card-body">
-								<h5 class="card-title">Catégories</h5>
-								<div class="d-flex align-items-center">
-									<div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-										<i class="ri-book-open-line"></i>
-									</div>
-									<div class="ps-3">
-										<h6>145</h6>
-										<button type="button" class="btn btn-outline-primary"><a href="<?= PROJECT_DIR; ?>bibliothecaire/categorie/liste_des_categories">
-												Voir plus</a></button>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div><!-- End table Card -->
-
-					<!-- table Card -->
-					<div class="col-lg-4 col-md-6">
-						<div class="card info-card sales-card">
-							<div class="card-body">
-								<h5 class="card-title">DATE PARUTION</h5>
-								<div class="d-flex align-items-center">
-									<div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-										<i class="ri-calendar-event-line"></i>
-									</div>
-									<div class="ps-3">
-										<h6>145</h6>
-										<button type="button" class="btn btn-outline-primary"><a href="<?= PROJECT_DIR; ?>bibliothecaire/date_parution/liste_des_dates_parutions">
-												Voir plus</a></button>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div><!-- End table Card -->
-
-					<!-- table Card -->
-					<div class="col-lg-4 col-md-6">
-						<div class="card info-card sales-card">
-							<div class="card-body">
-								<h5 class="card-title">AUTEURS SECONDAIRES</h5>
-								<div class="d-flex align-items-center">
-									<div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-										<i class="ri-input-method-line"></i>
-									</div>
-									<div class="ps-3">
-										<h6>145</h6>
-										<button type="button" class="btn btn-outline-primary"><a href="<?= PROJECT_DIR; ?>bibliothecaire/auteur_secondaire/liste_des_auteurs_secondaires">
-												Voir plus</a></button>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div><!-- End table Card -->
 		</main>
 	</section>
 

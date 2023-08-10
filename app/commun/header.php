@@ -219,7 +219,7 @@
 					</li>
 					<li>
 						<a href="<?= PROJECT_DIR; ?>bibliothecaire/emprunt/ajouter_emprunt">
-							<i class="bi bi-circle"></i><span>Ajouter un emprunt</span>
+							<i class="bi bi-circle"></i><span>Valider un emprunt</span>
 						</a>
 					</li>
 				</ul>
@@ -248,11 +248,6 @@
 							<i class="bi bi-circle"></i><span>Liste des membres indélicats</span>
 						</a>
 					</li>
-					<li>
-						<a href="<?= PROJECT_DIR; ?>bibliothecaire/membre_indelicat/ajouter_membre_indelicat">
-							<i class="bi bi-circle"></i><span>Ajouter un membre indélicat</span>
-						</a>
-					</li>
 				</ul>
 			</li><!-- Fin menu membre indélicat -->
 
@@ -274,59 +269,7 @@
 				</ul>
 			</li><!-- Fin  menu domaine -->
 
-			<li class="nav-item">
-				<a class="nav-link collapsed" data-bs-target="#categorie-nav" data-bs-toggle="collapse" href="#">
-					<i class="ri-book-open-line"></i><span>CATEGORIES</span><i class="bi bi-chevron-down ms-auto"></i>
-				</a>
-				<ul id="categorie-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-					<li>
-						<a href="<?= PROJECT_DIR; ?>bibliothecaire/categorie/liste_des_categories">
-							<i class="bi bi-circle"></i><span>Liste des catégories</span>
-						</a>
-					</li>
-					<li>
-						<a href="<?= PROJECT_DIR; ?>bibliothecaire/categorie/ajouter_categorie">
-							<i class="bi bi-circle"></i><span>Ajouter une catégorie</span>
-						</a>
-					</li>
-				</ul>
-			</li><!-- Fin menu domaine ouvrage -->
 
-			<li class="nav-item">
-				<a class="nav-link collapsed" data-bs-target="#date_parution-nav" data-bs-toggle="collapse" href="#">
-					<i class="ri-calendar-event-line"></i><span>DATE PARUTION</span><i class="bi bi-chevron-down ms-auto"></i>
-				</a>
-				<ul id="date_parution-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-					<li>
-						<a href="<?= PROJECT_DIR; ?>bibliothecaire/date_parution/liste_des_dates_parutions">
-							<i class="bi bi-circle"></i><span>Liste des dates parutions</span>
-						</a>
-					</li>
-					<li>
-						<a href="<?= PROJECT_DIR; ?>bibliothecaire/date_parution/ajouter_date_parution">
-							<i class="bi bi-circle"></i><span>Ajouter une date parution</span>
-						</a>
-					</li>
-				</ul>
-			</li><!-- Fin menu date parution -->
-
-			<li class="nav-item">
-				<a class="nav-link collapsed" data-bs-target="#auteurs_secondaires-nav" data-bs-toggle="collapse" href="#">
-					<i class="ri-input-method-line"></i><span>AUTEURS SECONDAIRES</span><i class="bi bi-chevron-down ms-auto"></i>
-				</a>
-				<ul id="auteurs_secondaires-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-					<li>
-						<a href="<?= PROJECT_DIR; ?>bibliothecaire/auteur_secondaire/liste_des_auteurs_secondaires">
-							<i class="bi bi-circle"></i><span>Liste des auteurs secondaire</span>
-						</a>
-					</li>
-					<li>
-						<a href="<?= PROJECT_DIR; ?>bibliothecaire/auteur_secondaire/ajouter_auteur_secondaire">
-							<i class="bi bi-circle"></i><span>Ajouter un auteur secondaire </span>
-						</a>
-					</li>
-				</ul>
-			</li><!-- Fin menu date parution -->
 
 			<li class="nav-heading">Pages</li>
 
