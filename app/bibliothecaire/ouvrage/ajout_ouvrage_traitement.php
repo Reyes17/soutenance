@@ -1,17 +1,18 @@
 <?php
-
-
 $errors = [];
 $data = [];
 
 // Récupération des données du formulaire
 $titre = $_POST['titre-ouvrage'];
 $nb_exemplaire = intval($_POST['nombre-exemplaire-ouvrage']);
-$auteur_principal_id = intval($_POST['auteur-principal-ouvrage']);
-$auteurs_secondaires = $_POST['auteurs-secondaires-ouvrage'];
-$domaines = $_POST['domaine-ouvrage'];
-$langues = $_POST['langue'];
-$dates_parution = $_POST['annee_publication'];
+$selectedAuteurId = $_POST['selected-auteur-id']; // Récupération de l'ID de l'auteur sélectionné
+
+// Restaurer les valeurs saisies précédemment si disponibles
+if (isset($_SESSION['saisie-precedente'])) {
+    $titre = $_SESSION['saisie-precedente']['titre'];
+    $nb_exemplaire = $_SESSION['saisie-precedente']['nb_exemplaire'];
+    $selectedAuteurId = $_SESSION['saisie-precedente']['selectedAuteurId'];
+}
 
 // Vérification et traitement des champs
 if (empty($titre)) {
@@ -22,20 +23,25 @@ if (empty($titre)) {
 
 // Vérification du nombre d'exemplaires
 if ($nb_exemplaire < 1 || $nb_exemplaire > 200) {
-    $errors['nombre-exemplaire-ouvrage'] = "Le nombre d'exemplaires doit être compris entre 1 et 200.";
+    $errors['nombre-exemplaire-ouvrage'] = "Sélectionner un nombre d'exemplaire valide.";
 } else {
     $data['nombre-exemplaire-ouvrage'] = $nb_exemplaire;
 }
 
 // Vérification de l'auteur principal
-if (empty($auteur_principal_id)) {
+if (empty($selectedAuteurId)) {
     $errors['auteur-principal-ouvrage'] = "Veuillez sélectionner un auteur principal.";
 } else {
-    $data['auteur-principal-ouvrage'] = $auteur_principal_id;
+    // Utiliser la fonction pour récupérer l'auteur complet par son ID
+    $auteur = get_auteur_by_id($selectedAuteurId);
+    if ($auteur) {
+        $data['auteur-principal-ouvrage'] = $selectedAuteurId;
+    } else {
+        $errors['auteur-principal-ouvrage'] = "L'auteur sélectionné n'est pas valide.";
+    }
 }
 
 // Vérification de l'image
-// Vérification du fichier image
 if (isset($_FILES['image-ouvrage']) && $_FILES['image-ouvrage']['error'] === UPLOAD_ERR_OK) {
     $image_info = $_FILES['image-ouvrage'];
     $image_name = $image_info['name'];
@@ -67,44 +73,30 @@ if (isset($_FILES['image-ouvrage']) && $_FILES['image-ouvrage']['error'] === UPL
         }
     }
 } else {
-    $errors['image-ouvrage'] = "Une erreur s'est produite lors de l'envoi de l'image.";
+    $errors['image-ouvrage'] = "Veuillez ajouter une image.";
 }
 
-
-// Vérification des auteurs secondaires
-$data['auteurs-secondaires-ouvrage'] = $auteurs_secondaires;
-
-// Vérification des domaines
-if (empty($domaines)) {
-    $errors['domaine-ouvrage'] = "Aucun domaine n'a été sélectionné.";
-} else {
-    $data['domaine-ouvrage'] = $domaines;
-}
-
-// Vérification des langues et dates de parution
-foreach ($langues as $index => $langue) {
-    if ($langue == 0 || empty($dates_parution[$index])) {
-        $errors['langue-ouvrage'] = "Veuillez sélectionner une langue et une date de publication pour chaque entrée.";
-        break;
-    }
-}
-
+// Si aucune erreur n'a été trouvée, procédez à l'insertion dans la base de données
 if (empty($errors)) {
-    $id_ouvrage = ajouterOuvrage($data['titre-ouvrage'], $data['nombre-exemplaire-ouvrage'], $data['auteur-principal-ouvrage'], $image_path);
+    $resultat_insertion = insererOuvrage($titre, $nb_exemplaire, $selectedAuteurId, $image_path);
 
-    if ($id_ouvrage) {
-        associerAuteursSecondairesOuvrage($id_ouvrage, $data['auteurs-secondaires-ouvrage']);
-        ajouterDomainesOuvrage($id_ouvrage, $data['domaine-ouvrage']);
-        associerLanguesDatesParutionOuvrage($id_ouvrage, $langues, $dates_parution);
-        $_SESSION['ajout-ouvrage-success'] = "L'ouvrage a été ajouté avec succès.";
+    if ($resultat_insertion) {
+        // Succès
+        $_SESSION['ajout-ouvrage-success'] = 'L\'ouvrage a été ajouté avec succès.';
     } else {
-        $_SESSION['ajout-ouvrage-error'] = "Une erreur s'est produite lors de l'ajout de l'ouvrage.";
+        // Erreur
+        $_SESSION['ajout-ouvrage-error'] = 'Une erreur est survenue lors de l\'ajout de l\'ouvrage.';
     }
 } else {
+    $_SESSION['saisie-precedente'] = [
+        'titre' => $titre,
+        'nb_exemplaire' => $nb_exemplaire,
+        'selectedAuteurId' => $selectedAuteurId,
+        
+    ];
     $_SESSION['ajout-ouvrage-errors'] = $errors;
 }
 
-// Redirection vers la page d'ajout d'ouvrage avec les messages d'erreur ou de succès
-header('location:' . PROJECT_DIR . 'bibliothecaire/ouvrage/ajouter_ouvrage');
-exit;
+header('Location: ' . PROJECT_DIR . 'bibliothecaire/ouvrage/ajouter_ouvrage');
+exit();
 ?>

@@ -1453,31 +1453,26 @@ function obtenir_membre_par_id($id): ?array
  *
  * @return int|bool L'ID de la dernière ligne insérée ou false en cas d'erreur.
  */
-function ajouterOuvrage(string $titre, int $nb_exemplaire, int $auteur_principal_id, string $image_path)
-{
-    if (empty($titre) || $nb_exemplaire <= 0 || empty($image_path) || !file_exists($image_path)) {
-        return false;
-    }
+function insererOuvrage($titre, $nb_exemplaire, $num_aut, $img) {
 
     $db = connect_db();
-    $sql_insert_ouvrage = "INSERT INTO ouvrage (titre, nb_ex, num_aut, img) VALUES (:titre, :nb_exemplaire, :auteur_principal_id, :image_path)";
 
-    try {
-        $requete = $db->prepare($sql_insert_ouvrage);
-        $requete->bindParam(':titre', $titre);
-        $requete->bindParam(':nb_exemplaire', $nb_exemplaire);
-        $requete->bindParam(':auteur_principal_id', $auteur_principal_id);
-        $requete->bindParam(':image_path', $image_path);
+    $requete_insertion = 'INSERT INTO ouvrage (titre, nb_ex, num_aut, img) VALUES (:titre, :nb_ex, :num_aut, :img)';
 
-        if ($requete->execute()) {
-            return $db->lastInsertId();
-        } else {
-            return false;
-        }
-    } catch (PDOException $e) {
-        return false;
-    }
+    $requete_preparee = $db->prepare($requete_insertion);
+    
+    $resultat_insertion = $requete_preparee->execute([
+        'titre' => $titre,
+        'nb_ex' => $nb_exemplaire,
+        'num_aut' => $num_aut,
+        'img' => $img
+        
+    ]);
+
+    return $resultat_insertion;
 }
+
+// ...
 
 
 /**
