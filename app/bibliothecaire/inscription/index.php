@@ -3,13 +3,6 @@ if (!empty($_SESSION["utilisateur_connecter_bibliothecaire"])) {
 	header('location:' . PROJECT_DIR . 'bibliothecaire/dossier/dashboard');
 }
 
-if (isset($_SESSION['inscription-erreurs']) && !empty($_SESSION['inscription-erreurs'])) {
-	$errors = $_SESSION['inscription-erreurs'];
-}
-
-if (isset($_SESSION['donnees-utilisateur']) && !empty($_SESSION['donnees-utilisateur'])) {
-	$data = $_SESSION['donnees-utilisateur'];
-}
 $title ='Inscription';
 include 'app/commun/index.php';
 
@@ -38,7 +31,7 @@ include 'app/commun/index.php';
 								<?php
 								if (isset($_SESSION['message_success_global']) && !empty($_SESSION['message_success_global'])) {
 								?>
-									<div class="alert alert-primary mt-3" style="color: white; background-color: #2bc717; text-align:center; border-radius: 15px; text-align:center;">
+									<div class="alert alert-success mt-3" style="border-radius: 15px; text-align: center;">
 										<?= $_SESSION['message_success_global'] ?>
 									</div>
 								<?php
@@ -48,7 +41,7 @@ include 'app/commun/index.php';
 								<?php
 								if (isset($_SESSION['message_errors_global']) && !empty($_SESSION['message_errors_global'])) {
 								?>
-									<div class="alert alert-primary mt-3" style="color: white; background-color: #dc3545; border-radius: 15px; text-align:center;">
+									<div class="alert alert-danger mt-3" style="border-radius: 15px; text-align: center;">
 										<?= $_SESSION['message_errors_global'] ?>
 									</div>
 								<?php

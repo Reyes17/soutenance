@@ -1448,64 +1448,183 @@ function obtenir_membre_par_id($id): ?array
  *
  * @param string $titre Le titre de l'ouvrage.
  * @param int $nb_exemplaire Le nombre d'exemplaires.
- * @param int $auteur_principal_id L'ID de l'auteur principal.
- * @param string $image_path Le chemin de l'image.
+ * @param int $num_aut L'ID de l'auteur principal.
+ * @param string $img Le chemin de l'image.
+ * @param string|null $periodicite La périodicité de l'ouvrage (facultatif).
  *
  * @return int|bool L'ID de la dernière ligne insérée ou false en cas d'erreur.
  */
-function insererOuvrage($titre, $nb_exemplaire, $num_aut, $img) {
-
+function insererOuvrage($titre, $nb_exemplaire, $num_aut, $img, $periodicite = null) {
     $db = connect_db();
 
-    $requete_insertion = 'INSERT INTO ouvrage (titre, nb_ex, num_aut, img) VALUES (:titre, :nb_ex, :num_aut, :img)';
+    $requete_insertion = 'INSERT INTO ouvrage (titre, nb_ex, num_aut, img, periodicite) VALUES (:titre, :nb_ex, :num_aut, :img, :periodicite)';
 
     $requete_preparee = $db->prepare($requete_insertion);
-    
+
     $resultat_insertion = $requete_preparee->execute([
         'titre' => $titre,
         'nb_ex' => $nb_exemplaire,
         'num_aut' => $num_aut,
-        'img' => $img
-        
+        'img' => $img,
+        'periodicite' => $periodicite
     ]);
 
     return $resultat_insertion;
 }
 
-// ...
+/**
+ * Vérifie si un ouvrage avec le même titre et le même auteur principal existe déjà.
+ *
+ * @param string $titre Le titre de l'ouvrage.
+ * @param int $num_aut L'ID de l'auteur principal.
+ * @return bool True si un ouvrage existe, sinon False.
+ */
+function ouvrageExisteAvecTitreEtAuteur(string $titre,int $num_aut) {
+    $db = connect_db();
+
+    $requete_verification = 'SELECT COUNT(*) FROM ouvrage WHERE titre = :titre AND num_aut = :num_aut';
+
+    $requete_preparee = $db->prepare($requete_verification);
+
+    $requete_preparee->execute(['titre' => $titre, 'num_aut' => $num_aut]);
+
+    $nombre_ouvrages = $requete_preparee->fetchColumn();
+
+    return $nombre_ouvrages > 0;
+}
+
+/**
+ * Cette fonction permet de récupérer un ouvrage par son identifiant (cod_ouv) depuis la base de données.
+ *
+ * @param int $cod_ouv L'identifiant de l'ouvrage.
+ * @return array|null Les données de l'ouvrage ou null si non trouvé.
+ */
+function get_ouvrage_by_id(int $cod_ouv) {
+    $db = connect_db();
+    
+    // Requête pour récupérer l'ouvrage par son identifiant
+    $requete = 'SELECT * FROM ouvrage WHERE cod_ouv = :cod_ouv';
+    
+    // Préparation de la requête
+    $query = $db->prepare($requete);
+    
+    // Exécution de la requête en liant le paramètre :cod_ouv
+    $query->execute(['cod_ouv' => $cod_ouv]);
+    
+    // Récupération du résultat de la requête
+    $ouvrage = $query->fetch(PDO::FETCH_ASSOC);
+    
+    return $ouvrage ?: null;
+}
+
+/**
+ * Cette fonction permet de récupérer toutes les informations d'un ouvrage depuis la base de données.
+ *
+ * @param string $titre qui est le titre de l'ouvrage
+ * @param int $nb_ex qui est le nombre d'exemplaire
+ * @param int num_aut qui est l'id de l'auteur
+ * @param string $img qui est l'image de la page de garde
+ * @param string $periodicite qui le périodicité de l'ouvrage si cela s'avère être une revue ou un journal
+ * @return array Les données de l'ouvrage.
+ */
+function get_all_data_ouvrage_by_id(string $titre, int $nb_ex, int $num_aut, string $img, string $periodicite) {
+    $data =[];
+    $db = connect_db();
+    
+    // Requête pour récupérer toutes les données de l'ouvrage par son identifiant
+    $requete = 'SELECT cod_ouv FROM ouvrage WHERE titre = :titre and nb_ex =:nb_ex and num_aut =:num_aut and img =:img and periodicite = :periodicite';
+    
+    $verifier_ouvrage = $db->prepare($requete);
+
+    $resultat = $verifier_ouvrage->execute([
+        'titre' => $titre,
+        'nb_ex' => $nb_ex,
+        'num_aut' => $num_aut,
+        'img' => $img,
+        'periodicite' => $periodicite,
+    ]);
+
+    if ($resultat) {
+        $data = $verifier_ouvrage->fetch();
+    }
+    return $data;
+}
 
 
 /**
- * Cette fonction permet d'associer les auteurs secondaires à un ouvrage dans la table auteur_secondaire.
+ * Cette fonction permet de récupérer le code domaine (cod_dom) par son libellé.
  *
- * @param int $id_ouvrage L'identifiant de l'ouvrage auquel les auteurs secondaires seront associés.
- * @param array $id_auteurs_secondaires Un tableau contenant les identifiants des auteurs secondaires à associer.
- *
- * @return bool Renvoie true si l'opération s'est déroulée avec succès, sinon renvoie false.
+ * @param string $lib_dom Le nom du domaine.
+ * @return int|null Le code domaine (cod_dom) ou null si non trouvé.
  */
-function associerAuteursSecondairesOuvrage(int $id_ouvrage, array $id_auteurs_secondaires): bool
-{
-    if (empty($id_auteurs_secondaires)) {
-        return false;
-    }
-
+function get_cod_dom_by_nom(string $lib_dom) {
     $db = connect_db();
-    $sql_insert_auteurs_secondaires = "INSERT INTO auteur_secondaire (cod_ouv, num_aut) VALUES (:id_ouvrage, :num_aut)";
+    
+    // Requête pour récupérer le code domaine par son nom
+    $requete = 'SELECT cod_dom FROM domaine WHERE lib_dom = :lib_dom';
+    
+    // Préparation de la requête
+    $query = $db->prepare($requete);
+    
+    // Exécution de la requête en liant le paramètre :nom_dom
+    $query->execute(['lib_dom' => $lib_dom]);
+    
+    // Récupération du résultat de la requête
+    $cod_dom = $query->fetchColumn();
+    
+    return $cod_dom ?: null;
+}
 
-    try {
-        $stmt_insert = $db->prepare($sql_insert_auteurs_secondaires);
+/**
+ * Associer un domaine à un ouvrage dans la table "domaine_ouvrage".
+ *
+ * @param int $cod_dom L'ID du domaine.
+ * @param int $cod_ouv L'ID de l'ouvrage.
+ * @return bool True en cas de succès, sinon False.
+ */
+function associerDomaineOuvrage(int $cod_dom, int $cod_ouv): bool {
+    $db = connect_db();
 
-        foreach ($id_auteurs_secondaires as $num_aut) {
-            $stmt_insert->execute([
-                'id_ouvrage' => $id_ouvrage,
-                'num_aut' => $num_aut
-            ]);
-        }
+    $requete_insertion = 'INSERT INTO domaine_ouvrage (cod_dom, cod_ouv) VALUES (:cod_dom, :cod_ouv)';
 
-        return true;
-    } catch (PDOException $e) {
-        return false;
-    }
+    $requete_preparee = $db->prepare($requete_insertion);
+
+    $resultat_insertion = $requete_preparee->execute([
+        'cod_dom' => $cod_dom,
+        'cod_ouv' => $cod_ouv,
+    ]);
+
+    return $resultat_insertion;
+}
+
+
+
+
+
+
+/**
+ * Cette fonction permet d'associer un auteur secondaire à un ouvrage dans la table auteur_secondaire.
+ *
+ * @param int $num_aut L'ID de l'auteur secondaire.
+ * @param int $cod_ouv L'ID de l'ouvrage.
+ * @return bool True en cas de succès, False en cas d'échec.
+ */
+function associerAuteurSecondaireOuvrage($num_aut, $cod_ouv) {
+    $db = connect_db();
+
+    // Requête pour insérer l'association dans la table auteur_secondaire
+    $requete = 'INSERT INTO auteur_secondaire (num_aut, cod_ouv) VALUES (:num_aut, :cod_ouv)';
+
+    // Préparation de la requête
+    $query = $db->prepare($requete);
+
+    // Exécution de la requête en liant les paramètres
+    $resultat = $query->execute([
+        'num_aut' => $num_aut,
+        'cod_ouv' => $cod_ouv,
+    ]);
+
+    return $resultat;
 }
 
 

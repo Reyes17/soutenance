@@ -6,6 +6,10 @@ $data = [];
 $titre = $_POST['titre-ouvrage'];
 $nb_exemplaire = intval($_POST['nombre-exemplaire-ouvrage']);
 $selectedAuteurId = $_POST['selected-auteur-id']; // Récupération de l'ID de l'auteur sélectionné
+$periodicite = isset($_POST['periodicite-ouvrage']) ? $_POST['periodicite-ouvrage'] : null;
+$selectedDomaines = isset($_POST['domaines-ouvrage']) ? $_POST['domaines-ouvrage'] : [];
+$selectedAuteursSecondaires = isset($_POST['auteurs-secondaires-ouvrage']) ? $_POST['auteurs-secondaires-ouvrage'] : [];
+
 
 // Restaurer les valeurs saisies précédemment si disponibles
 if (isset($_SESSION['saisie-precedente'])) {
@@ -47,7 +51,7 @@ if (isset($_FILES['image-ouvrage']) && $_FILES['image-ouvrage']['error'] === UPL
     $image_name = $image_info['name'];
     $image_tmp_name = $image_info['tmp_name'];
     $image_size = $image_info['size'];
-    
+
     // Vérification de l'extension de l'image
     $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif'];
     $image_extension = strtolower(pathinfo($image_name, PATHINFO_EXTENSION));
@@ -76,27 +80,65 @@ if (isset($_FILES['image-ouvrage']) && $_FILES['image-ouvrage']['error'] === UPL
     $errors['image-ouvrage'] = "Veuillez ajouter une image.";
 }
 
-// Si aucune erreur n'a été trouvée, procédez à l'insertion dans la base de données
+// Vérification des domaines
+if (empty($selectedDomaines)) {
+    $errors['domaine-ouvrage'] = "Aucun domaine n'a été sélectionné.";
+} else {
+    $data['domaine-ouvrage'] = $selectedDomaines;
+}
+
+// Vérifier si un ouvrage avec le même titre et le même auteur existe déjà
+if (!empty($selectedAuteurId) && ouvrageExisteAvecTitreEtAuteur($titre, $selectedAuteurId)) {
+
+    $_SESSION['ajout-ouvrage-error'] = "Un ouvrage avec le même titre et le même auteur existe déjà dans la base de données.";
+}
+
+
 if (empty($errors)) {
-    $resultat_insertion = insererOuvrage($titre, $nb_exemplaire, $selectedAuteurId, $image_path);
+    $resultat_insertion = insererOuvrage($titre, $nb_exemplaire, $selectedAuteurId, $image_path, $periodicite);
 
     if ($resultat_insertion) {
-        // Succès
-        $_SESSION['ajout-ouvrage-success'] = 'L\'ouvrage a été ajouté avec succès.';
+        // Récupérer toutes les informations de l'ouvrage ajouté
+        $ouvrage = get_all_data_ouvrage_by_id($titre, $nb_exemplaire, $selectedAuteurId, $image_path, $periodicite);
+        if ($ouvrage) {
+            // Maintenant vous pouvez accéder à chaque valeur spécifique de l'ouvrage
+            $cod_ouv = $ouvrage['cod_ouv'];
+            // Associer les domaines à l'ouvrage dans la table "domaine_ouvrage"
+            foreach ($selectedDomaines as $cod_dom) {
+                // Insérer dans la table "domaine_ouvrage"
+                associerDomaineOuvrage($cod_dom, $cod_ouv);
+            }
+
+            // Associer les auteurs secondaires à l'ouvrage dans la table "auteur_secondaire"
+            foreach ($selectedAuteursSecondaires as $num_aut) {
+                associerAuteurSecondaireOuvrage($num_aut, $cod_ouv);
+            }
+            // Succès
+            $_SESSION['ajout-ouvrage-success'] = 'L\'ouvrage a été ajouté avec succès.';
+        } else {
+            // Erreur lors de la récupération de l'ID de l'ouvrage
+            $_SESSION['ajout-ouvrage-error'] = 'Erreur lors de la récupération de l\'ID de l\'ouvrage ajouté.';
+        }
     } else {
-        // Erreur
+        // Erreur lors de l'insertion de l'ouvrage
         $_SESSION['ajout-ouvrage-error'] = 'Une erreur est survenue lors de l\'ajout de l\'ouvrage.';
     }
 } else {
+    // Restaurer les valeurs saisies précédemment si disponibles
+    if (isset($_SESSION['saisie-precedente'])) {
+        $titre = $_SESSION['saisie-precedente']['titre'];
+        $nb_exemplaire = $_SESSION['saisie-precedente']['nb_exemplaire'];
+        $selectedAuteurId = $_SESSION['saisie-precedente']['selectedAuteurId'];
+    }
+
     $_SESSION['saisie-precedente'] = [
         'titre' => $titre,
         'nb_exemplaire' => $nb_exemplaire,
         'selectedAuteurId' => $selectedAuteurId,
-        
+        'auteur-nom-prenom' => isset($data['auteur-nom-prenom']) ? $data['auteur-nom-prenom'] : '',
     ];
     $_SESSION['ajout-ouvrage-errors'] = $errors;
 }
 
 header('Location: ' . PROJECT_DIR . 'bibliothecaire/ouvrage/ajouter_ouvrage');
 exit();
-?>

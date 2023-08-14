@@ -13,7 +13,7 @@ include './app/commun/header.php';
 			<?php
 			if (isset($_SESSION['ajout-errors']) && !empty($_SESSION['ajout-errors'])) {
 			?>
-				<div class="alert alert-primary mt-3" style="color: white; background-color: #dc3545; border-radius: 15px; text-align:center;">
+				<div class="alert alert-danger mt-3" style="border-radius: 15px; text-align: center;">
 					<?= $_SESSION['ajout-errors'] ?>
 				</div>
 			<?php
@@ -23,7 +23,7 @@ include './app/commun/header.php';
 			<?php
 			if (isset($_SESSION['ajout-success']) && !empty($_SESSION['ajout-success'])) {
 			?>
-				<div class="alert alert-primary mt-3" style="color: white; background-color: #2bc717; text-align:center; border-radius: 15px; text-align:center;">
+				<div class="alert alert-success mt-3" style="border-radius: 15px; text-align: center;">
 					<?= $_SESSION['ajout-success'] ?>
 				</div>
 			<?php
@@ -34,7 +34,7 @@ include './app/commun/header.php';
 			<?php
 			if (isset($_SESSION['auteur-existe']) && !empty($_SESSION['auteur-existe'])) {
 			?>
-				<div class="alert alert-primary mt-3" style="color: white; background-color: #dc3545; border-radius: 15px; text-align:center;">
+				<div class="alert alert-danger mt-3" style="border-radius: 15px; text-align: center;">
 					<?= $_SESSION['auteur-existe'] ?>
 				</div>
 			<?php

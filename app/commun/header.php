@@ -2,7 +2,7 @@
 <html lang="fr">
 
 <head>
-	<meta charset="UTF-8">
+	<meta charset="utf-8">
 	<meta content="width=device-width, initial-scale=1.0" name="viewport">
 
 	<title><?= $title?></title>
@@ -217,11 +217,7 @@
 							<i class="bi bi-circle"></i><span>Liste des emprunts</span>
 						</a>
 					</li>
-					<li>
-						<a href="<?= PROJECT_DIR; ?>bibliothecaire/emprunt/ajouter_emprunt">
-							<i class="bi bi-circle"></i><span>Valider un emprunt</span>
-						</a>
-					</li>
+					
 				</ul>
 			</li><!-- Fin menu emprunt -->
 
@@ -235,21 +231,8 @@
 							<i class="bi bi-circle"></i><span>Liste des membres</span>
 						</a>
 					</li>
-				</ul>
-			</li><!-- Fin menu membre -->
-
-			<li class="nav-item">
-				<a class="nav-link collapsed" data-bs-target="#membres_indelicats-nav" data-bs-toggle="collapse" href="#">
-					<i class="ri-markdown-line"></i><span>MEMBRES INDELICATS</span><i class="bi bi-chevron-down ms-auto"></i>
-				</a>
-				<ul id="membres_indelicats-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-					<li>
-						<a href="<?= PROJECT_DIR; ?>bibliothecaire/membre_indelicat/liste_des_membres_indelicats">
-							<i class="bi bi-circle"></i><span>Liste des membres indélicats</span>
-						</a>
-					</li>
-				</ul>
-			</li><!-- Fin menu membre indélicat -->
+				</ul>	
+					
 
 			<li class="nav-item">
 				<a class="nav-link collapsed" data-bs-target="#domaines-nav" data-bs-toggle="collapse" href="#">
@@ -269,7 +252,7 @@
 				</ul>
 			</li><!-- Fin  menu domaine -->
 
-
+		
 
 			<li class="nav-heading">Pages</li>
 

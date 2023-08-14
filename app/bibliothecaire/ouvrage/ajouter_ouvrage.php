@@ -53,7 +53,7 @@ include 'app/commun/header.php';
                         <label for="nombre-exemplaire-ouvrage" class="col-sm-2 col-form-label">Nombre d'exemplaire:</label>
                         <div class="col-sm-10">
                             <select class="form-select <?= isset($_SESSION['ajout-ouvrage-errors']['nombre-exemplaire-ouvrage']) ? 'is-invalid' : '' ?>" id="nombre-exemplaire-ouvrage" name="nombre-exemplaire-ouvrage" value="<?= $nb_exemplaire ?>">
-                                <option value="" ></option>
+                                <option value=""></option>
                                 <?php
                                 for ($nombre = 1; $nombre <= 200; $nombre++) {
                                     $selected = isset($_SESSION['saisie-precedente']['nb_exemplaire']) && $_SESSION['saisie-precedente']['nb_exemplaire'] == $nombre ? 'selected' : '';
@@ -100,6 +100,27 @@ include 'app/commun/header.php';
                     <!-- Champ caché pour stocker l'ID de l'auteur sélectionné -->
                     <input type="hidden" id="selected-auteur-id" name="selected-auteur-id" value="">
 
+                    <div class="mb-3 row">
+                        <label for="periodicite-ouvrage" class="col-sm-2 col-form-label">Périodicité :</label>
+                        <div class="col-sm-10">
+                            <select class="form-select <?= isset($_SESSION['ajout-ouvrage-errors']['periodicite-ouvrage']) ? 'is-invalid' : '' ?>" id="periodicite-ouvrage" name="periodicite-ouvrage">
+                                <option value="0"></option>
+                                <option value="quotidien" <?= isset($_SESSION['saisie-precedente']['periodicite-ouvrage']) && $_SESSION['saisie-precedente']['periodicite-ouvrage'] === 'quotidien' ? 'selected' : '' ?>>Quotidien</option>
+                                <option value="hebdomadaire" <?= isset($_SESSION['saisie-precedente']['periodicite-ouvrage']) && $_SESSION['saisie-precedente']['periodicite-ouvrage'] === 'hebdomadaire' ? 'selected' : '' ?>>Hebdomadaire</option>
+                                <option value="mensuel" <?= isset($_SESSION['saisie-precedente']['periodicite-ouvrage']) && $_SESSION['saisie-precedente']['periodicite-ouvrage'] === 'mensuel' ? 'selected' : '' ?>>Mensuel</option>
+                                <option value="bimensuel" <?= isset($_SESSION['saisie-precedente']['periodicite-ouvrage']) && $_SESSION['saisie-precedente']['periodicite-ouvrage'] === 'bimensuel' ? 'selected' : '' ?>>Bimensuel</option>
+                                <option value="trimestriel" <?= isset($_SESSION['saisie-precedente']['periodicite-ouvrage']) && $_SESSION['saisie-precedente']['periodicite-ouvrage'] === 'trimestriel' ? 'selected' : '' ?>>Trimestriel</option>
+                                <option value="semestriel" <?= isset($_SESSION['saisie-precedente']['periodicite-ouvrage']) && $_SESSION['saisie-precedente']['periodicite-ouvrage'] === 'semestriel' ? 'selected' : '' ?>>Semestriel</option>
+                                <option value="annuel" <?= isset($_SESSION['saisie-precedente']['periodicite-ouvrage']) && $_SESSION['saisie-precedente']['periodicite-ouvrage'] === 'annuel' ? 'selected' : '' ?>>Annuel</option>
+                            </select>
+
+                            <?php if (isset($_SESSION['ajout-ouvrage-errors']['periodicite-ouvrage'])) : ?>
+                                <div class="invalid-feedback">
+                                    <?= $_SESSION['ajout-ouvrage-errors']['periodicite-ouvrage'] ?>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
 
                     <div class="mb-3 row">
                         <label for="image-ouvrage" class="col-sm-2 col-form-label">Image de la page de garde:</label>
@@ -111,6 +132,49 @@ include 'app/commun/header.php';
                                 </div>
                             <?php endif; ?>
 
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <label for="domaines-ouvrage" class="col-sm-2 col-form-label">Domaines :</label>
+                        <div class="col-sm-10">
+                            <select multiple class="form-select <?= isset($_SESSION['ajout-ouvrage-errors']['domaine-ouvrage']) ? 'is-invalid' : '' ?>" id="domaines-ouvrage" name="domaines-ouvrage[]">
+                                <?php
+                                $liste_domaines = get_liste_domaine();
+
+                                foreach ($liste_domaines as $domaine) {
+                                    echo '<option value="' . $domaine['cod_dom'] . '">' . $domaine['lib_dom'] . '</option>';
+                                }
+                                ?>
+                            </select>
+                            <?php if (isset($_SESSION['ajout-ouvrage-errors']['domaine-ouvrage'])) : ?>
+                                <div class="invalid-feedback">
+                                    <?= $_SESSION['ajout-ouvrage-errors']['domaine-ouvrage'] ?>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3 row">
+                        <label for="auteurs-secondaires-ouvrage" class="col-sm-2 col-form-label">Auteurs secondaires:</label>
+                        <div class="col-sm-10">
+                            <select class="form-select <?= isset($_SESSION['ajout-ouvrage-errors']['auteurs-secondaires-ouvrage']) ? 'is-invalid' : '' ?>" id="auteurs-secondaires-ouvrage" name="auteurs-secondaires-ouvrage[]" multiple>
+                                <?php
+                                // Appeler la fonction pour récupérer la liste des auteurs secondaires
+                                $liste_auteur = get_liste_auteurs();
+
+                                // Afficher les auteurs secondaires dans le menu déroulant
+                                foreach ($liste_auteur as $auteur) {
+                                    $selected = $auteur === $auteur['num_aut'] ? 'selected' : '';
+                                    echo '<option value="' . $auteur['num_aut'] . '" ' . $selected . '>' . $auteur['nom_aut'] . ' ' . $auteur['prenom_aut'] . '</option>';
+                                }
+                                ?>
+                            </select>
+                            <?php if (isset($_SESSION['ajout-ouvrage-errors']['auteurs-secondaires-ouvrage'])) : ?>
+                                <div class="invalid-feedback">
+                                    <?= $_SESSION['ajout-ouvrage-errors']['auteurs-secondaires-ouvrage'] ?>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </div>
 
