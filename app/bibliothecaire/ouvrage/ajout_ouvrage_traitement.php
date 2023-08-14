@@ -9,14 +9,8 @@ $selectedAuteurId = $_POST['selected-auteur-id']; // Récupération de l'ID de l
 $periodicite = isset($_POST['periodicite-ouvrage']) ? $_POST['periodicite-ouvrage'] : null;
 $selectedDomaines = isset($_POST['domaines-ouvrage']) ? $_POST['domaines-ouvrage'] : [];
 $selectedAuteursSecondaires = isset($_POST['auteurs-secondaires-ouvrage']) ? $_POST['auteurs-secondaires-ouvrage'] : [];
-
-
-// Restaurer les valeurs saisies précédemment si disponibles
-if (isset($_SESSION['saisie-precedente'])) {
-    $titre = $_SESSION['saisie-precedente']['titre'];
-    $nb_exemplaire = $_SESSION['saisie-precedente']['nb_exemplaire'];
-    $selectedAuteurId = $_SESSION['saisie-precedente']['selectedAuteurId'];
-}
+$selectedLangues = $_POST['langue']; // Récupération des langues sélectionnées
+$anneesPublication = $_POST['annee_publication']; // Récupération des années de publication
 
 // Vérification et traitement des champs
 if (empty($titre)) {
@@ -87,6 +81,24 @@ if (empty($selectedDomaines)) {
     $data['domaine-ouvrage'] = $selectedDomaines;
 }
 
+// Vérification et traitement des champs de langue et année de publication
+$langueEtAnneeErrors = [];
+
+foreach ($selectedLangues as $index => $langue) {
+    if (empty($langue)) {
+        $langueEtAnneeErrors[$index] = "Veuillez sélectionner une langue et une date de publication pour chaque entrée.";
+    }
+
+    if (empty($anneesPublication[$index])) {
+        $langueEtAnneeErrors[$index] = "Veuillez sélectionner une langue et une année de publication pour chaque entrée.";
+    }
+}
+
+// Si des erreurs ont été trouvées, les ajouter au tableau d'erreurs principal
+if (!empty($langueEtAnneeErrors)) {
+    $errors['langue-ouvrage'] = $langueEtAnneeErrors;
+}
+
 // Vérifier si un ouvrage avec le même titre et le même auteur existe déjà
 if (!empty($selectedAuteurId) && ouvrageExisteAvecTitreEtAuteur($titre, $selectedAuteurId)) {
 
@@ -113,6 +125,14 @@ if (empty($errors)) {
             foreach ($selectedAuteursSecondaires as $num_aut) {
                 associerAuteurSecondaireOuvrage($num_aut, $cod_ouv);
             }
+            
+            // Insérer les langues et années de publication dans la table "date_parution"
+             foreach ($selectedLangues as $index => $langue) {
+                $anneePublication = $anneesPublication[$index];
+                insererDateParution($cod_ouv, $selectedLangues, $anneesPublication);
+
+            }
+
             // Succès
             $_SESSION['ajout-ouvrage-success'] = 'L\'ouvrage a été ajouté avec succès.';
         } else {
@@ -129,6 +149,7 @@ if (empty($errors)) {
         $titre = $_SESSION['saisie-precedente']['titre'];
         $nb_exemplaire = $_SESSION['saisie-precedente']['nb_exemplaire'];
         $selectedAuteurId = $_SESSION['saisie-precedente']['selectedAuteurId'];
+        $selectedDomaines = isset($_SESSION['saisie-precedente']['domaine-ouvrage']) ? $_SESSION['saisie-precedente']['domaine-ouvrage'] : [];
     }
 
     $_SESSION['saisie-precedente'] = [
@@ -136,6 +157,7 @@ if (empty($errors)) {
         'nb_exemplaire' => $nb_exemplaire,
         'selectedAuteurId' => $selectedAuteurId,
         'auteur-nom-prenom' => isset($data['auteur-nom-prenom']) ? $data['auteur-nom-prenom'] : '',
+        'domaine-ouvrage' => $selectedDomaines,
     ];
     $_SESSION['ajout-ouvrage-errors'] = $errors;
 }

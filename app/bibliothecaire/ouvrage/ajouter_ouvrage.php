@@ -141,6 +141,8 @@ include 'app/commun/header.php';
                             <select multiple class="form-select <?= isset($_SESSION['ajout-ouvrage-errors']['domaine-ouvrage']) ? 'is-invalid' : '' ?>" id="domaines-ouvrage" name="domaines-ouvrage[]">
                                 <?php
                                 $liste_domaines = get_liste_domaine();
+                                
+                                $selectedDomaines = isset($_SESSION['saisie-precedente']['domaine-ouvrage']) ? $_SESSION['saisie-precedente']['domaine-ouvrage'] : [];
 
                                 foreach ($liste_domaines as $domaine) {
                                     echo '<option value="' . $domaine['cod_dom'] . '">' . $domaine['lib_dom'] . '</option>';
@@ -154,7 +156,7 @@ include 'app/commun/header.php';
                             <?php endif; ?>
                         </div>
                     </div>
-                    
+
                     <div class="mb-3 row">
                         <label for="auteurs-secondaires-ouvrage" class="col-sm-2 col-form-label">Auteurs secondaires:</label>
                         <div class="col-sm-10">
@@ -178,7 +180,59 @@ include 'app/commun/header.php';
                         </div>
                     </div>
 
+                    <div class="row mt-3">
+                        <label for="langue-et-annnee" class="col-sm-2 col-form-label">Langue et année de publication:</label>
+                        <div class="col-md-5">
+                            <select class="form-select langue-select <?= isset($_SESSION['ajout-ouvrage-errors']['langue-ouvrage']) ? 'is-invalid' : '' ?>" id="langue et annnee" name="langue[]" required data-index="0">
+                                <option value="0"></option>
+                                <?php
+                                // Appeler la fonction pour récupérer la liste des domaines
+                                $liste_langue = get_liste_langue();
 
+                                // Afficher les domaines dans le menu déroulant
+                                foreach ($liste_langue as $langue) {
+                                    $selected = $langue === $langue['cod_lang'] ? 'selected' : '';
+                                    echo '<option value="' . $langue['cod_lang'] . '" ' . $selected . '>' . $langue['lib_lang'] . '</option>';
+                                }
+                                ?>
+                            </select>
+                            <?php if (isset($_SESSION['ajout-ouvrage-errors']['langue-ouvrage'])) : ?>
+                                <?php foreach ($_SESSION['ajout-ouvrage-errors']['langue-ouvrage'] as $error) : ?>
+                                    <div class="invalid-feedback">
+                                        <?= $error ?>
+                                    </div>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+
+                        </div>
+                        <div class="col-md-4">
+                            <select class="form-select annee-publication-select <?= isset($_SESSION['ajout-ouvrage-errors']['annee_publication']) ? 'is-invalid' : '' ?>" id="langue et annnee" name="annee_publication[]" required data-index="0">
+                                <option value="0"></option>
+                                <?php
+                                $anneeActuelle = date("Y");
+                                $anneeDebut = 1700; // Année de départ
+                                $anneeFin = $anneeActuelle; // Année de fin (utilise $anneeActuelle ou une autre valeur si nécessaire)
+
+                                for ($annee = $anneeDebut; $annee <= $anneeFin; $annee++) {
+                                    $selected = in_array(strval($annee), $annee_publication) ? 'selected' : '';
+                                    echo '<option value="' . $annee . '" ' . $selected . '>' . $annee . '</option>';
+                                }
+                                ?>
+                            </select>
+                            <?php if (isset($_SESSION['ajout-ouvrage-errors']['langue-ouvrage'])) : ?>
+                                <?php foreach ($_SESSION['ajout-ouvrage-errors']['langue-ouvrage'] as $error) : ?>
+                                    <div class="invalid-feedback">
+                                        <?= $error ?>
+                                    </div>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+
+                        </div>
+                        <div class="col-md-1">
+                            <button type="button" class="btn btn-success btn-add">+</button>
+                        </div>
+                        <div id="form-container"></div>
+                    </div>
 
 
                     <div class="row">
@@ -198,6 +252,107 @@ include 'app/commun/header.php';
     document.getElementById('auteur-principal-ouvrage').addEventListener('change', function(event) {
         const selectedAuthorId = event.target.value;
         document.getElementById('selected-auteur-id').value = selectedAuthorId;
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Compteur pour identifier les champs ajoutés
+        let counter = 1;
+
+        // Fonction pour créer un nouveau champ "Langue et année de publication"
+        function createNewField() {
+            const row = document.createElement('div');
+            row.classList.add('row', 'mt-3');
+
+            const label = document.createElement('label');
+            label.classList.add('col-sm-2', 'col-form-label');
+            label.textContent = 'Langue et année de publication:';
+
+            const col1 = document.createElement('div');
+            col1.classList.add('col-md-5');
+
+            const selectLangue = document.createElement('select');
+            selectLangue.classList.add('form-select', 'langue-select');
+            selectLangue.name = 'langue[]';
+            selectLangue.required = true;
+            selectLangue.dataset.index = counter;
+            selectLangue.innerHTML = `
+<option value="0"></option>
+<?php
+// Appeler la fonction pour récupérer la liste des domaines
+$liste_langue = get_liste_langue();
+
+// Afficher les domaines dans le menu déroulant
+foreach ($liste_langue as $langue) {
+    $selected = $langue === $langue['cod_lang'] ? 'selected' : '';
+    echo '<option value="' . $langue['cod_lang'] . '" ' . $selected . '>' . $langue['lib_lang'] . '</option>';
+}
+?>
+`;
+
+            const col2 = document.createElement('div');
+            col2.classList.add('col-md-4');
+
+            const selectAnnee = document.createElement('select');
+            selectAnnee.classList.add('form-select', 'annee-publication-select');
+            selectAnnee.name = 'annee_publication[]';
+            selectAnnee.required = true;
+            selectAnnee.dataset.index = counter;
+            selectAnnee.innerHTML = `
+<option value="0"></option>
+<?php
+$anneeActuelle = date("Y");
+$anneeDebut = 1700; // Année de départ
+$anneeFin = $anneeActuelle; // Année de fin (utilise $anneeActuelle ou une autre valeur si nécessaire)
+
+for ($annee = $anneeDebut; $annee <= $anneeFin; $annee++) {
+    $selected = in_array(strval($annee), $annee_publication) ? 'selected' : '';
+    echo '<option value="' . $annee . '" ' . $selected . '>' . $annee . '</option>';
+}
+?>
+`;
+
+            const col3 = document.createElement('div');
+            col3.classList.add('col-md-1');
+
+            const btnRemove = document.createElement('button');
+            btnRemove.type = 'button';
+            btnRemove.classList.add('btn', 'btn-danger', 'btn-remove');
+            btnRemove.textContent = '-';
+            btnRemove.dataset.index = counter;
+
+            col1.appendChild(selectLangue);
+            col2.appendChild(selectAnnee);
+            col3.appendChild(btnRemove);
+
+            row.appendChild(label);
+            row.appendChild(col1);
+            row.appendChild(col2);
+            row.appendChild(col3);
+
+            document.getElementById('form-container').appendChild(row);
+
+            // Incrémenter le compteur pour les futurs champs ajoutés
+            counter++;
+        }
+
+        // Fonction pour supprimer un champ "Langue et année de publication"
+        function removeField(index) {
+            const fieldToRemove = document.querySelector(`[data-index="${index}"]`).closest('.row');
+            fieldToRemove.remove();
+        }
+
+        // Gérer le clic sur le bouton "+"
+        document.querySelector('.btn-add').addEventListener('click', function() {
+            createNewField();
+        });
+
+        // Gérer le clic sur le bouton "-"
+        document.addEventListener('click', function(event) {
+            if (event.target.classList.contains('btn-remove')) {
+                const indexToRemove = event.target.dataset.index;
+                removeField(indexToRemove);
+            }
+        });
     });
 </script>
 

@@ -1552,30 +1552,6 @@ function get_all_data_ouvrage_by_id(string $titre, int $nb_ex, int $num_aut, str
 
 
 /**
- * Cette fonction permet de récupérer le code domaine (cod_dom) par son libellé.
- *
- * @param string $lib_dom Le nom du domaine.
- * @return int|null Le code domaine (cod_dom) ou null si non trouvé.
- */
-function get_cod_dom_by_nom(string $lib_dom) {
-    $db = connect_db();
-    
-    // Requête pour récupérer le code domaine par son nom
-    $requete = 'SELECT cod_dom FROM domaine WHERE lib_dom = :lib_dom';
-    
-    // Préparation de la requête
-    $query = $db->prepare($requete);
-    
-    // Exécution de la requête en liant le paramètre :nom_dom
-    $query->execute(['lib_dom' => $lib_dom]);
-    
-    // Récupération du résultat de la requête
-    $cod_dom = $query->fetchColumn();
-    
-    return $cod_dom ?: null;
-}
-
-/**
  * Associer un domaine à un ouvrage dans la table "domaine_ouvrage".
  *
  * @param int $cod_dom L'ID du domaine.
@@ -1630,73 +1606,34 @@ function associerAuteurSecondaireOuvrage($num_aut, $cod_ouv) {
 
 
 /**
- * Cette fonction permet d'ajouter les domaines liés à un ouvrage dans la table domaine_ouvrage.
+ * Cette fonction insère les données de langue et d'année de publication dans la table date_parution.
  *
- * @param int $id_ouvrage L'identifiant de l'ouvrage auquel lier les domaines.
- * @param array $id_domaines Les identifiants des domaines à lier.
- *
- * @return bool Indique si l'opération d'ajout a réussi ou non.
+ * @param int $cod_ouv L'identifiant de l'ouvrage.
+ * @param array $langues Les langues sélectionnées.
+ * @param array $annees Les années de publication correspondantes.
+ * @return bool True en cas de succès, False en cas d'échec.
  */
-function ajouterDomainesOuvrage(int $id_ouvrage, array $id_domaines): bool
-{
-    if (empty($id_domaines)) {
-        return false;
-    }
-
+function insererDateParution(int $cod_ouv, array $langues, array $annees) {
     $db = connect_db();
-    $sql_insert_domaine_ouvrage = "INSERT INTO domaine_ouvrage (cod_ouv, cod_dom) VALUES (:id_ouvrage, :cod_dom)";
+    
+    // Préparer et exécuter les requêtes pour insérer les données dans la table date_parution
+    $requete = 'INSERT INTO date_parution (cod_ouv, cod_lang, dat_par) VALUES (:cod_ouv, :cod_lang, :dat_par)';
+    $query = $db->prepare($requete);
 
-    try {
-        $stmt_insert = $db->prepare($sql_insert_domaine_ouvrage);
+    foreach ($langues as $index => $cod_lang) {
+        $dat_par = $annees[$index];
+        $resultat = $query->execute([
+            'cod_ouv' => $cod_ouv,
+            'cod_lang' => $cod_lang,
+            'dat_par' => $dat_par,
+        ]);
 
-        foreach ($id_domaines as $cod_dom) {
-            $stmt_insert->execute([
-                'id_ouvrage' => $id_ouvrage,
-                'cod_dom' => $cod_dom
-            ]);
+        if (!$resultat) {
+            return false; // En cas d'échec, retourner false
         }
-
-        return true; // Indiquer que l'ajout a réussi
-    } catch (PDOException $e) {
-        return false; // Indiquer qu'il y a eu une erreur
     }
-}
-
-
-/**
- * Cette fonction permet d'associer les langues et les dates de parution à un ouvrage dans la table date_parution.
- *
- * @param int $id_ouvrage L'identifiant de l'ouvrage auquel lier les langues et les dates de parution.
- * @param array $langues Les identifiants des langues à lier.
- * @param array $dates_parution Les dates de parution associées à chaque langue.
- *
- * @return bool Indique si l'opération d'association a réussi ou non.
- */
-function associerLanguesDatesParutionOuvrage(int $id_ouvrage, array $langues, array $dates_parution): bool
-{
-    if (count($langues) !== count($dates_parution)) {
-        return false;
-    }
-
-    $db = connect_db();
-    $sql_assoc_langues_dates = "INSERT INTO date_parution (cod_ouv, cod_lang, date_par) VALUES (:id_ouvrage, :cod_lang, :date_parution)";
-
-    try {
-        $stmt_assoc = $db->prepare($sql_assoc_langues_dates);
-
-        foreach ($langues as $index => $cod_lang) {
-            $date_parution = $dates_parution[$index];
-            $stmt_assoc->execute([
-                'id_ouvrage' => $id_ouvrage,
-                'cod_lang' => $cod_lang,
-                'date_parution' => $date_parution
-            ]);
-        }
-
-        return true; // Indiquer que l'association a réussi
-    } catch (PDOException $e) {
-        return false; // Indiquer qu'il y a eu une erreur
-    }
+    
+    return true; // Si toutes les insertions réussissent, retourner true
 }
 
 
