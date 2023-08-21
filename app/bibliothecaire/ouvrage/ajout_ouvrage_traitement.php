@@ -16,7 +16,7 @@ $anneesPublication = $_POST['annee_publication']; // Récupération des années 
 if (empty($titre)) {
     $errors['titre-ouvrage'] = "Le champ titre est requis. Veuillez le renseigner!";
 } else {
-    $data['titre-ouvrage'] = trim(htmlentities($titre));
+    $data['titre-ouvrage'] = trim(htmlspecialchars($titre));
 }
 
 // Vérification du nombre d'exemplaires

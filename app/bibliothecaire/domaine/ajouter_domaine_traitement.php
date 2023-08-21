@@ -4,7 +4,7 @@ $errors="";
 
 
 if (verifier_info($_POST['domaine'])) {
-    $data = trim(htmlentities($_POST['domaine']));
+    $data = trim(htmlspecialchars($_POST['domaine']));
 } else {
     $errors = '<p> Le champ est requis. Veuillez le renseigner! </p>';
 }
@@ -14,7 +14,7 @@ if(isset($_POST['domaine']) && !empty($_POST['domaine']) && check_if_domaine_exi
 }
 
 if(isset($_POST['domaine']) && !empty($_POST['domaine']) && !check_if_domaine_exist($_POST['domaine']) ){
-    $data= trim(htmlentities($_POST['domaine']));
+    $data= trim(htmlspecialchars($_POST['domaine']));
 }
 
 

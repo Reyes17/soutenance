@@ -236,3 +236,25 @@ $_SESSION['ajout-ouvrage-error'] = 'Une erreur est survenue lors de l\'ajout de 
 header('Location: ' . PROJECT_DIR . 'bibliothecaire/ouvrage/ajouter');
 exit();
 }
+
+
+
+<div class="mb-3 row">
+                        <label for="auteur-principal-ouvrage" class="col-sm-2 col-form-label">Auteur :</label>
+                        <div class="col-sm-10">
+                            <select class="form-select <?= isset($_SESSION['ajout-ouvrage-errors']['auteur-principal-ouvrage']) ? 'is-invalid' : '' ?>" id="auteur-principal-ouvrage" name="auteur-principal-ouvrage">
+                                <option value="0"></option>
+                                <?php
+                                // Appeler la fonction pour récupérer la liste des auteurs
+                                $liste_auteurs = get_liste_auteurs();
+
+                                // Récupérer la valeur précédente de l'auteur depuis la session si disponible
+                                $selectedAuteurId = isset($_SESSION['saisie-precedente']['selectedAuteurId']) ? $_SESSION['saisie-precedente']['selectedAuteurId'] : '';
+
+                                // Afficher les auteurs dans le menu déroulant
+                                foreach ($liste_auteurs as $auteur) {
+                                    $selected = $selectedAuteurId === $auteur['num_aut'] ? 'selected' : '';
+                                    echo '<option value="' . $auteur['num_aut'] . '" ' . $selected . '>' . $auteur['nom_aut'] . ' ' . $auteur['prenom_aut'] . '</option>';
+                                }
+                                ?>
+                            </select>

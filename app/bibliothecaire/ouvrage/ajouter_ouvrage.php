@@ -138,7 +138,7 @@ include 'app/commun/header.php';
                     <div class="mb-3 row">
                         <label for="domaines-ouvrage" class="col-sm-2 col-form-label">Domaines :</label>
                         <div class="col-sm-10">
-                            <select multiple class="form-select <?= isset($_SESSION['ajout-ouvrage-errors']['domaine-ouvrage']) ? 'is-invalid' : '' ?>" id="domaines-ouvrage" name="domaines-ouvrage[]">
+                            <select multiple class="form-select select2 <?= isset($_SESSION['ajout-ouvrage-errors']['domaine-ouvrage']) ? 'is-invalid' : '' ?>" id="domaines-ouvrage" name="domaines-ouvrage[]">
                                 <?php
                                 $liste_domaines = get_liste_domaine();
                                 
@@ -160,7 +160,7 @@ include 'app/commun/header.php';
                     <div class="mb-3 row">
                         <label for="auteurs-secondaires-ouvrage" class="col-sm-2 col-form-label">Auteurs secondaires:</label>
                         <div class="col-sm-10">
-                            <select class="form-select <?= isset($_SESSION['ajout-ouvrage-errors']['auteurs-secondaires-ouvrage']) ? 'is-invalid' : '' ?>" id="auteurs-secondaires-ouvrage" name="auteurs-secondaires-ouvrage[]" multiple>
+                            <select class="form-select select2 <?= isset($_SESSION['ajout-ouvrage-errors']['auteurs-secondaires-ouvrage']) ? 'is-invalid' : '' ?>" id="auteurs-secondaires-ouvrage" name="auteurs-secondaires-ouvrage[]" multiple>
                                 <?php
                                 // Appeler la fonction pour récupérer la liste des auteurs secondaires
                                 $liste_auteur = get_liste_auteurs();
@@ -248,6 +248,13 @@ include 'app/commun/header.php';
     </main>
 </section>
 <script>
+    //Code js pour select2
+     $(document).ready(function() {
+        $('.select2').select2();
+    });
+
+   
+
     // Gérer le changement de sélection dans le champ de sélection de l'auteur
     document.getElementById('auteur-principal-ouvrage').addEventListener('change', function(event) {
         const selectedAuthorId = event.target.value;

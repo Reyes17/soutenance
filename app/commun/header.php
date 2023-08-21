@@ -22,16 +22,14 @@
 	<link href="<?= PROJECT_DIR; ?>public/vendor/quill/quill.bubble.css" rel="stylesheet">
 	<link href="<?= PROJECT_DIR; ?>public/vendor/remixicon/remixicon.css" rel="stylesheet">
 	<link href="<?= PROJECT_DIR; ?>public/vendor/simple-datatables/style.css" rel="stylesheet">
-	<link href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" rel="stylesheet">
 	<!-- Template Main CSS File -->
 	<link href="<?= PROJECT_DIR; ?>public/css/style.css" rel="stylesheet">
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<!-- Inclure le fichier CSS de Toastify -->
-
-
+<!-- Inclure la bibliothèque du select2 -->
+<script src="<?= PROJECT_DIR; ?>public/select2/js/select2.min.js"></script>
+<link href="<?= PROJECT_DIR; ?>public/select2/css/select2.min" rel="stylesheet">
+<link href="<?= PROJECT_DIR; ?>public/select2-bootstrap4/select2-bootstrap4.min.css" rel="stylesheet">
 <!-- Inclure le fichier JavaScript de Toastify -->
-<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-
 
 	<!-- =======================================================
 	======================================================== -->

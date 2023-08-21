@@ -4,7 +4,7 @@ $errors="";
 
 
 if (verifier_info($_POST['langue'])) {
-    $data = trim(htmlentities($_POST['langue']));
+    $data = trim(htmlspecialchars($_POST['langue']));
 } else {
     $errors = '<p> Le champ est requis. Veuillez le renseigner! </p>';
 }
@@ -14,7 +14,7 @@ if(isset($_POST['langue']) && !empty($_POST['langue']) && check_if_langue_exist(
 }
 
 if(isset($_POST['langue']) && !empty($_POST['langue']) && !check_if_langue_exist($_POST['langue']) ){
-    $data= trim(htmlentities($_POST['langue']));
+    $data= trim(htmlspecialchars($_POST['langue']));
 }
 
 

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : jeu. 10 août 2023 à 22:14
+-- Généré le : lun. 21 août 2023 à 13:09
 -- Version du serveur :  5.7.31
 -- Version de PHP : 7.3.21
 
@@ -37,14 +37,7 @@ CREATE TABLE IF NOT EXISTS `auteur` (
   `est_supprimer` int(11) NOT NULL DEFAULT '0',
   `maj_le` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`num_aut`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
-
---
--- Déchargement des données de la table `auteur`
---
-
-INSERT INTO `auteur` (`num_aut`, `nom_aut`, `prenom_aut`, `creer_le`, `est_actif`, `est_supprimer`, `maj_le`) VALUES
-(29, 'Th&eacute;riault', 'Sabrina', '2023-07-25 14:54:24', 1, 0, NULL);
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -64,7 +57,7 @@ CREATE TABLE IF NOT EXISTS `auteur_secondaire` (
   PRIMARY KEY (`id`),
   KEY `num_aut` (`num_aut`),
   KEY `cod_ouv` (`cod_ouv`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -77,15 +70,15 @@ CREATE TABLE IF NOT EXISTS `date_parution` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `cod_ouv` int(11) NOT NULL,
   `cod_lang` int(11) NOT NULL,
-  `dat_par` date NOT NULL,
-  `creer_le` int(11) NOT NULL,
-  `est_actif` int(11) NOT NULL,
-  `est_supprimer` int(11) NOT NULL,
-  `maj_le` timestamp NOT NULL,
+  `dat_par` int(11) NOT NULL,
+  `creer_le` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `est_actif` int(11) NOT NULL DEFAULT '1',
+  `est_supprimer` int(11) NOT NULL DEFAULT '0',
+  `maj_le` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `cod_ouv` (`cod_ouv`),
   KEY `cod_lang` (`cod_lang`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -102,19 +95,7 @@ CREATE TABLE IF NOT EXISTS `domaine` (
   `est_supprimer` int(11) NOT NULL DEFAULT '0',
   `maj_le` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`cod_dom`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
-
---
--- Déchargement des données de la table `domaine`
---
-
-INSERT INTO `domaine` (`cod_dom`, `lib_dom`, `creer_le`, `est_actif`, `est_supprimer`, `maj_le`) VALUES
-(5, 'Enfance et Jeunesse', '2023-07-24 09:35:54', 1, 0, '2023-07-24 07:36:05'),
-(6, 'Arts, soci&eacute;t&eacute; &amp; sciences humaines', '2023-07-24 09:49:15', 1, 0, '2023-07-24 07:50:41'),
-(7, 'Bien-&ecirc;tre &amp; vie pratique', '2023-07-25 13:35:37', 1, 0, '2023-07-25 13:35:37'),
-(8, 'M&eacute;decine, sciences, techniques', '2023-07-25 13:36:32', 1, 0, '2023-07-25 13:36:32'),
-(9, 'Litt&eacute;rature', '2023-07-25 13:37:08', 1, 0, '2023-07-25 13:37:08'),
-(10, 'Scolaire &amp; p&eacute;dagogie', '2023-07-25 13:38:05', 1, 0, '2023-07-25 13:38:05');
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -127,14 +108,14 @@ CREATE TABLE IF NOT EXISTS `domaine_ouvrage` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `cod_ouv` int(11) NOT NULL,
   `cod_dom` int(11) NOT NULL,
-  `creer_le` int(11) NOT NULL,
-  `est_actif` int(11) NOT NULL,
-  `est_supprimer` int(11) NOT NULL,
-  `maj_le` timestamp NOT NULL,
+  `creer_le` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `est_actif` int(11) NOT NULL DEFAULT '1',
+  `est_supprimer` int(11) NOT NULL DEFAULT '0',
+  `maj_le` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `cod_ouv` (`cod_ouv`),
   KEY `cod_dom` (`cod_dom`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -220,13 +201,13 @@ CREATE TABLE IF NOT EXISTS `ouvrage` (
   `periodicite` varchar(255) DEFAULT NULL,
   `num_aut` int(11) NOT NULL,
   `img` varchar(255) DEFAULT NULL,
-  `creer_le` int(11) NOT NULL,
-  `est_actif` int(11) NOT NULL,
-  `est_supprimer` int(11) NOT NULL,
-  `maj_le` timestamp NOT NULL,
+  `creer_le` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `est_actif` int(11) NOT NULL DEFAULT '1',
+  `est_supprimer` int(11) NOT NULL DEFAULT '0',
+  `maj_le` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`cod_ouv`),
   KEY `num_aut` (`num_aut`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -246,14 +227,6 @@ CREATE TABLE IF NOT EXISTS `token` (
   `maj_le` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
-
---
--- Déchargement des données de la table `token`
---
-
-INSERT INTO `token` (`id`, `user_id`, `type`, `token`, `est_actif`, `est_supprimer`, `creer_le`, `maj_le`) VALUES
-(28, 31, 'VALIDATION_COMPTE', 'VALIDATION_COMPTE64b2a74c4f45b', 0, 1, '2023-07-15 14:03:56', '2023-07-15 12:08:46'),
-(29, 31, 'NOUVEAU_MOT_DE_PASSE', '64b2a85592c01', 0, 1, '2023-07-15 14:08:21', '2023-07-15 12:08:46');
 
 -- --------------------------------------------------------
 
@@ -283,14 +256,6 @@ CREATE TABLE IF NOT EXISTS `utilisateur` (
   `adresse` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
-
---
--- Déchargement des données de la table `utilisateur`
---
-
-INSERT INTO `utilisateur` (`id`, `nom`, `prenom`, `sexe`, `date_naissance`, `email`, `telephone`, `mot_de_passe`, `profil`, `avatar`, `est_actif`, `est_supprimer`, `creer_le`, `maj_le`, `email_valide`, `telephone_valide`, `nom_utilisateur`, `adresse`) VALUES
-(30, 'EMEH', 'Restarick', 'M', '1999-10-17', 'emehoceane@gmail.com', 67657013, '05b530ad0fb56286fe051d5f8be5b8453f1cd93f', 'bibliothecaire', '/soutenance/public/image/utilisateur_image/fate state.jpg', 1, 0, '2023-07-11 13:58:14', '2023-07-15 17:56:00', NULL, NULL, 'Restarick EMEH', 'Cotonou'),
-(31, 'EMEH', 'Restarick', 'M', '1999-10-17', 'emehrestarick77@gmail.com', 66057342, '04f081741466827161bede82a374af0ec9a39e31', 'MEMBRE', '/soutenance/public/image/utilisateur_image/FB_IMG_1651251178570.jpg', 1, 0, '2023-07-15 14:03:56', '2023-07-24 08:09:04', NULL, NULL, 'REYES17', 'Cotonou');
 
 --
 -- Contraintes pour les tables déchargées

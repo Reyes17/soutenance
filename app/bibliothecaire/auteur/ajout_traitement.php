@@ -4,13 +4,13 @@ $errors = [];
 $messageErreur = '';
 
 if (verifier_info($_POST['nom_aut'])) {
-    $data['nom_aut'] = trim(htmlentities($_POST['nom_aut']));
+    $data['nom_aut'] = trim(htmlspecialchars($_POST['nom_aut']));
 } else {
     $errors['nom_aut'] = '<p> Le champ nom est requis. Veuillez le renseigner! </p>';
 }
 
 if (verifier_info($_POST['prenom_aut'])) {
-    $data['prenom_aut'] = trim(htmlentities($_POST['prenom_aut']));
+    $data['prenom_aut'] = trim(htmlspecialchars($_POST['prenom_aut']));
 } else {
     $errors['prenom_aut'] = '<p> Le champ prénom est requis. Veuillez le renseigner!</p>';
 }

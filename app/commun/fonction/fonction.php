@@ -1574,10 +1574,6 @@ function associerDomaineOuvrage(int $cod_dom, int $cod_ouv): bool {
 }
 
 
-
-
-
-
 /**
  * Cette fonction permet d'associer un auteur secondaire à un ouvrage dans la table auteur_secondaire.
  *
@@ -1635,5 +1631,92 @@ function insererDateParution(int $cod_ouv, array $langues, array $annees) {
     
     return true; // Si toutes les insertions réussissent, retourner true
 }
+
+/**
+ * Cette fonction permet de récupérer la liste des ouvrages de la base de données.
+ *
+ * @return array $liste_ouvrages La liste des ouvrages.
+ */
+function get_liste_ouvrages(): array
+{
+    $liste_ouvrages = array();
+
+    $db = connect_db();
+
+    // Écriture de la requête
+    $requete = 'SELECT * FROM ouvrage';
+
+    // Préparation de la requête
+    $requete_preparee = $db->prepare($requete);
+
+    // Exécution de la requête
+    $resultat = $requete_preparee->execute();
+
+    if ($resultat) {
+        $liste_ouvrages = $requete_preparee->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    return $liste_ouvrages;
+}
+
+
+/**
+ * Cette fonction retourne les auteurs correspondant à la recherche.
+ *
+ * @param string $texteRecherche Le texte de recherche saisi par l'utilisateur.
+ * @return array Tableau des auteurs correspondant à la recherche.
+ */
+function get_auteurs_suggestions($texteRecherche): array
+{
+    $db = connect_db();
+
+    // Éviter les injections SQL en utilisant des requêtes préparées
+    $query = "SELECT num_aut, nom_aut, prenom_aut FROM auteur WHERE CONCAT(nom_aut, ' ', prenom_aut) LIKE :recherche";
+
+    $stmt = $db->prepare($query);
+    $stmt->bindValue(':recherche', '%' . $texteRecherche . '%', PDO::PARAM_STR);
+    $stmt->execute();
+
+    $suggestion = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    return $suggestion;
+}
+
+
+function get_domaines_by_ouvrage($cod_ouv): array
+{
+    $db = connect_db();
+    $query = "SELECT domaine.lib_dom
+              FROM domaine_ouvrage
+              INNER JOIN domaine ON domaine_ouvrage.cod_dom = domaine.cod_dom
+              WHERE domaine_ouvrage.cod_ouv = :cod_ouv";
+    $stmt = $db->prepare($query);
+    $stmt->bindParam(':cod_ouv', $cod_ouv);
+    $stmt->execute();
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    return $result;
+}
+
+
+function get_auteurs_secondaires_by_ouvrage($cod_ouv): array
+{
+    $db = connect_db();
+    $query = "SELECT auteur.prenom_aut, auteur.nom_aut
+              FROM auteur_secondaire
+              INNER JOIN auteur ON auteur_secondaire.num_aut = auteur.num_aut
+              WHERE auteur_secondaire.cod_ouv = :cod_ouv";
+    $stmt = $db->prepare($query);
+    $stmt->bindParam(':cod_ouv', $cod_ouv);
+    $stmt->execute();
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    return $result;
+}
+
+
+        
+           
+        
+
+
 
 
