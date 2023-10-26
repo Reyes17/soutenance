@@ -1,6 +1,8 @@
 <?php
-if (empty($_SESSION["utilisateur_connecter_membre"])) {
+// Vérification de l'authentification
+if (!isset($_SESSION['utilisateur_connecter_membre'])) {
 	header('location:' . PROJECT_DIR . 'membre/connexion');
+	exit();
 }
 $title = 'Profil';
 include 'app/commun/header_membre.php';
@@ -40,11 +42,11 @@ if (!empty($_SESSION['utilisateur_connecter_membre']['0']['id']) && !empty($_SES
 
 					<div class="pt-2 d-flex flex-column align-items-center pb-4">
 						<h3 class="card-title">Paramètres de compte</h3>
-						<!----message de succès global à la connexion----->
+						<!----message d'erreur global à la désactivation de compte----->
 						<?php
 						if (!empty($_SESSION['desactivation-errors']) && !empty($_SESSION['desactivation-errors'])) {
 						?>
-							<div class="alert alert-danger" style="color: white; background-color:#dc3545; border-radius: 15px; text-align:center;">
+							<div class="alert alert-danger mt-3" style="border-radius: 15px; text-align: center;">
 								<?= $_SESSION['desactivation-errors'] ?>
 							</div>
 						<?php
@@ -157,7 +159,7 @@ if (!empty($_SESSION['utilisateur_connecter_membre']['0']['id']) && !empty($_SES
 								<?php
 								if (!empty($_SESSION['passe']) && !empty($_SESSION['passe'])) {
 								?>
-									<div class="alert alert-danger" style="color: white; background-color: #dc3545; border-radius: 15px; padding: 2%; text-align:center;">
+									<div class="alert alert-danger mt-3" style="border-radius: 15px; text-align: center;">
 										<?= $_SESSION['passe'] ?>
 									</div>
 								<?php
@@ -168,7 +170,7 @@ if (!empty($_SESSION['utilisateur_connecter_membre']['0']['id']) && !empty($_SES
 								<?php
 								if (!empty($_SESSION['photo-erreurs']) && !empty($_SESSION['photo-erreurs'])) {
 								?>
-									<div class="alert alert-danger" style="color: white; background-color: #dc3545; border-radius: 15px; padding: 2%; text-align:center;">
+									<div class="alert alert-danger mt-3" style="border-radius: 15px; text-align: center;">
 										<?= $_SESSION['photo-erreurs'] ?>
 									</div>
 								<?php
@@ -179,7 +181,7 @@ if (!empty($_SESSION['utilisateur_connecter_membre']['0']['id']) && !empty($_SES
 								<?php
 								if (!empty($_SESSION['success']) && !empty($_SESSION['success'])) {
 								?>
-									<div class="alert alert-danger" style="color: white; background-color:#2bc717 ; border-radius: 15px; padding: 2%; text-align:center;">
+									<div class="alert alert-success mt-3" style="border-radius: 15px; text-align: center;">
 										<?= $_SESSION['success'] ?>
 									</div>
 								<?php
@@ -190,7 +192,7 @@ if (!empty($_SESSION['utilisateur_connecter_membre']['0']['id']) && !empty($_SES
 								<?php
 								if (!empty($_SESSION['photo_success']) && !empty($_SESSION['photo_success'])) {
 								?>
-									<div class="alert alert-danger" style="color: white; background-color:#2bc717 ; border-radius: 15px; padding: 2%; text-align:center;">
+									<div class="alert alert-success mt-3" style="border-radius: 15px; text-align: center;">
 										<?= $_SESSION['photo_success'] ?>
 									</div>
 								<?php
@@ -445,7 +447,7 @@ if (!empty($_SESSION['utilisateur_connecter_membre']['0']['id']) && !empty($_SES
 							<?php
 							if (!empty($_SESSION['changement-erreurs']) && !empty($_SESSION['changement-erreurs'])) {
 							?>
-								<div class="alert alert-danger" style="color: white; background-color:#dc3545; border-radius: 15px; text-align:center;">
+								<div class="alert alert-danger mt-3" style="border-radius: 15px; text-align: center;">
 									<?= $_SESSION['changement-erreurs'] ?>
 								</div>
 							<?php

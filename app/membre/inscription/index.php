@@ -1,5 +1,5 @@
 <?php
-if (!empty($_SESSION["utilisateur_connecter_membre"])) {
+if (isset($_SESSION["utilisateur_connecter_membre"])) {
 	header('location:' . PROJECT_DIR . 'membre/utilisateur/acceuil');
 }
 
@@ -38,7 +38,7 @@ include 'app/commun/index.php';
 								<?php
 								if (isset($_SESSION['inscription-message-success-global']) && !empty($_SESSION['inscription-message-success-global'])) {
 								?>
-									<div class="alert alert-primary mt-3" style="color: white; background-color: #2bc717; text-align:center; border-radius: 15px; text-align:center;">
+									<div class="alert alert-success mt-3" style="border-radius: 15px; text-align: center;">
 										<?= $_SESSION['inscription-message-success-global'] ?>
 									</div>
 								<?php
@@ -48,7 +48,7 @@ include 'app/commun/index.php';
 								<?php
 								if (isset($_SESSION['inscription-message-erreur-global']) && !empty($_SESSION['inscription-message-erreur-global'])) {
 								?>
-									<div class="alert alert-primary mt-3" style="color: white; background-color: #dc3545; border-radius: 15px; text-align:center;">
+									<div class="alert alert-danger mt-3" style="border-radius: 15px; text-align: center;">
 										<?= $_SESSION['inscription-message-erreur-global'] ?>
 									</div>
 								<?php
@@ -209,7 +209,7 @@ include 'app/commun/index.php';
 											<button class="btn btn-primary w-100" type="submit">Créer un compte</button>
 										</div>
 										<div class="col-12 mt-3">
-											<p class="small mb-0">Vous aviez déjà un compte? <a href="login">Se
+											<p class="small mb-0">Vous aviez déjà un compte? <a href="<?= PROJECT_DIR; ?>membre/connexion">Se
 													Connecter</a></p>
 										</div>
 										<?php

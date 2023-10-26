@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : lun. 21 août 2023 à 13:09
+-- Généré le : mer. 25 oct. 2023 à 18:31
 -- Version du serveur :  5.7.31
 -- Version de PHP : 7.3.21
 
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `auteur` (
   `est_supprimer` int(11) NOT NULL DEFAULT '0',
   `maj_le` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`num_aut`)
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS `auteur_secondaire` (
   PRIMARY KEY (`id`),
   KEY `num_aut` (`num_aut`),
   KEY `cod_ouv` (`cod_ouv`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -71,6 +71,7 @@ CREATE TABLE IF NOT EXISTS `date_parution` (
   `cod_ouv` int(11) NOT NULL,
   `cod_lang` int(11) NOT NULL,
   `dat_par` int(11) NOT NULL,
+  `nb_ex_lang` int(11) NOT NULL,
   `creer_le` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `est_actif` int(11) NOT NULL DEFAULT '1',
   `est_supprimer` int(11) NOT NULL DEFAULT '0',
@@ -78,7 +79,7 @@ CREATE TABLE IF NOT EXISTS `date_parution` (
   PRIMARY KEY (`id`),
   KEY `cod_ouv` (`cod_ouv`),
   KEY `cod_lang` (`cod_lang`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -95,7 +96,7 @@ CREATE TABLE IF NOT EXISTS `domaine` (
   `est_supprimer` int(11) NOT NULL DEFAULT '0',
   `maj_le` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`cod_dom`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -115,7 +116,7 @@ CREATE TABLE IF NOT EXISTS `domaine_ouvrage` (
   PRIMARY KEY (`id`),
   KEY `cod_ouv` (`cod_ouv`),
   KEY `cod_dom` (`cod_dom`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -134,6 +135,31 @@ CREATE TABLE IF NOT EXISTS `emprunt` (
   `maj_le` timestamp NOT NULL,
   PRIMARY KEY (`num_emp`),
   KEY `num_mem` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `emprunt_ouvrage`
+--
+
+DROP TABLE IF EXISTS `emprunt_ouvrage`;
+CREATE TABLE IF NOT EXISTS `emprunt_ouvrage` (
+  `id_emp_ouvrage` int(11) NOT NULL AUTO_INCREMENT,
+  `num_emp` int(11) NOT NULL,
+  `cod_ouv` int(11) NOT NULL,
+  `id` int(11) NOT NULL,
+  `dat_ret` datetime DEFAULT NULL,
+  `etat` varchar(255) DEFAULT NULL,
+  `dat_butoir` datetime NOT NULL,
+  `creer_le` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `est_supprime` int(11) NOT NULL DEFAULT '0',
+  `maj_le` timestamp NULL DEFAULT NULL,
+  `est_actif` int(11) NOT NULL,
+  PRIMARY KEY (`id_emp_ouvrage`),
+  KEY `emprunt_ouvrage_num_emp` (`num_emp`),
+  KEY `emprunt_ouvrage_cod_ouv` (`cod_ouv`),
+  KEY `emprunt_ouvrage_utilsateur_id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -158,11 +184,10 @@ CREATE TABLE IF NOT EXISTS `langue` (
 --
 
 INSERT INTO `langue` (`cod_lang`, `lib_lang`, `creer_le`, `est_actif`, `est_supprimer`, `maj_le`) VALUES
-(9, 'Fran&ccedil;ais', '2023-07-24 10:06:56', 1, 0, NULL),
-(10, 'Anglais', '2023-07-24 10:07:09', 1, 0, NULL),
+(10, 'Anglais', '2023-07-24 10:07:09', 1, 0, '2023-09-08 17:49:09'),
 (11, 'Allemand', '2023-07-24 10:07:15', 1, 0, NULL),
 (12, 'Espagnol', '2023-07-24 10:07:18', 1, 0, NULL),
-(13, 'Grec', '2023-07-24 10:07:21', 1, 0, NULL);
+(13, 'Français', '2023-09-08 17:51:33', 1, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -172,19 +197,22 @@ INSERT INTO `langue` (`cod_lang`, `lib_lang`, `creer_le`, `est_actif`, `est_supp
 
 DROP TABLE IF EXISTS `membre_indelicat`;
 CREATE TABLE IF NOT EXISTS `membre_indelicat` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_indelicat` int(11) NOT NULL AUTO_INCREMENT,
   `num_emp` int(11) NOT NULL,
   `cod_ouv` int(11) NOT NULL,
+  `id` int(11) NOT NULL,
   `dat_ret` datetime NOT NULL,
+  `dat_butoir` datetime NOT NULL,
   `numero_compte` varchar(255) NOT NULL,
   `banque` varchar(255) NOT NULL,
   `creer_le` int(11) NOT NULL,
   `est_actif` int(11) NOT NULL,
   `est_supprimer` int(11) NOT NULL,
   `maj_le` timestamp NOT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`id_indelicat`),
   KEY `num_emp` (`num_emp`),
-  KEY `cod_ouv` (`cod_ouv`)
+  KEY `cod_ouv` (`cod_ouv`),
+  KEY `membre_indelicat_utilsateur_id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -207,7 +235,7 @@ CREATE TABLE IF NOT EXISTS `ouvrage` (
   `maj_le` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`cod_ouv`),
   KEY `num_aut` (`num_aut`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -226,7 +254,7 @@ CREATE TABLE IF NOT EXISTS `token` (
   `creer_le` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `maj_le` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -246,7 +274,7 @@ CREATE TABLE IF NOT EXISTS `utilisateur` (
   `mot_de_passe` varchar(255) NOT NULL,
   `profil` varchar(255) DEFAULT NULL,
   `avatar` varchar(255) DEFAULT 'Non defini',
-  `est_actif` int(11) DEFAULT NULL,
+  `est_actif` int(11) DEFAULT '0',
   `est_supprimer` int(11) DEFAULT '0',
   `creer_le` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `maj_le` timestamp NULL DEFAULT NULL,
@@ -255,7 +283,7 @@ CREATE TABLE IF NOT EXISTS `utilisateur` (
   `nom_utilisateur` varchar(255) NOT NULL,
   `adresse` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8;
 
 --
 -- Contraintes pour les tables déchargées
@@ -289,11 +317,20 @@ ALTER TABLE `emprunt`
   ADD CONSTRAINT `emprunt_utilisateur_id` FOREIGN KEY (`id`) REFERENCES `utilisateur` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Contraintes pour la table `emprunt_ouvrage`
+--
+ALTER TABLE `emprunt_ouvrage`
+  ADD CONSTRAINT `emprunt_ouvrage_cod_ouv` FOREIGN KEY (`cod_ouv`) REFERENCES `ouvrage` (`cod_ouv`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `emprunt_ouvrage_num_emp` FOREIGN KEY (`num_emp`) REFERENCES `emprunt` (`num_emp`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `emprunt_ouvrage_utilsateur_id` FOREIGN KEY (`id`) REFERENCES `utilisateur` (`id`);
+
+--
 -- Contraintes pour la table `membre_indelicat`
 --
 ALTER TABLE `membre_indelicat`
-  ADD CONSTRAINT `membre_indelicat_emprumt_num_emp` FOREIGN KEY (`num_emp`) REFERENCES `emprunt` (`num_emp`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `membre_indelicat_ouvrage_cod_ouv` FOREIGN KEY (`cod_ouv`) REFERENCES `ouvrage` (`cod_ouv`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `membre_indelicat_emprunt_num_emp` FOREIGN KEY (`num_emp`) REFERENCES `emprunt` (`num_emp`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `membre_indelicat_ouvrage_cod_ouv` FOREIGN KEY (`cod_ouv`) REFERENCES `ouvrage` (`cod_ouv`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `membre_indelicat_utilsateur_id` FOREIGN KEY (`id`) REFERENCES `utilisateur` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `ouvrage`

@@ -1,6 +1,8 @@
 <?php
-if (empty($_SESSION["utilisateur_connecter_bibliothecaire"])) {
-	header('location:' . PROJECT_DIR . 'bibliothecaire/connexion');
+// Vérification de l'authentification
+if (!isset($_SESSION['utilisateur_connecter_bibliothecaire'])) {
+    header('location:' . PROJECT_DIR . 'bibliothecaire/connexion');
+    exit();
 }
 $title = 'Listes des langues';
 include './app/commun/header.php';
@@ -14,8 +16,7 @@ $liste_langue = get_liste_langue();
 			<?php
 			if (isset($_SESSION['modification_succès']) && !empty($_SESSION['modification_succès'])) {
 			?>
-				<div class="alert alert-primary mt-3" style="color: white; background-color: #2bc717; text-align:center; border-radius: 15px; text-align:center;">
-					<?= $_SESSION['modification_succès'] ?>
+				<div class="alert alert-success mt-3" style="border-radius: 15px; text-align: center;"> <?= $_SESSION['modification_succès'] ?>
 				</div>
 			<?php
 			}
@@ -24,8 +25,7 @@ $liste_langue = get_liste_langue();
 			<?php
 			if (isset($_SESSION['suppression_succes']) && !empty($_SESSION['suppression_succes'])) {
 			?>
-				<div class="alert alert-primary mt-3" style="color: white; background-color: #2bc717; text-align:center; border-radius: 15px; text-align:center;">
-					<?= $_SESSION['suppression_succes'] ?>
+				<div class="alert alert-success mt-3" style="border-radius: 15px; text-align: center;"> <?= $_SESSION['suppression_succes'] ?>
 				</div>
 			<?php
 				unset($_SESSION['suppression_succes']);
@@ -35,7 +35,7 @@ $liste_langue = get_liste_langue();
 			<?php
 			if (isset($_SESSION['suppression_erreur']) && !empty($_SESSION['suppression_erreur'])) {
 			?>
-				<div class="alert alert-primary mt-3" style="color: white; background-color: #dc3545; text-align:center; border-radius: 15px; text-align:center;">
+				<div class="alert alert-danger mt-3" style="border-radius: 15px; text-align: center;">
 					<?= $_SESSION['suppression_erreur'] ?>
 				</div>
 			<?php

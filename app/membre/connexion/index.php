@@ -1,20 +1,20 @@
 <?php
 $title = 'Connexion';
 include 'app/commun/index.php';
-if (!empty($_SESSION["utilisateur_connecter_membre"])) {
+if (isset($_SESSION["utilisateur_connecter_membre"])) {
 	header('location:' . PROJECT_DIR . 'membre/accueil/index');
 }
 $compteSupprime = isset($_GET['compte_supprime']) ? $_GET['compte_supprime'] : null;
 
 if ($compteSupprime == 1) {
-    echo '<div class="alert alert-warning">Votre compte a été supprimé par le bibliothécaire.</div>';
+	echo '<div class="alert alert-warning">Votre compte a été supprimé par le bibliothécaire.</div>';
 }
 // Vérifier si le cookie existe
 if (isset($_COOKIE['compte_supprime_message'])) {
-    // Afficher le message d'alerte
+	// Afficher le message d'alerte
 	echo '<div class="alert alert-danger mt-3" style="color: white; background-color: #dc3545; border: 5px; text-align: center;">' . $_COOKIE['compte_supprime_message'] . '</div>';
-    // Supprimer le cookie
-    setcookie("compte_supprime_message", "", time() - 3600, "/");
+	// Supprimer le cookie
+	setcookie("compte_supprime_message", "", time() - 3600, "/");
 }
 
 if (isset($_COOKIE['utilisateur_connecter_membre']) and !empty($_COOKIE['utilisateur_connecter_membre'])) {
@@ -22,7 +22,7 @@ if (isset($_COOKIE['utilisateur_connecter_membre']) and !empty($_COOKIE['utilisa
 }
 ?>
 <div class="container">
-<section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+	<section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
 		<div class="container">
 			<div class="row justify-content-center">
 				<div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
@@ -44,48 +44,44 @@ if (isset($_COOKIE['utilisateur_connecter_membre']) and !empty($_COOKIE['utilisa
 								<!----message d'erreur global après envoie d'un mauvais mot de passe ou non utilisiateur à la connexion----->
 								<?php
 								if (isset($_SESSION['danger']) && !empty($_SESSION['danger'])) {
-									?>
-									<div class="alert alert-danger mt-3"
-										 style="color: white; background-color: #dc3545; border: 5px; text-align: center;">
+								?>
+									<div class="alert alert-danger mt-3" style="border-radius: 15px; text-align: center;">
 										<?= $_SESSION['danger'] ?>
 									</div>
-									<?php
+								<?php
 								}
 								?>
 
 								<!----message de succès global après validation de mail----->
 								<?php
 								if (isset($_SESSION['validation-compte-message-success']) && !empty($_SESSION['validation-compte-message-success'])) {
-									?>
-									<div class="alert alert-primary mt-3"
-										 style="color: white; background-color: #2bc717; border: 5px; text-align:center;">
+								?>
+									<div class="alert alert-success mt-3" style="border-radius: 15px; text-align: center;">
 										<?= $_SESSION['validation-compte-message-success'] ?>
 									</div>
-									<?php
+								<?php
 								}
 								?>
 
 								<!----message de succès global après changement de mot de passe----->
 								<?php
 								if (isset($_SESSION['changement-success']) && !empty($_SESSION['changement-success'])) {
-									?>
-									<div class="alert alert-primary mt-3"
-										 style="color: white; background-color: #2bc717; border: 5px; text-align:center;">
+								?>
+									<div class="alert alert-success mt-3" style="border-radius: 15px; text-align: center;">
 										<?= $_SESSION['changement-success'] ?>
 									</div>
-									<?php
+								<?php
 								}
 								?>
 
 								<!----message d'erreur global après validation de mail----->
 								<?php
 								if (isset($_SESSION['validation-compte-message-erreur']) && !empty($_SESSION['validation-compte-message-erreur'])) {
-									?>
-									<div class="alert alert-primary mt-3"
-										 style="color: white; background-color: #dc3545; border-radius: 15px; padding: 2%; text-align:center;">
+								?>
+									<div class="alert alert-danger mt-3" style="border-radius: 15px; text-align: center;">
 										<?= $_SESSION['validation-compte-message-erreur'] ?>
 									</div>
-									<?php
+								<?php
 								}
 								?>
 
@@ -97,8 +93,7 @@ if (isset($_COOKIE['utilisateur_connecter_membre']) and !empty($_COOKIE['utilisa
 								</p>
 							</div>
 
-							<form class="row g-3 needs-validation"
-								  action="<?= PROJECT_DIR; ?>membre/connexion/traitement" method="post">
+							<form class="row g-3 needs-validation" action="<?= PROJECT_DIR; ?>membre/connexion/traitement" method="post">
 
 								<div class="col-12 mt-3">
 									<label for="connexion_nom_utilisateur" class="form-label">
@@ -107,13 +102,12 @@ if (isset($_COOKIE['utilisateur_connecter_membre']) and !empty($_COOKIE['utilisa
 										:
 									</label>
 									<div class="input-group has-validation">
-										<input type="text" id="connexion_nom_utilisateur"
-											   class="form-control <?= isset($_SESSION['errors']['nom_utilisateur']) ? 'is-invalid' : '' ?>"
-											   name="nom_utilisateur"
-											   placeholder="Veuillez entrer un nom d'utilisateur"
-											   value="<?php if (isset($data["nom_utilisateur"]) && !empty($data["nom_utilisateur"])) 
-											   { echo $data["nom_utilisateur"]; } else { echo ''; } ?>" placeholder="Veuillez entrer un nom d'utilisateur">
-																																																									
+										<input type="text" id="connexion_nom_utilisateur" class="form-control <?= isset($_SESSION['errors']['nom_utilisateur']) ? 'is-invalid' : '' ?>" name="nom_utilisateur" placeholder="Veuillez entrer un nom d'utilisateur" value="<?php if (isset($data["nom_utilisateur"]) && !empty($data["nom_utilisateur"])) {
+																																																																				echo $data["nom_utilisateur"];
+																																																																			} else {
+																																																																				echo '';
+																																																																			} ?>" placeholder="Veuillez entrer un nom d'utilisateur">
+
 										<?php if (isset($_SESSION['errors']['nom_utilisateur']) && !empty($_SESSION['errors']['nom_utilisateur'])) { ?>
 											<div class="invalid-feedback">
 												<?= $_SESSION['errors']['nom_utilisateur'] ?>
@@ -129,10 +123,7 @@ if (isset($_COOKIE['utilisateur_connecter_membre']) and !empty($_COOKIE['utilisa
 										<span class="text-danger"> (*)</span>
 										:
 									</label>
-									<input type="password" id="connexion_mot_de_passe"
-										   class="form-control <?= isset($_SESSION['errors']['mot_de_passe']) ? 'is-invalid' : '' ?>"
-										   name="mot_de_passe" placeholder=" Veuillez entrer un mot de passe"
-										   value="">
+									<input type="password" id="connexion_mot_de_passe" class="form-control <?= isset($_SESSION['errors']['mot_de_passe']) ? 'is-invalid' : '' ?>" name="mot_de_passe" placeholder=" Veuillez entrer un mot de passe" value="">
 									<?php if (isset($_SESSION['errors']['mot_de_passe']) && !empty($_SESSION['errors']['mot_de_passe'])) { ?>
 										<div class="invalid-feedback">
 											<?= $_SESSION['errors']['mot_de_passe'] ?>
@@ -141,8 +132,7 @@ if (isset($_COOKIE['utilisateur_connecter_membre']) and !empty($_COOKIE['utilisa
 								</div>
 								<div class="col-12">
 									<div class="form-check">
-										<input class="form-check-input" type="checkbox" name="rappeler" value="true"
-											   id="se-rappeler">
+										<input class="form-check-input" type="checkbox" name="rappeler" value="true" id="se-rappeler">
 										<label class="form-check-label" for="se-rappeler">Se souvenir de moi</label>
 									</div>
 								</div>

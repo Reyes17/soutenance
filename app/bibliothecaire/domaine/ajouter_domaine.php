@@ -1,7 +1,9 @@
 <?php
-if (empty($_SESSION["utilisateur_connecter_bibliothecaire"])) {
-	header('location:' . PROJECT_DIR . 'bibliothecaire/connexion');
-} 
+// Vérification de l'authentification
+if (!isset($_SESSION['utilisateur_connecter_bibliothecaire'])) {
+    header('location:' . PROJECT_DIR . 'bibliothecaire/connexion');
+    exit();
+}
 $title ='Liste des domaines';
 include './app/commun/header.php';
 ?>
@@ -13,7 +15,7 @@ include './app/commun/header.php';
 			<?php
 			if (isset($_SESSION['ajout-errors']) && !empty($_SESSION['ajout-errors'])) {
 			?>
-				<div class="alert alert-primary mt-3" style="color: white; background-color: #dc3545; border-radius: 15px; text-align:center;">
+				<div class="alert alert-danger mt-3" style="border-radius: 15px; text-align: center;">
 					<?= $_SESSION['ajout-errors'] ?>
 				</div>
 			<?php
@@ -23,7 +25,7 @@ include './app/commun/header.php';
 			<?php
 			if (isset($_SESSION['ajout-success']) && !empty($_SESSION['ajout-success'])) {
 			?>
-				<div class="alert alert-primary mt-3" style="color: white; background-color: #2bc717; text-align:center; border-radius: 15px; text-align:center;">
+				<div class="alert alert-success mt-3" style="border-radius: 15px; text-align: center;">
 					<?= $_SESSION['ajout-success'] ?>
 				</div>
 			<?php

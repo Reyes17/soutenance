@@ -8,7 +8,7 @@ if (empty($_POST["domaine"])) {
 
 if (empty($errors)) {
 	$cod_dom = $_SESSION['cod_dom'];
-	$domaine = trim(htmlentities($_POST['domaine']));
+	$domaine = trim(htmlspecialchars($_POST['domaine']));
 
 	// Mettez à jour les informations du domaine dans la base de données en utilisant votre fonction appropriée
 	modifier_domaine($cod_dom, $domaine);

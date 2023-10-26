@@ -1,5 +1,5 @@
 <?php
-if (!empty($_SESSION["utilisateur_connecter_membre"])) {
+if (isset($_SESSION["utilisateur_connecter_membre"])) {
 	header('location:' . PROJECT_DIR . 'membre/utilisateur/acceuil');
 }
 $title = "Réinitialisation de mot de passe";
@@ -22,12 +22,11 @@ include './app/commun/index.php';
                         <div class="card mb-3">
                         
                             <div class="card-body">
-                                <!----message d'erreur global après envoie d'un mauvais mot de passe ou non utilisiateur à la connexion----->
+                                <!----message de succès global après authentification de mail----->
 								<?php
 								if (isset($_SESSION['validation-compte-message-success']) && !empty($_SESSION['validation-compte-message-success'])) {
 									?>
-									<div class="alert alert-danger mt-3"
-										 style="color: white; background-color: #2bc717; border: 5px; text-align: center;">
+									<div class="alert alert-success mt-3" style="border-radius: 15px; text-align: center;">
 										<?= $_SESSION['validation-compte-message-success'] ?>
 									</div>
 									<?php
@@ -37,8 +36,7 @@ include './app/commun/index.php';
 <?php
 								if (isset($_SESSION['save_errors']) && !empty($_SESSION['save_errors'])) {
 									?>
-									<div class="alert alert-danger mt-3"
-										 style="color: white; background-color: #dc3545; border: 5px; text-align: center;">
+									<div class="alert alert-danger mt-3" style="border-radius: 15px; text-align: center;">
 										<?= $_SESSION['save_errors'] ?>
 									</div>
 									<?php

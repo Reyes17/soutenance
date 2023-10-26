@@ -5,30 +5,29 @@ $data = [];
 // Récupération des données du formulaire
 $titre = $_POST['titre-ouvrage'];
 $nb_exemplaire = intval($_POST['nombre-exemplaire-ouvrage']);
-$selectedAuteurId = $_POST['selected-auteur-id']; // Récupération de l'ID de l'auteur sélectionné
+$selectedAuteurId = $_POST['auteur-principal-ouvrage']; // Récupération de l'ID de l'auteur sélectionné
 $periodicite = isset($_POST['periodicite-ouvrage']) ? $_POST['periodicite-ouvrage'] : null;
-$selectedDomaines = isset($_POST['domaines-ouvrage']) ? $_POST['domaines-ouvrage'] : [];
-$selectedAuteursSecondaires = isset($_POST['auteurs-secondaires-ouvrage']) ? $_POST['auteurs-secondaires-ouvrage'] : [];
 $selectedLangues = $_POST['langue']; // Récupération des langues sélectionnées
 $anneesPublication = $_POST['annee_publication']; // Récupération des années de publication
+$nbExemplairesLangue = $_POST['nb-exemplaire-langue']; // Récupération du nombre d'exemplaires par langue
 
 // Vérification et traitement des champs
 if (empty($titre)) {
-    $errors['titre-ouvrage'] = "Le champ titre est requis. Veuillez le renseigner!";
+    $errors['titre-ouvrage'] = "Ce champ est requis.";
 } else {
-    $data['titre-ouvrage'] = trim(htmlspecialchars($titre));
+    $data['titre-ouvrage'] = ucfirst(trim(htmlspecialchars($titre)));;
 }
 
 // Vérification du nombre d'exemplaires
-if ($nb_exemplaire < 1 || $nb_exemplaire > 200) {
-    $errors['nombre-exemplaire-ouvrage'] = "Sélectionner un nombre d'exemplaire valide.";
-} else {
-    $data['nombre-exemplaire-ouvrage'] = $nb_exemplaire;
+if (empty($nb_exemplaire)) {
+    $errors['nombre-exemplaire-ouvrage'] = "Veuillez entrer un nombre valide.";
+}else{
+    $data['nombre-exemplaire-ouvrage'] = intval($nb_exemplaire);
 }
 
 // Vérification de l'auteur principal
 if (empty($selectedAuteurId)) {
-    $errors['auteur-principal-ouvrage'] = "Veuillez sélectionner un auteur principal.";
+    $errors['auteur-principal-ouvrage'] = "Veuillez sélectionner un auteur.";
 } else {
     // Utiliser la fonction pour récupérer l'auteur complet par son ID
     $auteur = get_auteur_by_id($selectedAuteurId);
@@ -39,74 +38,130 @@ if (empty($selectedAuteurId)) {
     }
 }
 
-// Vérification de l'image
-if (isset($_FILES['image-ouvrage']) && $_FILES['image-ouvrage']['error'] === UPLOAD_ERR_OK) {
-    $image_info = $_FILES['image-ouvrage'];
-    $image_name = $image_info['name'];
-    $image_tmp_name = $image_info['tmp_name'];
-    $image_size = $image_info['size'];
-
-    // Vérification de l'extension de l'image
-    $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif'];
-    $image_extension = strtolower(pathinfo($image_name, PATHINFO_EXTENSION));
-    if (!in_array($image_extension, $allowed_extensions)) {
-        $errors['image-ouvrage'] = "L'extension de l'image n'est pas autorisée. Les extensions autorisées sont : " . implode(', ', $allowed_extensions);
-    }
-
-    // Vérification de la taille de l'image (2Mo)
-    $max_image_size = 2 * 1024 * 1024; // 2 Mo
-    if ($image_size > $max_image_size) {
-        $errors['image-ouvrage'] = "La taille de l'image dépasse la limite autorisée (2 Mo).";
-    }
-
-    if (empty($errors['image-ouvrage'])) {
-        // Déplace l'image vers le répertoire public/ouvrage/image
-        $upload_dir = 'public/ouvrage/image/';
-        $image_path = $upload_dir . $image_name;
-
-        if (!move_uploaded_file($image_tmp_name, $image_path)) {
-            $errors['image-ouvrage'] = "Une erreur s'est produite lors du téléchargement de l'image.";
+// Vérification de l'auteur secondaire
+if (!empty($_POST['auteurs-secondaires-ouvrage']) && is_array($_POST['auteurs-secondaires-ouvrage'])) {
+    // Assurez-vous que les auteurs secondaires sont valides et associez-les à l'ouvrage
+    foreach ($_POST['auteurs-secondaires-ouvrage'] as $key => $auteur_secondaire) {
+        if (check_if_exist('auteur', 'num_aut', $auteur_secondaire)) {
+            $data['auteurs-secondaires-ouvrage'][] = $auteur_secondaire;
         } else {
-            $data['image-ouvrage'] = $image_path;
+            if (empty($_SESSION['ajout-ouvrage-error'])) {
+                $_SESSION['ajout-ouvrage-error'] = 'Une action inattendue au niveau du champs Auteurs Secondaires bloque le processus.';
+            }
         }
     }
+} 
+
+
+// Vérification de l'image
+if (!empty($_FILES['image-ouvrage'])) {
+    if (isset($_FILES["image-ouvrage"]) && $_FILES["image-ouvrage"]["error"] == 0) {
+
+        if ($_FILES["image-ouvrage"]["size"] <= 3000000) {
+
+            $file_name = $_FILES["image-ouvrage"]["name"];
+
+            $file_info = pathinfo($file_name);
+
+            $file_ext = $file_info["extension"];
+
+            $allowed_ext = ["png", "jpg", "jpeg", "gif", "webp"];
+
+            if (in_array(strtolower($file_ext), $allowed_ext)) {
+
+                if (!is_dir("public/ouvrage/image")) {
+                    if (!mkdir("public/ouvrage/image", 0755, true)) {
+                        $_errors['image-ouvrage'] = "Impossible de créer le répertoire de destination pour l'image.";
+                    }
+                }
+
+                $new_file_name = uniqid() . '.' . $file_ext;
+                $file_path = "public/ouvrage/image/" . $new_file_name;
+
+                if (move_uploaded_file($_FILES['image-ouvrage']['tmp_name'], $file_path)) {
+                    $image_path = PROJECT_DIR . $file_path;
+                } else {
+                    $errors['image-ouvrage'] = "Une erreur est survenue lors du téléchargement de l'image.";
+                }
+            } else {
+                $errors['image-ouvrage'] = "L'extension de votre image n'est pas prise en compte. Extensions autorisées : [PNG/JPG/JPEG/GIF/WEBP]";
+            }
+        } else {
+            $errors['image-ouvrage'] = "Image trop lourde. Poids maximum autorisé : 3 Mo";
+        }
+    } else {
+        $errors['image-ouvrage'] = "Une erreur est survenue lors du téléchargement de l'image.";
+    }
 } else {
-    $errors['image-ouvrage'] = "Veuillez ajouter une image.";
+    $errors['image-ouvrage'] = 'Champ requis.';
 }
+
 
 // Vérification des domaines
-if (empty($selectedDomaines)) {
-    $errors['domaine-ouvrage'] = "Aucun domaine n'a été sélectionné.";
-} else {
-    $data['domaine-ouvrage'] = $selectedDomaines;
-}
+if (is_array($_POST['domaines-ouvrage'])) {
 
-// Vérification et traitement des champs de langue et année de publication
-$langueEtAnneeErrors = [];
+    if (!empty($_POST['domaines-ouvrage']) && $_POST['domaines-ouvrage'][0] != 0) {
+
+        foreach ($_POST['domaines-ouvrage'] as $key => $domaine) {
+            if (check_if_exist('domaine', 'cod_dom', $domaine)) {
+                $data['domaines-ouvrage'][] = $domaine;
+            } else {
+                if (empty($_SESSION['ajout-ouvrage-error'])) {
+                    $_SESSION['ajout-ouvrage-error'] = "Une erreur inattendue au niveau du champ Domaines bloque le processus.Contactez l'adminstrateur";
+                }
+            }
+        }
+    } else {
+       $errors['domaines-ouvrage'] = 'Champs requis.';
+    }
+} else {
+    $errors['domaines-ouvrage'] = 'Champs requis.';
+    }
+
+// ... Vérification et traitement des champs de langue, année de publication et exemplaire par langue
+$champsLangueAnneeExemplaireErrors = [];
+
+// Initialisation d'une variable pour stocker le total des exemplaires par langue
+$totalExemplairesLangue = 0;
 
 foreach ($selectedLangues as $index => $langue) {
     if (empty($langue)) {
-        $langueEtAnneeErrors[$index] = "Veuillez sélectionner une langue et une date de publication pour chaque entrée.";
+        $champsLangueAnneeExemplaireErrors[$index][] = "Veuillez sélectionner une langue.";
     }
 
     if (empty($anneesPublication[$index])) {
-        $langueEtAnneeErrors[$index] = "Veuillez sélectionner une langue et une année de publication pour chaque entrée.";
+        $champsLangueAnneeExemplaireErrors[$index][] = "Veuillez sélectionner une année de publication.";
+    }
+
+    if (empty($nbExemplairesLangue[$index])) {
+        $champsLangueAnneeExemplaireErrors[$index][] = "Veuillez entrer le nombre d'exemplaires pour cette langue.";
+    } else {
+        $totalExemplairesLangue += intval($nbExemplairesLangue[$index]);
     }
 }
 
 // Si des erreurs ont été trouvées, les ajouter au tableau d'erreurs principal
-if (!empty($langueEtAnneeErrors)) {
-    $errors['langue-ouvrage'] = $langueEtAnneeErrors;
+if (!empty($champsLangueAnneeExemplaireErrors)) {
+    $_SESSION['ouvrage-errors'] = $champsLangueAnneeExemplaireErrors;
 }
+
+// Vérifier si la somme des exemplaires par langue correspond au nombre total d'exemplaires
+if ($totalExemplairesLangue !== $nb_exemplaire) {
+    $_SESSION['ajout-ouvrage-error'] = "La somme des exemplaires par langue ne correspond pas au nombre total d'exemplaires.";
+}
+
+// ... La suite de votre script de traitement
+
 
 // Vérifier si un ouvrage avec le même titre et le même auteur existe déjà
 if (!empty($selectedAuteurId) && ouvrageExisteAvecTitreEtAuteur($titre, $selectedAuteurId)) {
-
     $_SESSION['ajout-ouvrage-error'] = "Un ouvrage avec le même titre et le même auteur existe déjà dans la base de données.";
+   
+
 }
 
-
-if (empty($errors)) {
+// Insérer les langues, années de publication et exemplaires par langue dans la table "date_parution"
+if (empty($errors) && empty($_SESSION['ajout-ouvrage-error'])) {
     $resultat_insertion = insererOuvrage($titre, $nb_exemplaire, $selectedAuteurId, $image_path, $periodicite);
 
     if ($resultat_insertion) {
@@ -115,26 +170,28 @@ if (empty($errors)) {
         if ($ouvrage) {
             // Maintenant vous pouvez accéder à chaque valeur spécifique de l'ouvrage
             $cod_ouv = $ouvrage['cod_ouv'];
+
             // Associer les domaines à l'ouvrage dans la table "domaine_ouvrage"
-            foreach ($selectedDomaines as $cod_dom) {
+            foreach ($data['domaines-ouvrage'] as $cod_dom) {
                 // Insérer dans la table "domaine_ouvrage"
                 associerDomaineOuvrage($cod_dom, $cod_ouv);
             }
 
-            // Associer les auteurs secondaires à l'ouvrage dans la table "auteur_secondaire"
-            foreach ($selectedAuteursSecondaires as $num_aut) {
-                associerAuteurSecondaireOuvrage($num_aut, $cod_ouv);
+             // Associer les auteurs secondaires à l'ouvrage dans la table "auteur_secondaire"
+             if (!empty($data['auteurs-secondaires-ouvrage'])) {
+                foreach ($data['auteurs-secondaires-ouvrage'] as $num_aut) {
+                    associerAuteurSecondaireOuvrage($num_aut, $cod_ouv);
+                }
             }
             
             // Insérer les langues et années de publication dans la table "date_parution"
-             foreach ($selectedLangues as $index => $langue) {
-                $anneePublication = $anneesPublication[$index];
-                insererDateParution($cod_ouv, $selectedLangues, $anneesPublication);
-
+            if (insererDateParution($cod_ouv, $selectedLangues, $anneesPublication, $nbExemplairesLangue)) {
+                // Succès
+                $_SESSION['ajout-ouvrage-success'] = 'L\'ouvrage a été ajouté avec succès.';
+            } else {
+                // Erreur lors de l'insertion dans la table date_parution
+                $_SESSION['ajout-ouvrage-error'] = 'Une erreur est survenue lors de l\'insertion dans la table date_parution.';
             }
-
-            // Succès
-            $_SESSION['ajout-ouvrage-success'] = 'L\'ouvrage a été ajouté avec succès.';
         } else {
             // Erreur lors de la récupération de l'ID de l'ouvrage
             $_SESSION['ajout-ouvrage-error'] = 'Erreur lors de la récupération de l\'ID de l\'ouvrage ajouté.';
@@ -144,22 +201,8 @@ if (empty($errors)) {
         $_SESSION['ajout-ouvrage-error'] = 'Une erreur est survenue lors de l\'ajout de l\'ouvrage.';
     }
 } else {
-    // Restaurer les valeurs saisies précédemment si disponibles
-    if (isset($_SESSION['saisie-precedente'])) {
-        $titre = $_SESSION['saisie-precedente']['titre'];
-        $nb_exemplaire = $_SESSION['saisie-precedente']['nb_exemplaire'];
-        $selectedAuteurId = $_SESSION['saisie-precedente']['selectedAuteurId'];
-        $selectedDomaines = isset($_SESSION['saisie-precedente']['domaine-ouvrage']) ? $_SESSION['saisie-precedente']['domaine-ouvrage'] : [];
-    }
-
-    $_SESSION['saisie-precedente'] = [
-        'titre' => $titre,
-        'nb_exemplaire' => $nb_exemplaire,
-        'selectedAuteurId' => $selectedAuteurId,
-        'auteur-nom-prenom' => isset($data['auteur-nom-prenom']) ? $data['auteur-nom-prenom'] : '',
-        'domaine-ouvrage' => $selectedDomaines,
-    ];
-    $_SESSION['ajout-ouvrage-errors'] = $errors;
+    $_SESSION['data'] = $data;
+    $_SESSION['ajout-ouvrage-errors'] = $errors; 
 }
 
 header('Location: ' . PROJECT_DIR . 'bibliothecaire/ouvrage/ajouter_ouvrage');

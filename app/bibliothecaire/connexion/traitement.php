@@ -18,10 +18,10 @@ $_SESSION ['data'] = $data;
 
 if (empty($errors)) {
 //Je vérifie si l'utilisateur existe dans la base de données
-$data_users = recuperer_donnees_utilisateur($data['nom_utilisateur'], $data['mot_de_passe'],'bibliothecaire',1,0);
+$bibliothecaire = recuperer_donnees_utilisateur($data['nom_utilisateur'], $data['mot_de_passe'],'bibliothecaire',1,0);
 //si oui, je le connecte et j'enregistre ses données dans une session.
-if (is_array(  $data_users)) {
-	$_SESSION['utilisateur_connecter_bibliothecaire'] = $data_users;
+if (is_array(  $bibliothecaire)) {
+	$_SESSION['utilisateur_connecter_bibliothecaire'] = $bibliothecaire;
 	$_SESSION['data'] = "";
 
 	//Si l'utilisateur appuie sur le checkbox "se souvenir de moi"

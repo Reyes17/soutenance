@@ -1,5 +1,5 @@
 <?php
-if (!empty($_SESSION["utilisateur_connecter_membre"])) {
+if (isset($_SESSION["utilisateur_connecter_membre"])) {
 	header('location:' . PROJECT_DIR . 'membre/utilisateur/acceuil');
 }
 $title = "Mot de passe oublié";
@@ -24,11 +24,11 @@ include './app/commun/index.php';
 						<div class="card mb-3">
 
 							<div class="card-body">
-							<!----message de succès global lors du processus d'envoi de mail pour un changement de mot de passe----->
-							<?php
+								<!----message de succès global lors du processus d'envoi de mail pour un changement de mot de passe----->
+								<?php
 								if (isset($_SESSION['mot_passe_message_success_global']) && !empty($_SESSION['mot_passe_message_success_global'])) {
 								?>
-									<div class="alert alert-primary mt-3" style="color: white; background-color: #2bc717; text-align:center; border:5px; text-align:center;">
+									<div class="alert alert-success mt-3" style="border-radius: 15px; text-align: center;">
 										<?= $_SESSION['mot_passe_message_success_global'] ?>
 									</div>
 								<?php
@@ -38,7 +38,7 @@ include './app/commun/index.php';
 								<?php
 								if (isset($_SESSION['mot_passe_message_erreur_global']) && !empty($_SESSION['mot_passe_message_erreur_global'])) {
 								?>
-									<div class="alert alert-primary mt-3" style="color: white; background-color: #dc3545; border: 5px; text-align:center;">
+									<div class="alert alert-danger mt-3" style="border-radius: 15px; text-align: center;">
 										<?= $_SESSION['mot_passe_message_erreur_global'] ?>
 									</div>
 								<?php
@@ -46,10 +46,10 @@ include './app/commun/index.php';
 
 								?>
 
-<?php
+								<?php
 								if (isset($_SESSION['validation-compte-message-erreur']) && !empty($_SESSION['validation-compte-message-erreur'])) {
 								?>
-									<div class="alert alert-primary mt-3" style="color: white; background-color: #dc3545; border: 5px; text-align:center;">
+									<div class="alert alert-danger mt-3" style="border-radius: 15px; text-align: center;">
 										<?= $_SESSION['validation-compte-message-erreur'] ?>
 									</div>
 								<?php
@@ -67,15 +67,15 @@ include './app/commun/index.php';
 								<form class="row needs-validation" action="<?= PROJECT_DIR; ?>membre/mot_de_passe_oublie/traitement" method="post" novalidate>
 
 									<div class="col-12">
-									<label for="inscription-email" style="color:black;">
-                                            Adresse mail:
-                                            <span class="text-danger">(*)</span>
-                                        </label>
-                                        <input type="email" class="form-control <?= isset($_SESSION['errors']['email']) ? 'is-invalid' : '' ?>" name="email" value="<?php if (isset($data["email"]) && !empty($data["email"])) {
-																																														echo $data["email"];
-																																													} else {
-																																														echo '';
-																																													} ?>" id="email" placeholder="Veuillez entrer votre adresse email">
+										<label for="inscription-email" style="color:black;">
+											Adresse mail:
+											<span class="text-danger">(*)</span>
+										</label>
+										<input type="email" class="form-control <?= isset($_SESSION['errors']['email']) ? 'is-invalid' : '' ?>" name="email" value="<?php if (isset($data["email"]) && !empty($data["email"])) {
+																																										echo $data["email"];
+																																									} else {
+																																										echo '';
+																																									} ?>" id="email" placeholder="Veuillez entrer votre adresse email">
 										<?php
 										if (isset($_SESSION['errors']['email'])) {
 										?>

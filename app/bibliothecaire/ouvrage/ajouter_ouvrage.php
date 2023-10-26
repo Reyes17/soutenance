@@ -1,10 +1,17 @@
 <?php
-if (empty($_SESSION["utilisateur_connecter_bibliothecaire"])) {
+// Vérification de l'authentification
+if (!isset($_SESSION['utilisateur_connecter_bibliothecaire'])) {
     header('location:' . PROJECT_DIR . 'bibliothecaire/connexion');
+    exit();
 }
 $title = 'Ajouter un ouvrage';
 
 include 'app/commun/header.php';
+
+if (!empty($_SESSION['data'])) {
+    $data = $_SESSION['data'];
+}
+
 ?>
 
 <section class="section dashboard">
@@ -37,202 +44,178 @@ include 'app/commun/header.php';
         <div class="row mt-5">
             <div class="col-md-12 col-lg-8 offset-lg-2 bd-example">
                 <form action="<?= PROJECT_DIR; ?>bibliothecaire/ouvrage/ajout_ouvrage_traitement" method="post" enctype="multipart/form-data">
-                    <div class="mb-3 row">
-                        <label for="titre-ouvrage" class="col-sm-2 col-form-label">Titre:</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control <?= isset($_SESSION['ajout-ouvrage-errors']['titre-ouvrage']) ? 'is-invalid' : '' ?>" id="titre-ouvrage" name="titre-ouvrage" value="<?= isset($_SESSION['saisie-precedente']['titre']) ? $_SESSION['saisie-precedente']['titre'] : '' ?>" placeholder="Veuillez entrer le titre de l'ouvrage">
-                            <?php if (isset($_SESSION['ajout-ouvrage-errors']['titre-ouvrage'])) : ?>
-                                <div class="invalid-feedback">
-                                    <?= $_SESSION['ajout-ouvrage-errors']['titre-ouvrage'] ?>
-                                </div>
-                            <?php endif; ?>
-                        </div>
+                    <div class="col-md-12 mb-3">
+                        <label for="titre-ouvrage" class="form-label">Titre <span class="text-danger">(*)</span> :</label>
+
+                        <input type="text" class="form-control <?= !empty($_SESSION['ajout-ouvrage-errors']['titre-ouvrage']) ? 'is-invalid' : '' ?>" id="titre-ouvrage" name="titre-ouvrage" value="<?= !empty($data['titre-ouvrage']) ? $data['titre-ouvrage'] : '' ?>" placeholder="Veuillez entrer le titre de l'ouvrage">
+
+                        <?php if (!empty($_SESSION['ajout-ouvrage-errors']['titre-ouvrage'])) : ?>
+                            <div class="invalid-feedback">
+                                <?= $_SESSION['ajout-ouvrage-errors']['titre-ouvrage'] ?>
+                            </div>
+                        <?php endif; ?>
                     </div>
 
-                    <div class="mb-3 row">
-                        <label for="nombre-exemplaire-ouvrage" class="col-sm-2 col-form-label">Nombre d'exemplaire:</label>
-                        <div class="col-sm-10">
-                            <select class="form-select <?= isset($_SESSION['ajout-ouvrage-errors']['nombre-exemplaire-ouvrage']) ? 'is-invalid' : '' ?>" id="nombre-exemplaire-ouvrage" name="nombre-exemplaire-ouvrage" value="<?= $nb_exemplaire ?>">
-                                <option value=""></option>
-                                <?php
-                                for ($nombre = 1; $nombre <= 200; $nombre++) {
-                                    $selected = isset($_SESSION['saisie-precedente']['nb_exemplaire']) && $_SESSION['saisie-precedente']['nb_exemplaire'] == $nombre ? 'selected' : '';
-                                    $nombreFormatte = str_pad($nombre, 2, '0', STR_PAD_LEFT);
-                                    echo '<option value="' . $nombre . '" ' . $selected . '>' . $nombreFormatte . '</option>';
-                                }
-                                ?>
-                            </select>
-                            <?php if (isset($_SESSION['ajout-ouvrage-errors']['nombre-exemplaire-ouvrage'])) : ?>
-                                <div class="invalid-feedback">
-                                    <?= $_SESSION['ajout-ouvrage-errors']['nombre-exemplaire-ouvrage'] ?>
-                                </div>
-                            <?php endif; ?>
-                        </div>
+
+                    <div class="col-md-12 mb-3">
+                        <label for="nombre-exemplaire-ouvrage" class="form-label">Nombre exemplaire <span class="text-danger">(*)</span> :</label>
+                        <input type="number" class="form-control <?= !empty($_SESSION['ajout-ouvrage-errors']['nombre-exemplaire-ouvrage']) ? 'is-invalid' : '' ?>" id="nombre-exemplaire-ouvrage" name="nombre-exemplaire-ouvrage" value="<?= !empty($data['nombre-exemplaire-ouvrage']) ? $data['nombre-exemplaire-ouvrage'] : '' ?>" placeholder="Veuillez entrer le nombre d'exemplaire">
+                        <?php if (isset($_SESSION['ajout-ouvrage-errors']['nombre-exemplaire-ouvrage'])) : ?>
+                            <div class="invalid-feedback">
+                                <?= $_SESSION['ajout-ouvrage-errors']['nombre-exemplaire-ouvrage'] ?>
+                            </div>
+                        <?php endif; ?>
                     </div>
 
-                    <div class="mb-3 row">
-                        <label for="auteur-principal-ouvrage" class="col-sm-2 col-form-label">Auteur :</label>
-                        <div class="col-sm-10">
-                            <select class="form-select <?= isset($_SESSION['ajout-ouvrage-errors']['auteur-principal-ouvrage']) ? 'is-invalid' : '' ?>" id="auteur-principal-ouvrage" name="auteur-principal-ouvrage">
-                                <option value="0"></option>
-                                <?php
-                                // Appeler la fonction pour récupérer la liste des auteurs
-                                $liste_auteurs = get_liste_auteurs();
-
-                                // Récupérer la valeur précédente de l'auteur depuis la session si disponible
-                                $selectedAuteurId = isset($_SESSION['saisie-precedente']['selectedAuteurId']) ? $_SESSION['saisie-precedente']['selectedAuteurId'] : '';
-
-                                // Afficher les auteurs dans le menu déroulant
-                                foreach ($liste_auteurs as $auteur) {
-                                    $selected = $selectedAuteurId === $auteur['num_aut'] ? 'selected' : '';
-                                    echo '<option value="' . $auteur['num_aut'] . '" ' . $selected . '>' . $auteur['nom_aut'] . ' ' . $auteur['prenom_aut'] . '</option>';
-                                }
-                                ?>
-                            </select>
-
-                            <?php if (isset($_SESSION['ajout-ouvrage-errors']['auteur-principal-ouvrage'])) : ?>
-                                <div class="invalid-feedback">
-                                    <?= $_SESSION['ajout-ouvrage-errors']['auteur-principal-ouvrage'] ?>
-                                </div>
-                            <?php endif; ?>
-                        </div>
+                    <label for="auteur-principal-ouvrage" class="col-sm-2 col-form-label">Auteur <span class="text-danger">(*)</span> :</label>
+                    <div class="col-md-12 mb-3">
+                        <select class="form-select select2bs4 <?= isset($_SESSION['ajout-ouvrage-errors']['auteur-principal-ouvrage']) ? 'is-invalid' : '' ?>" id="auteur-principal-ouvrage" name="auteur-principal-ouvrage">
+                            <option value="0"></option>
+                            <?php
+                            // Appeler la fonction pour récupérer la liste des auteurs
+                            $liste_auteurs = get_liste_auteurs();
+                            // Afficher les auteurs dans le menu déroulant
+                            foreach ($liste_auteurs as $auteur) {
+                                $selected = $data['auteur-principal-ouvrage'] == $auteur['num_aut'] ? 'selected' : '';
+                                echo '<option value="' . $auteur['num_aut'] . '" ' . $selected . '>' . $auteur['nom_aut'] . ' ' . $auteur['prenom_aut'] . '</option>';
+                            }
+                            ?>
+                        </select>
+                        <?php if (isset($_SESSION['ajout-ouvrage-errors']['auteur-principal-ouvrage'])) : ?>
+                            <div class="invalid-feedback">
+                                <?= $_SESSION['ajout-ouvrage-errors']['auteur-principal-ouvrage'] ?>
+                            </div>
+                        <?php endif; ?>
                     </div>
                     <!-- Champ caché pour stocker l'ID de l'auteur sélectionné -->
                     <input type="hidden" id="selected-auteur-id" name="selected-auteur-id" value="">
 
-                    <div class="mb-3 row">
+                    <div class="col-md-12 mb-3">
                         <label for="periodicite-ouvrage" class="col-sm-2 col-form-label">Périodicité :</label>
-                        <div class="col-sm-10">
-                            <select class="form-select <?= isset($_SESSION['ajout-ouvrage-errors']['periodicite-ouvrage']) ? 'is-invalid' : '' ?>" id="periodicite-ouvrage" name="periodicite-ouvrage">
-                                <option value="0"></option>
-                                <option value="quotidien" <?= isset($_SESSION['saisie-precedente']['periodicite-ouvrage']) && $_SESSION['saisie-precedente']['periodicite-ouvrage'] === 'quotidien' ? 'selected' : '' ?>>Quotidien</option>
-                                <option value="hebdomadaire" <?= isset($_SESSION['saisie-precedente']['periodicite-ouvrage']) && $_SESSION['saisie-precedente']['periodicite-ouvrage'] === 'hebdomadaire' ? 'selected' : '' ?>>Hebdomadaire</option>
-                                <option value="mensuel" <?= isset($_SESSION['saisie-precedente']['periodicite-ouvrage']) && $_SESSION['saisie-precedente']['periodicite-ouvrage'] === 'mensuel' ? 'selected' : '' ?>>Mensuel</option>
-                                <option value="bimensuel" <?= isset($_SESSION['saisie-precedente']['periodicite-ouvrage']) && $_SESSION['saisie-precedente']['periodicite-ouvrage'] === 'bimensuel' ? 'selected' : '' ?>>Bimensuel</option>
-                                <option value="trimestriel" <?= isset($_SESSION['saisie-precedente']['periodicite-ouvrage']) && $_SESSION['saisie-precedente']['periodicite-ouvrage'] === 'trimestriel' ? 'selected' : '' ?>>Trimestriel</option>
-                                <option value="semestriel" <?= isset($_SESSION['saisie-precedente']['periodicite-ouvrage']) && $_SESSION['saisie-precedente']['periodicite-ouvrage'] === 'semestriel' ? 'selected' : '' ?>>Semestriel</option>
-                                <option value="annuel" <?= isset($_SESSION['saisie-precedente']['periodicite-ouvrage']) && $_SESSION['saisie-precedente']['periodicite-ouvrage'] === 'annuel' ? 'selected' : '' ?>>Annuel</option>
-                            </select>
+                        <select class="form-select <?= isset($_SESSION['ajout-ouvrage-errors']['periodicite-ouvrage']) ? 'is-invalid' : '' ?>" id="periodicite-ouvrage" name="periodicite-ouvrage">
+                            <option value="0"></option>
+                            <option>Quotidien</option>
+                            <option>Hebdomadaire</option>
+                            <option>Mensuel</option>
+                            <option>Bimensuel</option>
+                            <option>Trimestriel</option>
+                            <option>Semestriel</option>
+                            <option>Annuel</option>
+                        </select>
 
-                            <?php if (isset($_SESSION['ajout-ouvrage-errors']['periodicite-ouvrage'])) : ?>
-                                <div class="invalid-feedback">
-                                    <?= $_SESSION['ajout-ouvrage-errors']['periodicite-ouvrage'] ?>
-                                </div>
-                            <?php endif; ?>
-                        </div>
+                        <?php if (isset($_SESSION['ajout-ouvrage-errors']['periodicite-ouvrage'])) : ?>
+                            <div class="invalid-feedback">
+                                <?= $_SESSION['ajout-ouvrage-errors']['periodicite-ouvrage'] ?>
+                            </div>
+                        <?php endif; ?>
                     </div>
 
-                    <div class="mb-3 row">
-                        <label for="image-ouvrage" class="col-sm-2 col-form-label">Image de la page de garde:</label>
-                        <div class="col-sm-10">
-                            <input type="file" class="form-control <?= isset($_SESSION['ajout-ouvrage-errors']['image-ouvrage']) ? 'is-invalid' : '' ?>" id="image-ouvrage" name="image-ouvrage">
-                            <?php if (isset($_SESSION['ajout-ouvrage-errors']['image-ouvrage'])) : ?>
-                                <div class="invalid-feedback">
-                                    <?= $_SESSION['ajout-ouvrage-errors']['image-ouvrage'] ?>
-                                </div>
-                            <?php endif; ?>
-
-                        </div>
+                    <div class="col-md-12 mb-3">
+                        <label for="auteurs-secondaires-ouvrage" class="form-label">Auteurs secondaires :</label>
+                        <select class="form-select select2bs4 <?= isset($errors['auteurs-secondaires-ouvrage']) ? 'is-invalid' : '' ?>" id="auteurs-secondaires-ouvrage" name="auteurs-secondaires-ouvrage[]" multiple>
+                            <option value="0"></option>
+                            <?php
+                            // Appeler la fonction pour récupérer la liste des auteurs
+                            $liste_auteurs = get_liste_auteurs();
+                            // Afficher les auteurs dans le menu déroulant
+                            foreach ($liste_auteurs as $auteur) {
+                            ?>
+                                <option value="<?= $auteur['num_aut'] ?>" <?php echo !empty($data['auteurs-secondaires-ouvrage']) && in_array($auteur['num_aut'], $data['auteurs-secondaires-ouvrage']) ? 'selected' : '' ?>><?= $auteur['nom_aut'] . ' ' . $auteur['prenom_aut'] ?></option>
+                            <?php
+                            }
+                            ?>
+                        </select>
+                        <?php if (isset($_SESSION['ajout-ouvrage-errors']['auteurs_secondaires_ouvrage'])) : ?>
+                            <div class="invalid-feedback">
+                                <?= $_SESSION['ajout-ouvrage-errors']['auteurs_secondaires_ouvrage'] ?>
+                            </div>
+                        <?php endif; ?>
                     </div>
 
-                    <div class="mb-3 row">
-                        <label for="domaines-ouvrage" class="col-sm-2 col-form-label">Domaines :</label>
-                        <div class="col-sm-10">
-                            <select multiple class="form-select select2 <?= isset($_SESSION['ajout-ouvrage-errors']['domaine-ouvrage']) ? 'is-invalid' : '' ?>" id="domaines-ouvrage" name="domaines-ouvrage[]">
-                                <?php
-                                $liste_domaines = get_liste_domaine();
-                                
-                                $selectedDomaines = isset($_SESSION['saisie-precedente']['domaine-ouvrage']) ? $_SESSION['saisie-precedente']['domaine-ouvrage'] : [];
-
-                                foreach ($liste_domaines as $domaine) {
-                                    echo '<option value="' . $domaine['cod_dom'] . '">' . $domaine['lib_dom'] . '</option>';
-                                }
-                                ?>
-                            </select>
-                            <?php if (isset($_SESSION['ajout-ouvrage-errors']['domaine-ouvrage'])) : ?>
-                                <div class="invalid-feedback">
-                                    <?= $_SESSION['ajout-ouvrage-errors']['domaine-ouvrage'] ?>
-                                </div>
-                            <?php endif; ?>
-                        </div>
+                    <div class="col-md-12 mb-3">
+                        <label for="image-ouvrage" class="form-label">Image de la page de garde <span class="text-danger">(*)</span> :</label>
+                        <input type="file" class="form-control <?= isset($_SESSION['ajout-ouvrage-errors']['image-ouvrage']) ? 'is-invalid' : '' ?>" id="image-ouvrage" name="image-ouvrage">
+                        <?php if (isset($_SESSION['ajout-ouvrage-errors']['image-ouvrage'])) : ?>
+                            <div class="invalid-feedback">
+                                <?= $_SESSION['ajout-ouvrage-errors']['image-ouvrage'] ?>
+                            </div>
+                        <?php endif; ?>
                     </div>
 
-                    <div class="mb-3 row">
-                        <label for="auteurs-secondaires-ouvrage" class="col-sm-2 col-form-label">Auteurs secondaires:</label>
-                        <div class="col-sm-10">
-                            <select class="form-select select2 <?= isset($_SESSION['ajout-ouvrage-errors']['auteurs-secondaires-ouvrage']) ? 'is-invalid' : '' ?>" id="auteurs-secondaires-ouvrage" name="auteurs-secondaires-ouvrage[]" multiple>
-                                <?php
-                                // Appeler la fonction pour récupérer la liste des auteurs secondaires
-                                $liste_auteur = get_liste_auteurs();
-
-                                // Afficher les auteurs secondaires dans le menu déroulant
-                                foreach ($liste_auteur as $auteur) {
-                                    $selected = $auteur === $auteur['num_aut'] ? 'selected' : '';
-                                    echo '<option value="' . $auteur['num_aut'] . '" ' . $selected . '>' . $auteur['nom_aut'] . ' ' . $auteur['prenom_aut'] . '</option>';
-                                }
-                                ?>
-                            </select>
-                            <?php if (isset($_SESSION['ajout-ouvrage-errors']['auteurs-secondaires-ouvrage'])) : ?>
-                                <div class="invalid-feedback">
-                                    <?= $_SESSION['ajout-ouvrage-errors']['auteurs-secondaires-ouvrage'] ?>
-                                </div>
-                            <?php endif; ?>
-                        </div>
+                    <div class="col-md-12">
+                        <label for="domaines-ouvrage" class="col-sm-2 col-form-label">Domaines <span class="text-danger">(*)</span> :</label>
+                        <select class="form-select select2bs4 <?= isset($_SESSION['ajout-ouvrage-errors']['domaines-ouvrage']) ? 'is-invalid' : '' ?>" id="domaines-ouvrage" name="domaines-ouvrage[]" multiple>
+                            <option value="0"></option>
+                            <?php
+                            // Appeler la fonction pour récupérer la liste des domaines
+                            $liste_domaine = get_liste_domaine();
+                            // Afficher les domaines dans le menu déroulant
+                            foreach ($liste_domaine as $domaine_item) {
+                            ?>
+                                <option value="<?= $domaine_item['cod_dom'] ?>" <?php echo !empty($data['domaines-ouvrage']) && in_array($domaine_item['cod_dom'], $data['domaines-ouvrage']) ? 'selected' : '' ?>><?= $domaine_item['lib_dom'] ?></option>
+                            <?php
+                            }
+                            ?>
+                        </select>
+                        <?php if (!empty($_SESSION['ajout-ouvrage-errors']['domaines-ouvrage'])) : ?>
+                            <div class="invalid-feedback">
+                                <?= $_SESSION['ajout-ouvrage-errors']['domaines-ouvrage'] ?>
+                            </div>
+                        <?php endif; ?>
                     </div>
-
                     <div class="row mt-3">
-                        <label for="langue-et-annnee" class="col-sm-2 col-form-label">Langue et année de publication:</label>
-                        <div class="col-md-5">
-                            <select class="form-select langue-select <?= isset($_SESSION['ajout-ouvrage-errors']['langue-ouvrage']) ? 'is-invalid' : '' ?>" id="langue et annnee" name="langue[]" required data-index="0">
+                        <div class="col-md-3">
+                            <label for="langue" class="form-label">Langue <span class="text-danger">(*)</span> :</label>
+                            <select class="form-select langue-select <?= !empty($_SESSION['ouvrage-errors']['langue']) ? 'is-invalid' : '' ?>" id="langue" name="langue[]">
                                 <option value="0"></option>
                                 <?php
-                                // Appeler la fonction pour récupérer la liste des domaines
+                                // Appeler la fonction pour récupérer la liste des langues
                                 $liste_langue = get_liste_langue();
 
-                                // Afficher les domaines dans le menu déroulant
-                                foreach ($liste_langue as $langue) {
-                                    $selected = $langue === $langue['cod_lang'] ? 'selected' : '';
-                                    echo '<option value="' . $langue['cod_lang'] . '" ' . $selected . '>' . $langue['lib_lang'] . '</option>';
+                                // Afficher les langues dans le menu déroulant
+                                foreach ($liste_langue as $langue_item) {
+                                    $selected = $data['langue'] == $langue_item['cod_lang'] ? 'selected' : '';
+                                    echo '<option value="' . $langue_item['cod_lang'] . '" ' . $selected . '>' . $langue_item['lib_lang'] . '</option>';
                                 }
                                 ?>
                             </select>
-                            <?php if (isset($_SESSION['ajout-ouvrage-errors']['langue-ouvrage'])) : ?>
-                                <?php foreach ($_SESSION['ajout-ouvrage-errors']['langue-ouvrage'] as $error) : ?>
+                            <?php if (!empty($_SESSION['ouvrage-errors']['langue'])) : ?>
+                                <?php foreach ($_SESSION['ouvrage-errors']['langue'] as $error) : ?>
                                     <div class="invalid-feedback">
                                         <?= $error ?>
                                     </div>
                                 <?php endforeach; ?>
                             <?php endif; ?>
-
                         </div>
                         <div class="col-md-4">
-                            <select class="form-select annee-publication-select <?= isset($_SESSION['ajout-ouvrage-errors']['annee_publication']) ? 'is-invalid' : '' ?>" id="langue et annnee" name="annee_publication[]" required data-index="0">
-                                <option value="0"></option>
-                                <?php
-                                $anneeActuelle = date("Y");
-                                $anneeDebut = 1700; // Année de départ
-                                $anneeFin = $anneeActuelle; // Année de fin (utilise $anneeActuelle ou une autre valeur si nécessaire)
-
-                                for ($annee = $anneeDebut; $annee <= $anneeFin; $annee++) {
-                                    $selected = in_array(strval($annee), $annee_publication) ? 'selected' : '';
-                                    echo '<option value="' . $annee . '" ' . $selected . '>' . $annee . '</option>';
-                                }
-                                ?>
-                            </select>
-                            <?php if (isset($_SESSION['ajout-ouvrage-errors']['langue-ouvrage'])) : ?>
-                                <?php foreach ($_SESSION['ajout-ouvrage-errors']['langue-ouvrage'] as $error) : ?>
+                            <label for="annee-publication" class="form-label">Année publication <span class="text-danger">(*)</span> :</label>
+                            <input type="number" class="form-control annee-publication <?= !empty($_SESSION['ouvrage-errors']['annee_publication']) ? 'is-invalid' : '' ?>" id="annee-publication" name="annee_publication[]">
+                            <?php if (!empty($_SESSION['ouvrage-errors']['annee_publication'])) : ?>
+                                <?php foreach ($_SESSION['ouvrage-errors']['annee_publication'] as $error) : ?>
                                     <div class="invalid-feedback">
                                         <?= $error ?>
                                     </div>
                                 <?php endforeach; ?>
                             <?php endif; ?>
+                        </div>
 
+                        <div class="col-md-4">
+                            <label for="nb-exemplaire-langue" class="form-label">Nbres par langue<span class="text-danger">(*)</span> :</label>
+                            <input type="number" class="form-control nb-exemplaire-langue<?= !empty($_SESSION['ouvrage-errors']) ? 'is-invalid' : '' ?>" id="nb-exemplaire-langue" name="nb-exemplaire-langue[]">
+                            <?php if (!empty($_SESSION['ouvrage-errors'])) : ?>
+                                <?php foreach ($_SESSION['ouvrage-errors'] as $error) : ?>
+                                    <div class="invalid-feedback">
+                                        <?= $error ?>
+                                    </div>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
                         </div>
                         <div class="col-md-1">
                             <button type="button" class="btn btn-success btn-add">+</button>
                         </div>
                         <div id="form-container"></div>
                     </div>
+
 
 
                     <div class="row">
@@ -248,34 +231,79 @@ include 'app/commun/header.php';
     </main>
 </section>
 <script>
-    //Code js pour select2
-     $(document).ready(function() {
-        $('.select2').select2();
-    });
-
-   
-
     // Gérer le changement de sélection dans le champ de sélection de l'auteur
     document.getElementById('auteur-principal-ouvrage').addEventListener('change', function(event) {
         const selectedAuthorId = event.target.value;
         document.getElementById('selected-auteur-id').value = selectedAuthorId;
     });
 
+// Vérifier l'année de publication par rapport à l'année en cours
+function validatePublicationYear() {
+    const anneePublicationInputs = document.querySelectorAll('.annee-publication');
+    const anneeEnCours = new Date().getFullYear(); // Obtenir l'année en cours
+
+    anneePublicationInputs.forEach(input => {
+        input.addEventListener('blur', function () {
+            const anneePublication = parseInt(input.value);
+
+            if (anneePublication > anneeEnCours) {
+                alert('L\'année de publication ne peut pas être supérieure à l\'année en cours (' + anneeEnCours + ').');
+                input.value = ''; // Réinitialiser la valeur du champ
+            }
+        });
+    });
+}
+
+// Fonction pour recalculer la somme des exemplaires par langue et vérifier
+function calculateAndCheckTotalExemplaires() {
+    const nombreExemplaireInput = document.getElementById('nombre-exemplaire-ouvrage');
+    const totalExemplaires = parseInt(nombreExemplaireInput.value);
+
+    // Récupérer tous les champs d'exemplaires par langue
+    const exemplairesLangueInputs = document.querySelectorAll('.nb-exemplaire-langue');
+
+    // Calculer la somme des exemplaires par langue
+    let sumExemplairesLangue = 0;
+    exemplairesLangueInputs.forEach(input => {
+        const exemplairesLangue = parseInt(input.value);
+        if (!isNaN(exemplairesLangue)) {
+            sumExemplairesLangue += exemplairesLangue;
+        }
+    });
+
+    // Comparer la somme aux exemplaires totaux
+    if (sumExemplairesLangue !== totalExemplaires) {
+        // Afficher un message d'erreur
+        alert('Noter que la somme d\'exemplaire par langue doit correspondre au nombre total d\'exemplaires.');
+    }
+}
+
+    // Écouter les changements dans le champ "Nombre exemplaire" lorsque l'utilisateur quitte le champ
+    const nombreExemplaireInput = document.getElementById('nombre-exemplaire-ouvrage');
+    nombreExemplaireInput.addEventListener('blur', calculateAndCheckTotalExemplaires);
+
+    // Écouter les changements dans les champs "Exemplaire par langue" lorsque l'utilisateur quitte le champ
+    const exemplairesLangueInputs = document.querySelectorAll('.nb-exemplaire-langue');
+    exemplairesLangueInputs.forEach(input => {
+        input.addEventListener('blur', calculateAndCheckTotalExemplaires);
+    });
+
     document.addEventListener('DOMContentLoaded', function() {
         // Compteur pour identifier les champs ajoutés
         let counter = 1;
 
-        // Fonction pour créer un nouveau champ "Langue et année de publication"
+        // Fonction pour créer un nouveau groupe de champs
         function createNewField() {
             const row = document.createElement('div');
             row.classList.add('row', 'mt-3');
 
-            const label = document.createElement('label');
-            label.classList.add('col-sm-2', 'col-form-label');
-            label.textContent = 'Langue et année de publication:';
-
+            // Langue
             const col1 = document.createElement('div');
-            col1.classList.add('col-md-5');
+            col1.classList.add('col-md-3');
+
+            const labelLangue = document.createElement('label');
+            labelLangue.classList.add('form-label');
+            labelLangue.textContent = 'Langue:';
 
             const selectLangue = document.createElement('select');
             selectLangue.classList.add('form-select', 'langue-select');
@@ -283,43 +311,59 @@ include 'app/commun/header.php';
             selectLangue.required = true;
             selectLangue.dataset.index = counter;
             selectLangue.innerHTML = `
-<option value="0"></option>
-<?php
-// Appeler la fonction pour récupérer la liste des domaines
-$liste_langue = get_liste_langue();
+            <option value="0"></option>
+            <?php
+            // Appeler la fonction pour récupérer la liste des langues
+            $liste_langue = get_liste_langue();
 
-// Afficher les domaines dans le menu déroulant
-foreach ($liste_langue as $langue) {
-    $selected = $langue === $langue['cod_lang'] ? 'selected' : '';
-    echo '<option value="' . $langue['cod_lang'] . '" ' . $selected . '>' . $langue['lib_lang'] . '</option>';
-}
-?>
-`;
+            // Afficher les langues dans le menu déroulant
+            foreach ($liste_langue as $langue_item) {
+                $selected = $data['langue_ouvrage'] == $langue_item['cod_lang'] ? 'selected' : '';
+                echo '<option value="' . $langue_item['cod_lang'] . '" ' . $selected . '>' . $langue_item['lib_lang'] . '</option>';
+            }
+            ?>
+        `;
 
+            col1.appendChild(labelLangue);
+            col1.appendChild(selectLangue);
+
+            // Année de Publication
             const col2 = document.createElement('div');
             col2.classList.add('col-md-4');
 
-            const selectAnnee = document.createElement('select');
-            selectAnnee.classList.add('form-select', 'annee-publication-select');
-            selectAnnee.name = 'annee_publication[]';
-            selectAnnee.required = true;
-            selectAnnee.dataset.index = counter;
-            selectAnnee.innerHTML = `
-<option value="0"></option>
-<?php
-$anneeActuelle = date("Y");
-$anneeDebut = 1700; // Année de départ
-$anneeFin = $anneeActuelle; // Année de fin (utilise $anneeActuelle ou une autre valeur si nécessaire)
+            const labelAnnee = document.createElement('label');
+            labelAnnee.classList.add('form-label');
+            labelAnnee.textContent = 'Année publication:';
 
-for ($annee = $anneeDebut; $annee <= $anneeFin; $annee++) {
-    $selected = in_array(strval($annee), $annee_publication) ? 'selected' : '';
-    echo '<option value="' . $annee . '" ' . $selected . '>' . $annee . '</option>';
-}
-?>
-`;
+            const inputAnnee = document.createElement('input');
+            inputAnnee.type = 'number';
+            inputAnnee.classList.add('form-control', 'annee-publication');
+            inputAnnee.name = 'annee_publication[]';
+            inputAnnee.required = true;
+            inputAnnee.min = '0';
 
+            col2.appendChild(labelAnnee);
+            col2.appendChild(inputAnnee);
+
+            // Nombre/langue
             const col3 = document.createElement('div');
-            col3.classList.add('col-md-1');
+            col3.classList.add('col-md-4');
+
+            const labelNbLangue = document.createElement('label');
+            labelNbLangue.classList.add('form-label');
+            labelNbLangue.textContent = 'Nbres par langue:';
+
+            const inputNbLangue = document.createElement('input');
+            inputNbLangue.type = 'number';
+            inputNbLangue.classList.add('form-control', 'nb-exemplaire-langue');
+            inputNbLangue.name = 'nb-exemplaire-langue[]';
+
+            col3.appendChild(labelNbLangue);
+            col3.appendChild(inputNbLangue);
+
+            // Bouton Supprimer
+            const col4 = document.createElement('div');
+            col4.classList.add('col-md-1');
 
             const btnRemove = document.createElement('button');
             btnRemove.type = 'button';
@@ -327,22 +371,28 @@ for ($annee = $anneeDebut; $annee <= $anneeFin; $annee++) {
             btnRemove.textContent = '-';
             btnRemove.dataset.index = counter;
 
-            col1.appendChild(selectLangue);
-            col2.appendChild(selectAnnee);
-            col3.appendChild(btnRemove);
+            col4.appendChild(btnRemove);
 
-            row.appendChild(label);
+            // Ajout de tous les éléments au groupe de champs
             row.appendChild(col1);
             row.appendChild(col2);
             row.appendChild(col3);
+            row.appendChild(col4);
 
+            // Ajout du groupe de champs au conteneur
             document.getElementById('form-container').appendChild(row);
 
             // Incrémenter le compteur pour les futurs champs ajoutés
             counter++;
+
+             // Appeler les fonctions de validation pour les champs initiaux
+             validatePublicationYear();
+            calculateAndCheckTotalExemplaires();
         }
 
-        // Fonction pour supprimer un champ "Langue et année de publication"
+        
+
+        // Fonction pour supprimer un groupe de champs
         function removeField(index) {
             const fieldToRemove = document.querySelector(`[data-index="${index}"]`).closest('.row');
             fieldToRemove.remove();
@@ -360,11 +410,30 @@ for ($annee = $anneeDebut; $annee <= $anneeFin; $annee++) {
                 removeField(indexToRemove);
             }
         });
+
+         // Appeler les fonctions de validation pour les champs initiaux
+         validatePublicationYear();
+            calculateAndCheckTotalExemplaires();
     });
+
+
+    // Fonction pour valider que le champ nombre d'exemplaire contient uniquement des chiffres
+    function validateNumberInput(event) {
+        const input = event.target;
+        const inputValue = input.value;
+
+        // Vérifier si la valeur contient uniquement des chiffres
+        if (!/^\d+$/.test(inputValue)) {
+            input.classList.add('is-invalid');
+        } else {
+            input.classList.remove('is-invalid');
+        }
+    }
+
 </script>
 
 <?php
 include './app/commun/footer.php';
-unset($_SESSION['ajout-ouvrage-error'], $_SESSION['ajout-ouvrage-success'], $_SESSION['ajout-ouvrage-errors'], $_SESSION['saisie-precedente']);
+unset($_SESSION['ajout-ouvrage-error'], $_SESSION['ajout-ouvrage-success'], $_SESSION['ajout-ouvrage-errors'], $_SESSION['saisie-precedente'], $_SESSION['data']);
 
 ?>

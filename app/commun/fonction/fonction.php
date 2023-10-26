@@ -1602,26 +1602,30 @@ function associerAuteurSecondaireOuvrage($num_aut, $cod_ouv) {
 
 
 /**
- * Cette fonction insère les données de langue et d'année de publication dans la table date_parution.
+ * Cette fonction insère les données de langue, d'année de publication et d'exemplaires par langue
+ * dans la table date_parution.
  *
  * @param int $cod_ouv L'identifiant de l'ouvrage.
  * @param array $langues Les langues sélectionnées.
  * @param array $annees Les années de publication correspondantes.
+ * @param array $exemplaires Les exemplaires par langue.
  * @return bool True en cas de succès, False en cas d'échec.
  */
-function insererDateParution(int $cod_ouv, array $langues, array $annees) {
+function insererDateParution(int $cod_ouv, array $langues, array $annees, array $exemplaires) {
     $db = connect_db();
     
     // Préparer et exécuter les requêtes pour insérer les données dans la table date_parution
-    $requete = 'INSERT INTO date_parution (cod_ouv, cod_lang, dat_par) VALUES (:cod_ouv, :cod_lang, :dat_par)';
+    $requete = 'INSERT INTO date_parution (cod_ouv, cod_lang, dat_par, nb_ex_lang) VALUES (:cod_ouv, :cod_lang, :dat_par, :nb_ex_lang)';
     $query = $db->prepare($requete);
 
     foreach ($langues as $index => $cod_lang) {
         $dat_par = $annees[$index];
+        $nb_ex_lang = $exemplaires[$index];
         $resultat = $query->execute([
             'cod_ouv' => $cod_ouv,
             'cod_lang' => $cod_lang,
             'dat_par' => $dat_par,
+            'nb_ex_lang' => $nb_ex_lang,
         ]);
 
         if (!$resultat) {
@@ -1632,22 +1636,35 @@ function insererDateParution(int $cod_ouv, array $langues, array $annees) {
     return true; // Si toutes les insertions réussissent, retourner true
 }
 
+
 /**
  * Cette fonction permet de récupérer la liste des ouvrages de la base de données.
  *
+ * @param string $titre Le titre de recherche (facultatif).
  * @return array $liste_ouvrages La liste des ouvrages.
  */
-function get_liste_ouvrages(): array
+function get_liste_ouvrages($titre = ''): array
 {
     $liste_ouvrages = array();
 
     $db = connect_db();
 
-    // Écriture de la requête
+    // Écriture de la requête de base
     $requete = 'SELECT * FROM ouvrage';
+
+    // Si un titre de recherche est fourni, ajoutez une clause WHERE pour filtrer par titre
+    if (!empty($titre)) {
+        $requete .= " WHERE titre LIKE :titre";
+    }
 
     // Préparation de la requête
     $requete_preparee = $db->prepare($requete);
+
+    // Si un titre de recherche est fourni, liez le paramètre
+    if (!empty($titre)) {
+        $titre = '%' . $titre . '%';
+        $requete_preparee->bindParam(':titre', $titre, PDO::PARAM_STR);
+    }
 
     // Exécution de la requête
     $resultat = $requete_preparee->execute();
@@ -1659,28 +1676,6 @@ function get_liste_ouvrages(): array
     return $liste_ouvrages;
 }
 
-
-/**
- * Cette fonction retourne les auteurs correspondant à la recherche.
- *
- * @param string $texteRecherche Le texte de recherche saisi par l'utilisateur.
- * @return array Tableau des auteurs correspondant à la recherche.
- */
-function get_auteurs_suggestions($texteRecherche): array
-{
-    $db = connect_db();
-
-    // Éviter les injections SQL en utilisant des requêtes préparées
-    $query = "SELECT num_aut, nom_aut, prenom_aut FROM auteur WHERE CONCAT(nom_aut, ' ', prenom_aut) LIKE :recherche";
-
-    $stmt = $db->prepare($query);
-    $stmt->bindValue(':recherche', '%' . $texteRecherche . '%', PDO::PARAM_STR);
-    $stmt->execute();
-
-    $suggestion = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    return $suggestion;
-}
 
 
 function get_domaines_by_ouvrage($cod_ouv): array
@@ -1712,8 +1707,58 @@ function get_auteurs_secondaires_by_ouvrage($cod_ouv): array
     return $result;
 }
 
+/**
+ * Cette fonction permet de récupérer les informations associées à l'ouvrage dans la table date parution
+ * @param $cod_ouv le cod de l'ouvrage
+ */
+function get_details_ouvrage($cod_ouv): array
+{
+    $db = connect_db();
+    $query = "SELECT langue.lib_lang AS langue, date_parution.dat_par AS annee_publication, date_parution.nb_ex_lang AS nb_exemplaire_langue
+              FROM date_parution
+              INNER JOIN langue ON date_parution.cod_lang = langue.cod_lang
+              WHERE date_parution.cod_ouv = :cod_ouv";
+    $stmt = $db->prepare($query);
+    $stmt->bindParam(':cod_ouv', $cod_ouv);
+    $stmt->execute();
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    return $result;
+}
 
-        
+
+/**
+ * Cette fonction permet de  pour vérifier si une entrée spécifique existe dans une table d'une base de données 
+ * @param string $table : Il s'agit du nom de la table dans laquelle vous souhaitez vérifier si une entrée existe.
+ * @param string $field : Il s'agit du nom du champ (colonne) dans la table que vous souhaitez comparer à une valeur spécifique pour vérifier son existence.
+ * @param string $fieldentry : Il s'agit de la valeur que vous souhaitez comparer au champ spécifié pour déterminer si une entrée correspondante existe.
+ * @return bool
+ */
+function check_if_exist($table, $field, $fieldentry): bool
+{
+
+    $exist = false;
+
+    $db = connect_db();
+
+    $request = "SELECT * FROM " . $table . " WHERE " . $field . " = :field_entry and est_actif = 1 and est_supprimer = 0";
+
+    $request_prepare = $db->prepare($request);
+
+    $request_execution = $request_prepare->execute([
+        "field_entry" => $fieldentry
+    ]);
+
+    if ($request_execution) {
+
+        $data = $request_prepare->fetch(PDO::FETCH_ASSOC);
+
+        if (!empty($data)) {
+            $exist = true;
+        }
+    }
+
+    return $exist;
+}       
            
         
 

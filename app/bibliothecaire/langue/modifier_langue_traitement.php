@@ -8,7 +8,7 @@ if (empty($_POST["langue"])) {
 
 if (empty($errors)) {
 	$cod_lang = $_SESSION['cod_lang'];
-	$langue = trim(htmlentities($_POST['langue']));
+	$langue = trim(htmlspecialchars($_POST['langue']));
 
 	// Mettez à jour les informations de la langue dans la base de données en utilisant votre fonction appropriée
 	modifier_langue($cod_lang, $langue);

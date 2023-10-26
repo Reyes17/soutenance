@@ -1,7 +1,8 @@
 <?php
-
-if (empty($_SESSION["utilisateur_connecter_bibliothecaire"])) {
-	header('location:' . PROJECT_DIR . 'bibliothecaire/connexion');
+// Vérification de l'authentification
+if (!isset($_SESSION['utilisateur_connecter_bibliothecaire'])) {
+    header('location:' . PROJECT_DIR . 'bibliothecaire/connexion');
+    exit();
 }
 $title = 'Modifier un domaine';
 include './app/commun/header.php';

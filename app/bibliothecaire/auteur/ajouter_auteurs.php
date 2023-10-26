@@ -1,6 +1,8 @@
 <?php
-if (empty($_SESSION["utilisateur_connecter_bibliothecaire"])) {
-	header('location:' . PROJECT_DIR . 'bibliothecaire/connexion');
+// Vérification de l'authentification
+if (!isset($_SESSION['utilisateur_connecter_bibliothecaire'])) {
+    header('location:' . PROJECT_DIR . 'bibliothecaire/connexion');
+    exit();
 }
 $title = 'ajouter un auteur';
 include './app/commun/header.php';

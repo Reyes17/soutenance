@@ -1,9 +1,13 @@
 <?php
-if (!empty($_SESSION["utilisateur_connecter_bibliothecaire"])) {
+if (isset($_SESSION["utilisateur_connecter_bibliothecaire"])) {
 	header('location:' . PROJECT_DIR . 'bibliothecaire/dossier/dashboard');
 }
 
-$title ='Inscription';
+if (isset($_SESSION['donnees-utilisateur']) && !empty($_SESSION['donnees-utilisateur'])) {
+	$data = $_SESSION['donnees-utilisateur'];
+}
+
+$title = 'Inscription';
 include 'app/commun/index.php';
 
 ?>
@@ -20,7 +24,7 @@ include 'app/commun/index.php';
 						<div class="d-flex justify-content-center py-4">
 							<a href="" class="logo d-flex align-items-center w-auto">
 								<img src="../public/image/bliotheque.jpg" alt="bliotheque.jpg">
-								<span class="d-none d-lg-block">Bibliothèque AKAII</span>
+								<span class="d-none d-lg-block">Bibliothèque AKAITSUKI</span>
 							</a>
 						</div><!-- End Logo -->
 
@@ -41,7 +45,7 @@ include 'app/commun/index.php';
 								<?php
 								if (isset($_SESSION['message_errors_global']) && !empty($_SESSION['message_errors_global'])) {
 								?>
-									<div class="alert alert-danger mt-3" style="border-radius: 15px; text-align: center;">
+									<div class="alert alert-success mt-3" style="border-radius: 15px; text-align: center;">
 										<?= $_SESSION['message_errors_global'] ?>
 									</div>
 								<?php
@@ -97,10 +101,10 @@ include 'app/commun/index.php';
 											<span class="text-danger"> (*)</span>
 										</label>
 										<input type="email" class="form-control <?= isset($_SESSION['inscription-erreurs']['email']) ? 'is-invalid' : '' ?>" name="email" value="<?php if (isset($data["email"]) && !empty($data["email"])) {
-																																															echo $data["email"];
-																																														} else {
-																																															echo '';
-																																														} ?>" id="yourEmail" placeholder="Veuillez entrer votre adresse email">
+																																														echo $data["email"];
+																																													} else {
+																																														echo '';
+																																													} ?>" id="yourEmail" placeholder="Veuillez entrer votre adresse email">
 										<?php
 										if (isset($_SESSION['inscription-erreurs']['email'])) {
 										?>
@@ -121,10 +125,10 @@ include 'app/commun/index.php';
 										</label>
 										<div class="input-group has-validation">
 											<input type="text" class="form-control <?= isset($_SESSION['inscription-erreurs']['nom_utilisateur']) ? 'is-invalid' : '' ?>" name="nom_utilisateur" id="incription_nom_utilisateur" value="<?php if (isset($data["nom_utilisateur"]) && !empty($data["nom_utilisateur"])) {
-																																																									echo $data["nom_utilisateur"];
-																																																								} else {
-																																																									echo '';
-																																																								} ?>" placeholder="Veuillez entrer un nom d'utilisateur">
+																																																											echo $data["nom_utilisateur"];
+																																																										} else {
+																																																											echo '';
+																																																										} ?>" placeholder="Veuillez entrer un nom d'utilisateur">
 											<?php
 											if (isset($_SESSION['inscription-erreurs']['nom_utilisateur'])) {
 											?>

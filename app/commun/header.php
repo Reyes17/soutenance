@@ -26,11 +26,8 @@
 	<link href="<?= PROJECT_DIR; ?>public/css/style.css" rel="stylesheet">
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- Inclure la bibliothèque du select2 -->
-<script src="<?= PROJECT_DIR; ?>public/select2/js/select2.min.js"></script>
-<link href="<?= PROJECT_DIR; ?>public/select2/css/select2.min" rel="stylesheet">
-<link href="<?= PROJECT_DIR; ?>public/select2-bootstrap4/select2-bootstrap4.min.css" rel="stylesheet">
-<!-- Inclure le fichier JavaScript de Toastify -->
-
+	<link rel="stylesheet" href="<?= PROJECT_DIR; ?>public/select2/css/select2.min.css">
+    <link rel="stylesheet" href="<?= PROJECT_DIR; ?>public/select2-bootstrap4/select2-bootstrap4.min.css">
 	<!-- =======================================================
 	======================================================== -->
 	
@@ -49,12 +46,7 @@
 			<i class="bi bi-list toggle-sidebar-btn"></i>
 		</div><!-- End Logo -->
 
-		<div class="search-bar">
-			<form class="search-form d-flex align-items-center" method="POST" action="#">
-				<input type="text" name="query" placeholder="Search" title="Enter search keyword">
-				<button type="submit" title="Search"><i class="bi bi-search"></i></button>
-			</form>
-		</div><!-- End Search Bar -->
+		
 
 		<nav class="header-nav ms-auto">
 			<ul class="d-flex align-items-center">
@@ -71,10 +63,10 @@
 
 				<li class="nav-item dropdown pe-3">
 
-					<a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-						<img src="<?= isset($_SESSION['utilisateur_connecter_bibliothecaire']) ? $_SESSION['utilisateur_connecter_bibliothecaire']['avatar'] : 'avatar' ?>" style="width: 50px;" alt="Profile" class="rounded-circle">
-						<span class="d-none d-md-block dropdown-toggle ps-2"><?= $_SESSION['utilisateur_connecter_bibliothecaire']['nom'] ?> <?= $_SESSION['utilisateur_connecter_bibliothecaire']['prenom'] ?></span>
-					</a><!-- End Profile Iamge Icon -->
+				<a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+					<img src="<?= $_SESSION['utilisateur_connecter_bibliothecaire']['avatar'] == 'Non defini' ? PROJECT_DIR . 'public/image/user.png' : $_SESSION['utilisateur_connecter_bibliothecaire']['avatar'] ?>" style="width: 50px;" alt="Profile" class="rounded-circle">
+					<span class="d-none d-md-block dropdown-toggle ps-2"><?= $_SESSION['utilisateur_connecter_bibliothecaire']['nom'] ?> <?= $_SESSION['utilisateur_connecter_bibliothecaire']['prenom'] ?></span>
+				</a><!-- End Profile Iamge Icon -->
 
 					<ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
 						<li class="dropdown-header">

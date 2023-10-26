@@ -9,7 +9,7 @@ $errors = [];
 
 
 if (verifier_info($_POST['nom'])) {
-	$data['nom'] = trim(htmlentities($_POST['nom']));
+	$data['nom'] = trim(htmlspecialchars($_POST['nom']));
 } else {
 	$errors['nom'] = '<p> Le champ nom est requis. Veuillez le renseigner! </p>';
 }
@@ -87,6 +87,7 @@ if (empty($errors)) {
 	}
 } //Si les informations de l'utilisateur sont incorrects, je le redirige vers la page d'inscription avec des messages d'erreurs
 else {
+	$_SESSION['donnees-utilisateur'] = $data;
 	$_SESSION['inscription-erreurs'] = $errors;
 }
 header('location:' . PROJECT_DIR . 'bibliothecaire/inscription');

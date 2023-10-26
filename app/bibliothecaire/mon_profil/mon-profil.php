@@ -1,5 +1,5 @@
 <?php
-if (empty($_SESSION["utilisateur_connecter_bibliothecaire"])) {
+if (!isset($_SESSION["utilisateur_connecter_bibliothecaire"])) {
 	header('location:' . PROJECT_DIR . 'bibliothecaire/connexion');
 }
 $title = 'Profil';
@@ -44,7 +44,7 @@ if (!empty($_SESSION['utilisateur_connecter_bibliothecaire']['0']['id']) && !emp
 						<?php
 						if (!empty($_SESSION['desactivation-errors']) && !empty($_SESSION['desactivation-errors'])) {
 						?>
-							<div class="alert alert-danger" style="color: white; background-color:#dc3545; border-radius: 15px; text-align:center;">
+							<div class="alert alert-danger mt-3" style="border-radius: 15px; text-align: center;">
 								<?= $_SESSION['desactivation-errors'] ?>
 							</div>
 						<?php
@@ -157,7 +157,7 @@ if (!empty($_SESSION['utilisateur_connecter_bibliothecaire']['0']['id']) && !emp
 								<?php
 								if (!empty($_SESSION['passe']) && !empty($_SESSION['passe'])) {
 								?>
-									<div class="alert alert-danger" style="color: white; background-color: #dc3545; border-radius: 15px; padding: 2%; text-align:center;">
+									<div class="alert alert-danger mt-3" style="border-radius: 15px; text-align: center;">
 										<?= $_SESSION['passe'] ?>
 									</div>
 								<?php
@@ -168,7 +168,7 @@ if (!empty($_SESSION['utilisateur_connecter_bibliothecaire']['0']['id']) && !emp
 								<?php
 								if (!empty($_SESSION['photo-erreurs']) && !empty($_SESSION['photo-erreurs'])) {
 								?>
-									<div class="alert alert-danger" style="color: white; background-color: #dc3545; border-radius: 15px; padding: 2%; text-align:center;">
+									<div class="alert alert-danger mt-3" style="border-radius: 15px; text-align: center;">
 										<?= $_SESSION['photo-erreurs'] ?>
 									</div>
 								<?php
@@ -179,7 +179,7 @@ if (!empty($_SESSION['utilisateur_connecter_bibliothecaire']['0']['id']) && !emp
 								<?php
 								if (!empty($_SESSION['success']) && !empty($_SESSION['success'])) {
 								?>
-									<div class="alert alert-danger" style="color: white; background-color:#2bc717 ; border-radius: 15px; padding: 2%; text-align:center;">
+									<div class="alert alert-success mt-3" style="border-radius: 15px; text-align: center;">
 										<?= $_SESSION['success'] ?>
 									</div>
 								<?php
@@ -190,7 +190,7 @@ if (!empty($_SESSION['utilisateur_connecter_bibliothecaire']['0']['id']) && !emp
 								<?php
 								if (!empty($_SESSION['photo_success']) && !empty($_SESSION['photo_success'])) {
 								?>
-									<div class="alert alert-danger" style="color: white; background-color:#2bc717 ; border-radius: 15px; padding: 2%; text-align:center;">
+									<div class="alert alert-success mt-3" style="border-radius: 15px; text-align: center;">
 										<?= $_SESSION['photo_success'] ?>
 									</div>
 								<?php
@@ -254,6 +254,7 @@ if (!empty($_SESSION['utilisateur_connecter_bibliothecaire']['0']['id']) && !emp
 											<!-- suppression_photo Form -->
 											<form action="<?= PROJECT_DIR ?>bibliothecaire/profil/traitement_suppression_photo" method="post" style="display: flex; justify-content: center; align-items: center;">
 												<div class="row">
+												<?php if (($_SESSION["utilisateur_connecter_bibliothecaire"]['avatar'] != 'Non defini')) { ?>
 													<button type="reset" class="btn btn-danger mt-3" data-bs-toggle="modal" data-bs-target="#supprimer_photo"><i class="bi bi-trash-fill"> Supprimer la photo</i></button>
 													<div class="col-md-8 col-lg-12">
 														<div class="text-center" style="color: #070b3a;">
@@ -287,8 +288,9 @@ if (!empty($_SESSION['utilisateur_connecter_bibliothecaire']['0']['id']) && !emp
 																</div>
 															</div>
 														</div>
-
 													</div>
+													<?php
+													} ?>
 												</div>
 
 											</form>
@@ -442,7 +444,7 @@ if (!empty($_SESSION['utilisateur_connecter_bibliothecaire']['0']['id']) && !emp
 							<?php
 							if (!empty($_SESSION['changement-erreurs']) && !empty($_SESSION['changement-erreurs'])) {
 							?>
-								<div class="alert alert-danger" style="color: white; background-color:#dc3545; border-radius: 15px; text-align:center;">
+								<div class="alert alert-danger mt-3" style="border-radius: 15px; text-align: center;">
 									<?= $_SESSION['changement-erreurs'] ?>
 								</div>
 							<?php
