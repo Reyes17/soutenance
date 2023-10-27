@@ -1,8 +1,8 @@
 <?php
 // Vérification de l'authentification
 if (!isset($_SESSION['utilisateur_connecter_bibliothecaire'])) {
-    header('location:' . PROJECT_DIR . 'bibliothecaire/connexion');
-    exit();
+	header('location:' . PROJECT_DIR . 'bibliothecaire/connexion');
+	exit();
 }
 $title = 'Modifier un ouvrage';
 
@@ -216,32 +216,32 @@ if (!empty($_SESSION['data'])) {
 					</div>
 
 					<div class="row mt-3">
-					<div class="col-md-3">
-    <label for="langue" class="form-label">Langue <span class="text-danger">(*)</span> :</label>
-    <select class="form-select select2bs4 <?= !empty($_SESSION['ouvrage-errors']['langue']) ? 'is-invalid' : '' ?>" id="langue" name="langue[]">
-        <option value="0"></option>
-        <?php
-        // Appeler la fonction pour récupérer la liste des langues
-        $liste_langue = get_liste_langue();
-        $selectedLangue = $detailsOuvrage[0]['langue'];
+						<div class="col-md-3">
+							<label for="langue" class="form-label">Langue <span class="text-danger">(*)</span> :</label>
+							<select class="form-select select2bs4 <?= !empty($_SESSION['ouvrage-errors']['langue']) ? 'is-invalid' : '' ?>" id="langue" name="langue[]">
+								<option value="0"></option>
+								<?php
+								// Appeler la fonction pour récupérer la liste des langues
+								$liste_langue = get_liste_langue();
+								$selectedLangue = $detailsOuvrage[0]['langue'];
 
-        // Afficher les langues dans le menu déroulant
-        foreach ($liste_langue as $langue_item) {
-            $selected = $selectedLangue == $langue_item['cod_lang'] ? 'selected' : '';
-            echo '<option value="' . $langue_item['cod_lang'] . '" ' . $selected . '>' . $langue_item['lib_lang'] . '</option>';
-            echo 'Selected Langue: ' . $selectedLangue;
-            echo 'Langue Item Cod Lang: ' . $langue_item['cod_lang'];
-        }
-        ?>
-    </select>
-    <?php if (!empty($_SESSION['ouvrage-errors']['langue'])) : ?>
-        <?php foreach ($_SESSION['ouvrage-errors']['langue'] as $error) : ?>
-            <div class="invalid-feedback">
-                <?= $error ?>
-            </div>
-        <?php endforeach; ?>
-    <?php endif; ?>
-</div>
+								// Afficher les langues dans le menu déroulant
+								foreach ($liste_langue as $langue_item) {
+									$selected = $selectedLangue == $langue_item['cod_lang'] ? 'selected' : '';
+									echo '<option value="' . $langue_item['cod_lang'] . '" ' . $selected . '>' . $langue_item['lib_lang'] . '</option>';
+									echo 'Selected Langue: ' . $selectedLangue;
+									echo 'Langue Item Cod Lang: ' . $langue_item['cod_lang'];
+								}
+								?>
+							</select>
+							<?php if (!empty($_SESSION['ouvrage-errors']['langue'])) : ?>
+								<?php foreach ($_SESSION['ouvrage-errors']['langue'] as $error) : ?>
+									<div class="invalid-feedback">
+										<?= $error ?>
+									</div>
+								<?php endforeach; ?>
+							<?php endif; ?>
+						</div>
 
 						<div class="col-md-4">
 							<label for="annee-publication" class="form-label">Année publication <span class="text-danger">(*)</span> :</label>

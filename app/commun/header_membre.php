@@ -35,7 +35,7 @@
 	<header id="header" class="header fixed-top d-flex align-items-center">
 
 		<div class="d-flex align-items-center justify-content-between">
-			<a href="#" class="logo d-flex align-items-center">
+			<a href="<?= PROJECT_DIR; ?>membre/accueil/index" class="logo d-flex align-items-center">
 				<img src="<?= PROJECT_DIR; ?>public/image/bliotheque.jpg" alt="bliotheque.jpg">
 				<span class="d-none d-lg-block">Bibliothèque AKAITSUKI</span>
 			</a>

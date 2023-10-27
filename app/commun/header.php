@@ -207,6 +207,11 @@
 							<i class="bi bi-circle"></i><span>Liste des emprunts</span>
 						</a>
 					</li>
+					<li>
+						<a href="<?= PROJECT_DIR; ?>bibliothecaire/emprunt/ajouter_emprunt">
+							<i class="bi bi-circle"></i><span>Ajouter emprunts</span>
+						</a>
+					</li>
 					
 				</ul>
 			</li><!-- Fin menu emprunt -->

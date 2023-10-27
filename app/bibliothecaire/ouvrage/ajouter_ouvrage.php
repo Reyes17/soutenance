@@ -57,16 +57,6 @@ if (!empty($_SESSION['data'])) {
                     </div>
 
 
-                    <div class="col-md-12 mb-3">
-                        <label for="nombre-exemplaire-ouvrage" class="form-label">Nombre exemplaire <span class="text-danger">(*)</span> :</label>
-                        <input type="number" class="form-control <?= !empty($_SESSION['ajout-ouvrage-errors']['nombre-exemplaire-ouvrage']) ? 'is-invalid' : '' ?>" id="nombre-exemplaire-ouvrage" name="nombre-exemplaire-ouvrage" value="<?= !empty($data['nombre-exemplaire-ouvrage']) ? $data['nombre-exemplaire-ouvrage'] : '' ?>" placeholder="Veuillez entrer le nombre d'exemplaire">
-                        <?php if (isset($_SESSION['ajout-ouvrage-errors']['nombre-exemplaire-ouvrage'])) : ?>
-                            <div class="invalid-feedback">
-                                <?= $_SESSION['ajout-ouvrage-errors']['nombre-exemplaire-ouvrage'] ?>
-                            </div>
-                        <?php endif; ?>
-                    </div>
-
                     <label for="auteur-principal-ouvrage" class="col-sm-2 col-form-label">Auteur <span class="text-danger">(*)</span> :</label>
                     <div class="col-md-12 mb-3">
                         <select class="form-select select2bs4 <?= isset($_SESSION['ajout-ouvrage-errors']['auteur-principal-ouvrage']) ? 'is-invalid' : '' ?>" id="auteur-principal-ouvrage" name="auteur-principal-ouvrage">
@@ -142,8 +132,8 @@ if (!empty($_SESSION['data'])) {
                         <?php endif; ?>
                     </div>
 
-                    <div class="col-md-12">
-                        <label for="domaines-ouvrage" class="col-sm-2 col-form-label">Domaines <span class="text-danger">(*)</span> :</label>
+                    <div class="col-md-12 mb-3">
+                        <label for="domaines-ouvrage" class="col-form-label">Domaines <span class="text-danger">(*)</span> :</label>
                         <select class="form-select select2bs4 <?= isset($_SESSION['ajout-ouvrage-errors']['domaines-ouvrage']) ? 'is-invalid' : '' ?>" id="domaines-ouvrage" name="domaines-ouvrage[]" multiple>
                             <option value="0"></option>
                             <?php
@@ -163,6 +153,17 @@ if (!empty($_SESSION['data'])) {
                             </div>
                         <?php endif; ?>
                     </div>
+
+                    <div class="col-md-12 mb-3">
+                        <label for="nombre-exemplaire-ouvrage" class="form-label">Nombre exemplaire <span class="text-danger">(*)</span> :</label>
+                        <input type="number" class="form-control <?= !empty($_SESSION['ajout-ouvrage-errors']['nombre-exemplaire-ouvrage']) ? 'is-invalid' : '' ?>" id="nombre-exemplaire-ouvrage" name="nombre-exemplaire-ouvrage" value="<?= !empty($data['nombre-exemplaire-ouvrage']) ? $data['nombre-exemplaire-ouvrage'] : '' ?>" placeholder="Veuillez entrer le nombre d'exemplaire">
+                        <?php if (isset($_SESSION['ajout-ouvrage-errors']['nombre-exemplaire-ouvrage'])) : ?>
+                            <div class="invalid-feedback">
+                                <?= $_SESSION['ajout-ouvrage-errors']['nombre-exemplaire-ouvrage'] ?>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+
                     <div class="row mt-3">
                         <div class="col-md-3">
                             <label for="langue" class="form-label">Langue <span class="text-danger">(*)</span> :</label>

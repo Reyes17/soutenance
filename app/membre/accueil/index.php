@@ -3,23 +3,23 @@
 if (isset($_SESSION['utilisateur_membre_connecter'])) {
   $idMembreConnecte = $_SESSION['utilisateur_membre_connecter']['id'];
   $membre = obtenir_membre_par_id($idMembreConnecte);
-  
-  if (!$membre || $membre['est_supprimer'] || !$membre['est_actif']) {
-      // Le compte du membre a été supprimé ou désactivé, détruire la session
-      session_destroy($_SESSION['utilisateur_membre_connecter']['id']);
 
-      // Rediriger vers la page de connexion avec le message
-      header("Location: " . PROJECT_DIR . "membre/connexion/index?compte_supprime=1");
-      exit;
+  if (!$membre || $membre['est_supprimer'] || !$membre['est_actif']) {
+    // Le compte du membre a été supprimé ou désactivé, détruire la session
+    session_destroy($_SESSION['utilisateur_membre_connecter']['id']);
+
+    // Rediriger vers la page de connexion avec le message
+    header("Location: " . PROJECT_DIR . "membre/connexion/index?compte_supprime=1");
+    exit;
   }
 }
 // Vérifier si le cookie avec le message de compte supprimé est présent
 if (isset($_COOKIE['compte_supprime_message'])) {
-    // Afficher le message avec le style appliqué
-    echo '<div class="alert alert-danger mt-3" style="color: white; background-color: #dc3545; border: 5px; text-align: center;">' . $_COOKIE['compte_supprime_message'] . '</div>';
+  // Afficher le message avec le style appliqué
+  echo '<div class="alert alert-danger mt-3" style="color: white; background-color: #dc3545; border: 5px; text-align: center;">' . $_COOKIE['compte_supprime_message'] . '</div>';
 
-    // Supprimer le cookie après l'avoir affiché
-    setcookie("compte_supprime_message", "", time() - 3600, "/");
+  // Supprimer le cookie après l'avoir affiché
+  setcookie("compte_supprime_message", "", time() - 3600, "/");
 }
 
 ?>
@@ -103,7 +103,7 @@ if (isset($_COOKIE['compte_supprime_message'])) {
   <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-      <a href="#" class="logo d-flex align-items-center">
+      <a href="<?= PROJECT_DIR; ?>membre/accueil/index" class="logo d-flex align-items-center">
         <img src="<?= PROJECT_DIR; ?>public/image/bliotheque.jpg" alt="bliotheque.jpg">
         <span class="d-none d-lg-block">Bibliothèque AKAITSUKI</span>
       </a>
@@ -272,101 +272,47 @@ if (isset($_COOKIE['compte_supprime_message'])) {
   <!-- ... Autres parties de votre code HTML ... -->
 
   <main id="main" style="margin-left: 0px; padding: 30px;">
-    <section class="section" style="background-color: #fff;">
-      <div class="row">
-        <div class="col-md-4 p-4">
-            <div class="card-body overflow-hidden" style="background-color:#b97a56;" id="contentContainer">
-              <div class="container-center">
-                <h1 class="card-title">Domaines</h1>
-                <ul id="contentList">
-                  <li><a href="<?= PROJECT_DIR; ?>membre/domaine_ouvrage/index" id="dom">Cuisine</a></li>
-                  <li><a href="#" id="dom">Cuisine</a></li>
-                  <li><a href="#" id="dom">Cuisine</a></li>
-                  <li><a href="#" id="dom">Cuisine</a></li>
-                  <li><a href="#" id="dom">Cuisine</a></li>
-                  <li><a href="#" id="dom">Cuisine</a></li>
-                  <li><a href="#" id="dom">Cuisine</a></li>
-                  <li><a href="#" id="dom">Cuisine</a></li>
+  <section class="section dashboard">
+    <h3 class="text-center" style="background-color: #ccc; padding: 10px;">Domaines</h3>
+    <div class="row">
+        <?php
+        $liste_domaines = get_liste_domaine();
 
+        // Afficher les trois premiers domaines
+        for ($i = 0; $i < 3 && $i < count($liste_domaines); $i++) {
+            $domaine = $liste_domaines[$i];
+            echo '<div class="col-md-3">';
+            echo '<div class="card info-card sales-card">';
+            echo '<div class="card-body">';
+            echo '<h5 class="card-title">' . $domaine['lib_dom'] . '</h5>';
+            echo '<div class="d-flex align-items-center">';
+            echo '<div class="card-icon rounded-circle d-flex align-items-center justify-content-center">';
+            echo '<i class="ri-earth-line"></i>';
+            echo '</div>';
+            echo '<div class="ps-3">';
+            echo '<h6>' . $domaine['nb_ouvrages'] . '</h6>';
+            echo '<a href="' . PROJECT_DIR . 'membre/domaine_ouvrage/index/' . $domaine['cod_dom'] . '">Voir plus</a>';
+            echo '</div>';
+            echo '</div>';
+            echo '</div>';
+            echo '</div>';
+            echo '</div>';
+        }
+        ?>
 
-
-                  <!-- ... Autres éléments de la liste ... -->
-                </ul>
-                <a href="#" id="toggleLink">Voir plus</a>
-              </div>
-            </div>
+        <!-- Bouton "Le reste des domaines" -->
+        <div class="col-md-3">
+            <button type="button" class="btn btn-outline-primary mt-5 p-4"><a href="<?= PROJECT_DIR; ?>membre/domaine_ouvrage/liste_des_domaines">Le reste des domaines</a></button>
         </div>
-      </div>
-    </section>
+    </div>
+</section>
+
+
+
+
   </main>
 
-  <script>
-    // Récupérer l'élément du conteneur de contenu
-    const contentContainer = document.getElementById('contentContainer');
 
-
-    // Récupérer la hauteur du contenu initial
-    let initialContentHeight;
-
-    // Fonction pour ajuster la taille de l'arrière-plan en fonction de la hauteur réelle du contenu
-    function ajusterTailleArrierePlan() {
-      const contentHeight = contentContainer.scrollHeight;
-      contentContainer1.style.minHeight = contentHeight + "px";
-
-    }
-
-    // Fonction pour masquer tous les éléments de la liste au-delà du cinquième élément
-    function masquerContenu() {
-      const listeElements = contentContainer.querySelectorAll('li');
-      for (let i = 5; i < listeElements.length; i++) {
-        listeElements[i].style.display = "none";
-      }
-    }
-
-    // Fonction pour afficher tous les éléments de la liste
-    function afficherContenu() {
-      const listeElements = contentContainer.querySelectorAll('li');
-      for (let i = 5; i < listeElements.length; i++) {
-        listeElements[i].style.display = "list-item";
-      }
-    }
-
-    // Fonction pour gérer l'affichage du lien "Voir plus" en fonction du nombre d'éléments de la liste
-    function gererAffichageLienVoirPlus() {
-      const listeElements = contentContainer.querySelectorAll('li');
-      const toggleLink = document.getElementById('toggleLink');
-
-      if (listeElements.length > 5) {
-        toggleLink.style.display = "inline"; // Afficher le lien si plus de 5 éléments
-      } else {
-        toggleLink.style.display = "none"; // Masquer le lien s'il y a 5 éléments ou moins
-      }
-    }
-
-    // Fonction pour basculer l'affichage du contenu lors du clic sur le lien
-    function basculerContenu() {
-      const toggleLink = document.getElementById('toggleLink');
-      const lienTexte = toggleLink.innerText;
-
-      if (lienTexte === "Voir plus") {
-        afficherContenu();
-        toggleLink.innerText = "Réduire";
-      } else {
-        masquerContenu();
-        toggleLink.innerText = "Voir plus";
-      }
-
-      ajusterTailleArrierePlan();
-      gererAffichageLienVoirPlus();
-    }
-
-    // Ajouter un gestionnaire d'événement au lien "Voir plus"
-    toggleLink.addEventListener('click', basculerContenu);
-
-    // Masquer le contenu excédentaire et gérer l'affichage du lien "Voir plus" au chargement de la page
-    masquerContenu();
-    gererAffichageLienVoirPlus();
-  </script>
 
   <!-- ... Autres parties de votre code HTML ... -->
 

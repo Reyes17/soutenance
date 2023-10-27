@@ -1225,36 +1225,30 @@ function check_if_domaine_exist(string $domaine)
 
 	
 /**
- * Cette fonction permet de récupérer la liste des domaines de la base de donnée.
+ * Récupère la liste des domaines et le nombre d'ouvrages associés à chaque domaine.
  *
- * @return array $liste_domaines La liste des domaines.
+ * @return array $liste_domaines La liste des domaines avec le nombre d'ouvrages associés.
  */
 function get_liste_domaine(): array
 {
-
     $liste_domaines = array();
-
     $db = connect_db();
 
-    // Ecriture de la requête
-    $requette = 'SELECT * FROM domaine';
+    $requette = 'SELECT domaine.cod_dom, domaine.lib_dom, COUNT(domaine_ouvrage.cod_ouv) AS nb_ouvrages
+                FROM domaine
+                LEFT JOIN domaine_ouvrage ON domaine.cod_dom = domaine_ouvrage.cod_dom
+                GROUP BY domaine.cod_dom, domaine.lib_dom';
 
-    // Préparation
     $verifier_liste_domaines = $db->prepare($requette);
-
-    // Exécution ! La recette est maintenant en base de données
     $resultat = $verifier_liste_domaines->execute();
 
     if ($resultat) {
-
         $liste_domaines = $verifier_liste_domaines->fetchAll(PDO::FETCH_ASSOC);
-
     }
 
-
     return $liste_domaines;
-
 }
+
 
 
 /**
@@ -1344,7 +1338,7 @@ function supprimer_domaine($cod_dom) {
 
 
 /**
- * Cett fonction permet de récupérer un auteur exitant dans la base de données via son numéro d'auteur.
+ * Cett fonction permet de récupérer un auteur secondaire exitant dans la base de données via son numéro d'auteur.
  *
  * @param int $num_aut
  * @return  .
@@ -1760,7 +1754,79 @@ function check_if_exist($table, $field, $fieldentry): bool
     return $exist;
 }       
            
-        
+function get_langues_for_ouvrage($cod_ouv) {
+    $db = connect_db();
+    $query = "SELECT langue.lib_lang AS langue FROM date_parution
+              INNER JOIN langue ON date_parution.cod_lang = langue.cod_lang
+              WHERE date_parution.cod_ouv = :cod_ouv";
+    $stmt = $db->prepare($query);
+    $stmt->bindParam(':cod_ouv', $cod_ouv);
+    $stmt->execute();
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    return $result;
+}
+
+// functions.php
+
+/**
+ * Cette fonction récupère les informations des ouvrages associés à un domaine spécifique.
+ *
+ * @param int $domaine_id L'ID du domaine pour lequel récupérer les ouvrages.
+ * @return array Un tableau d'informations sur les ouvrages associés au domaine.
+ */
+function getOuvragesByDomaineID($domaine_id) {
+    // Établir une connexion à la base de données
+    $db = connect_db();
+
+    // Requête SQL pour récupérer les informations des ouvrages liés au domaine
+    $query = "SELECT
+        ouvrage.titre AS titre,
+        ouvrage.img AS image,
+        CONCAT(auteur.nom_aut, ' ', auteur.prenom_aut) AS auteur, -- Concaténation du nom et du prénom de l'auteur
+        GROUP_CONCAT(langue.lib_lang SEPARATOR ' | ') AS langues,
+        GROUP_CONCAT(date_parution.dat_par SEPARATOR ' | ') AS années
+    FROM
+        domaine_ouvrage
+    INNER JOIN ouvrage ON domaine_ouvrage.cod_ouv = ouvrage.cod_ouv
+    LEFT JOIN auteur ON ouvrage.num_aut = auteur.num_aut
+    LEFT JOIN date_parution ON ouvrage.cod_ouv = date_parution.cod_ouv
+    LEFT JOIN langue ON date_parution.cod_lang = langue.cod_lang
+    WHERE
+        domaine_ouvrage.cod_dom = :domaine_id
+    GROUP BY
+        ouvrage.cod_ouv";
+
+    // Préparation de la requête
+    $stmt = $db->prepare($query);
+    $stmt->bindParam(':domaine_id', $domaine_id);
+    
+    // Exécution de la requête
+    $stmt->execute();
+    
+    // Récupération des résultats sous forme de tableau associatif
+    $ouvrages = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Retourner le tableau d'informations des ouvrages
+    return $ouvrages;
+}
+
+/**
+ * Cette fonction récupère le nom du domaine en fonction de son ID.
+ *
+ * @param int $domaine_id L'ID du domaine.
+ * @return string Le nom du domaine.
+ */
+function getDomaineNameByID($domaine_id) {
+    $db = connect_db();
+    $query = "SELECT lib_dom FROM domaine WHERE cod_dom = :domaine_id";
+    $stmt = $db->prepare($query);
+    $stmt->bindParam(':domaine_id', $domaine_id, PDO::PARAM_INT);
+    $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $result['lib_dom'];
+}
+
+
 
 
 
