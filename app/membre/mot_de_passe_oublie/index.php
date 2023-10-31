@@ -3,23 +3,16 @@ if (isset($_SESSION["utilisateur_connecter_membre"])) {
 	header('location:' . PROJECT_DIR . 'membre/utilisateur/acceuil');
 }
 $title = "Mot de passe oublié";
-include './app/commun/index.php';
+include 'app/commun/header_membre.php';
 ?>
 
-<main>
+<main id="main" style="margin-left: 0px; padding: 3px;">
 	<div class="container">
 
 		<section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
 			<div class="container">
 				<div class="row justify-content-center">
 					<div class=" col-md-6 d-flex flex-column align-items-center justify-content-center">
-
-						<div class="d-flex justify-content-center py-4">
-							<a href="" class="logo d-flex align-items-center w-auto">
-								<img src="<?= PROJECT_DIR; ?>public/image/bliotheque.jpg" alt="bliotheque.jpg">
-								<span class="d-none d-lg-block">Bibliothèque AKAITSUKI</span>
-							</a>
-						</div><!-- End Logo -->
 
 						<div class="card mb-3">
 
@@ -87,9 +80,9 @@ include './app/commun/index.php';
 										?>
 									</div>
 
-									<div class="row mt-3 mb-3">
+									<div class="row mt-3">
 										<div class="col-6 w-100">
-											<a href="login">Connexion</a>
+											<p class="text-center small">Revenir sur la page connexion? Appuyer sur le bouton en haut <i class="bi bi-arrow-up-right-circle-fill link-primary"></i>.</p>
 										</div>
 
 									</div>
@@ -117,4 +110,5 @@ include './app/commun/index.php';
 <!-- End #main -->
 <?php
 unset($_SESSION['errors'], $_SESSION['mot_passe_message_erreur_global'], $_SESSION['mot_passe_message_success_global']);
+include 'app/commun/footer_membre.php';
 ?>

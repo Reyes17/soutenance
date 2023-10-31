@@ -25,7 +25,7 @@
 
 	<!-- Template Main CSS File -->
 	<link href="<?= PROJECT_DIR; ?>public/css/style.css" rel="stylesheet">
-	
+
 	<!-- =======================================================
 	======================================================== -->
 </head>
@@ -40,23 +40,28 @@
 				<span class="d-none d-lg-block">Bibliothèque AKAITSUKI</span>
 			</a>
 		</div><!-- End Logo -->
-
-		<div class="search-bar">
-			<form class="search-form d-flex align-items-center" method="POST" action="#">
-				<input type="text" name="query" placeholder="Search" title="Enter search keyword">
-				<button type="submit" title="Search"><i class="bi bi-search"></i></button>
-			</form>
-		</div><!-- End Search Bar -->
+		<?php if (isset($_SESSION["utilisateur_connecter_membre"])) { ?>
+			<div class="search-bar">
+				<form class="search-form d-flex align-items-center" method="POST" action="#">
+					<input type="text" name="query" placeholder="Search" title="Enter search keyword">
+					<button type="submit" title="Search"><i class="bi bi-search"></i></button>
+				</form>
+			</div><!-- End Search Bar -->
+		<?php } ?>
 
 		<nav class="header-nav ms-auto">
 			<ul class="d-flex align-items-center">
 
+				<li class="nav-item">
+					<a class="nav-link nav-icon" href="<?= PROJECT_DIR; ?>membre/accueil"> Accueil </a>
+				</li>
+				
 				<li class="nav-item d-block d-lg-none">
 					<a class="nav-link nav-icon search-bar-toggle " href="#">
 						<i class="bi bi-search"></i>
 					</a>
 				</li><!-- End Search Icon-->
-				<?php if (!empty($_SESSION["utilisateur_connecter_membre"])) { ?>
+				<?php if (isset($_SESSION["utilisateur_connecter_membre"])) { ?>
 					<a class="nav-link nav-icon" href="<?= PROJECT_DIR; ?>membre/emprunt/formulaire_emprunt">
 						<i class="bi bi-cart"></i>
 						<span class="badge bg-primary badge-number">4</span>
@@ -66,7 +71,7 @@
 
 				<li class="nav-item dropdown pe-3">
 					<?php
-					if (empty($_SESSION["utilisateur_connecter_membre"])) {
+					if (!isset($_SESSION["utilisateur_connecter_membre"])) {
 					?>
 
 				<li>
@@ -77,7 +82,7 @@
 			?>
 
 			<?php
-			if (!empty($_SESSION["utilisateur_connecter_membre"])) {
+			if (isset($_SESSION["utilisateur_connecter_membre"])) {
 			?>
 
 				<a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">

@@ -119,6 +119,14 @@ if (isset($_COOKIE['compte_supprime_message'])) {
     <nav class="header-nav ms-auto">
       <ul class="d-flex align-items-center">
 
+      <li class="nav-item">
+            <a class="nav-link nav-icon" href="<?= PROJECT_DIR; ?>membre/accueil"> Accueil </a>
+          </li>
+
+          <li class="nav-item">
+					<a class="nav-link nav-icon" href="#domaines"> Domaines </a>
+				</li>
+
         <li class="nav-item d-block d-lg-none">
           <a class="nav-link nav-icon search-bar-toggle " href="#">
             <i class="bi bi-search"></i>
@@ -131,7 +139,7 @@ if (isset($_COOKIE['compte_supprime_message'])) {
           </a><!-- End Notification Icon -->
         <?php } ?>
 
-
+          
         <li class="nav-item dropdown pe-3">
           <?php
           if (empty($_SESSION["utilisateur_connecter_membre"])) {
@@ -273,7 +281,7 @@ if (isset($_COOKIE['compte_supprime_message'])) {
 
   <main id="main" style="margin-left: 0px; padding: 30px;">
   <section class="section dashboard">
-    <h3 class="text-center" style="background-color: #ccc; padding: 10px;">Domaines</h3>
+    <h3 class="text-center" style="background-color: #ccc; padding: 10px;" id="domaines">Domaines</h3>
     <div class="row">
         <?php
         $liste_domaines = get_liste_domaine();

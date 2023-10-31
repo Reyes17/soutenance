@@ -12,25 +12,17 @@ if (isset($_SESSION['donnees-utilisateur']) && !empty($_SESSION['donnees-utilisa
 }
 $title = 'Inscription';
 
-include 'app/commun/index.php';
+include 'app/commun/header_membre.php';
 ?>
 
 
-<main>
+<main id="main" style="margin-left: 0px; padding: 3px;">
 	<div class="container">
 
 		<section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
 			<div class="container">
 				<div class="row justify-content-center">
 					<div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
-
-						<div class="d-flex justify-content-center py-4">
-							<a href="" class="logo d-flex align-items-center w-auto">
-								<img src="../public/image/bliotheque.jpg" alt="bliotheque.jpg">
-								<span class="d-none d-lg-block">Bibliothèque AKAII</span>
-							</a>
-						</div><!-- End Logo -->
-
 						<div class="card mb-3">
 
 							<div class="card-body">
@@ -209,12 +201,9 @@ include 'app/commun/index.php';
 											<button class="btn btn-primary w-100" type="submit">Créer un compte</button>
 										</div>
 										<div class="col-12 mt-3">
-											<p class="small mb-0">Vous aviez déjà un compte? <a href="<?= PROJECT_DIR; ?>membre/connexion">Se
-													Connecter</a></p>
+											<p class="small mb-0">Vous aviez déjà un compte? Si oui appuyez sur le bouton "Se
+													Connecter" <i class="bi bi-arrow-up-right-circle-fill link-primary"></i>.</p>
 										</div>
-										<?php
-										session_destroy();
-										?>
 								</form>
 
 							</div>
@@ -227,3 +216,7 @@ include 'app/commun/index.php';
 
 	</div>
 </main><!-- End #main -->
+<?php
+unset($_SESSION['inscription-erreurs'], $_SESSION['inscription-message-erreur-global'], $_SESSION['inscription-message-success-global'],  $_SESSION['donnees-utilisateur']);
+include 'app/commun/footer_membre.php';
+?>

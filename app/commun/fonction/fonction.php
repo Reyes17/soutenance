@@ -835,36 +835,34 @@ function ajout_auteur(string $nom_aut, string $prenom_aut): bool
 }
 
 /**
- * Cette fonction permet de récupérer la liste des auteurs de la base de donnée.
+ * Cette fonction permet de récupérer la liste des auteurs de la base de données
+ * ainsi que le nombre total d'auteurs.
  *
- * @return array $liste_auteurs La liste des auteurs.
+ * @return array $result Un tableau contenant la liste des auteurs et le nombre total d'auteurs.
  */
 function get_liste_auteurs(): array
 {
-
-    $liste_auteurs = array();
+    $result = array();
 
     $db = connect_db();
 
-    // Ecriture de la requête
-    $requette = 'SELECT * FROM auteur';
+    // Requête pour récupérer la liste des auteurs et leur nombre total
+    $requete = 'SELECT *, COUNT(*) AS nombre_total_auteurs FROM auteur';
 
-    // Préparation
-    $verifier_liste_auteurs = $db->prepare($requette);
+    // Préparation de la requête
+    $stmt = $db->prepare($requete);
 
-    // Exécution ! La recette est maintenant en base de données
-    $resultat = $verifier_liste_auteurs->execute();
+    // Exécution de la requête
+    $resultat = $stmt->execute();
 
     if ($resultat) {
-
-        $liste_auteurs = $verifier_liste_auteurs->fetchAll(PDO::FETCH_ASSOC);
-
+        // Récupération des résultats sous forme de tableau associatif
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-
-    return $liste_auteurs;
-
+    return $result;
 }
+
 
 
 /**
@@ -1249,6 +1247,27 @@ function get_liste_domaine(): array
     return $liste_domaines;
 }
 
+/**
+ * Cette fonction récupère le nombre de domaines dans la base de données.
+ *
+ * @return int $nombre_total_domaines Le nombre total de domaines.
+ */
+function getNombreTotalDomaines(): int
+{
+    $db = connect_db();
+
+    $requete = 'SELECT COUNT(*) AS nombre_total_domaines FROM domaine';
+
+    $verifier_nombre_total_domaines = $db->prepare($requete);
+    $resultat = $verifier_nombre_total_domaines->execute();
+
+    if ($resultat) {
+        $nombre_total_domaines = $verifier_nombre_total_domaines->fetchColumn();
+        return $nombre_total_domaines;
+    }
+
+    return 0; // Retourner 0 en cas d'erreur ou de résultats vides
+}
 
 
 /**
@@ -1766,7 +1785,7 @@ function get_langues_for_ouvrage($cod_ouv) {
     return $result;
 }
 
-// functions.php
+
 
 /**
  * Cette fonction récupère les informations des ouvrages associés à un domaine spécifique.
@@ -1778,23 +1797,28 @@ function getOuvragesByDomaineID($domaine_id) {
     // Établir une connexion à la base de données
     $db = connect_db();
 
-    // Requête SQL pour récupérer les informations des ouvrages liés au domaine
+    // Requête SQL pour récupérer les informations des ouvrages liés au domaine, y compris le cod_ouv
     $query = "SELECT
+        ouvrage.cod_ouv AS cod_ouv, 
         ouvrage.titre AS titre,
         ouvrage.img AS image,
-        CONCAT(auteur.nom_aut, ' ', auteur.prenom_aut) AS auteur, -- Concaténation du nom et du prénom de l'auteur
-        GROUP_CONCAT(langue.lib_lang SEPARATOR ' | ') AS langues,
-        GROUP_CONCAT(date_parution.dat_par SEPARATOR ' | ') AS années
+        ouvrage.nb_ex AS  nombre_exemplaires_total,
+        CONCAT(auteur.nom_aut, ' ', auteur.prenom_aut) AS auteur,
+        GROUP_CONCAT(DISTINCT CONCAT(auteur_secondaire_info.nom_aut, ' ', auteur_secondaire_info.prenom_aut) SEPARATOR ', ') AS auteurs_secondaires,
+        GROUP_CONCAT(DISTINCT CONCAT(langue.lib_lang, ' | ', date_parution.dat_par, ' | ', date_parution.nb_ex_lang) SEPARATOR ', ') AS details
+
     FROM
         domaine_ouvrage
     INNER JOIN ouvrage ON domaine_ouvrage.cod_ouv = ouvrage.cod_ouv
     LEFT JOIN auteur ON ouvrage.num_aut = auteur.num_aut
     LEFT JOIN date_parution ON ouvrage.cod_ouv = date_parution.cod_ouv
     LEFT JOIN langue ON date_parution.cod_lang = langue.cod_lang
+    LEFT JOIN auteur_secondaire ON ouvrage.cod_ouv = auteur_secondaire.cod_ouv
+    LEFT JOIN auteur AS auteur_secondaire_info ON auteur_secondaire.num_aut = auteur_secondaire_info.num_aut
     WHERE
         domaine_ouvrage.cod_dom = :domaine_id
     GROUP BY
-        ouvrage.cod_ouv";
+        ouvrage.cod_ouv";  
 
     // Préparation de la requête
     $stmt = $db->prepare($query);
@@ -1809,6 +1833,7 @@ function getOuvragesByDomaineID($domaine_id) {
     // Retourner le tableau d'informations des ouvrages
     return $ouvrages;
 }
+
 
 /**
  * Cette fonction récupère le nom du domaine en fonction de son ID.
@@ -1827,6 +1852,41 @@ function getDomaineNameByID($domaine_id) {
 }
 
 
+/**
+ * Cette fonction génère un numéro d'emprunt personnalisé au format "001", "002", ...
+ *
+ * @return string|false Le numéro d'emprunt personnalisé ou false en cas d'erreur.
+ */
+function generateCustomEmpNumber() {
+    $db = connect_db(); // Supposons que vous avez une fonction connect_db() pour vous connecter à la base de données
+
+    try {
+        $db->beginTransaction(); // Début d'une transaction
+
+        // Sélectionner le dernier numéro d'emprunt en mode verrouillage
+        $query = "SELECT MAX(num_emp) AS max_num_emp FROM emprunt FOR UPDATE";
+        $result = $db->query($query);
+        $row = $result->fetch(PDO::FETCH_ASSOC);
+        $maxNumEmp = $row['max_num_emp'];
+
+        // Générer le prochain numéro en incrémentant de 1
+        $newNumEmp = $maxNumEmp + 1;
+
+        // Formater le numéro pour avoir trois chiffres (ex. 001, 002, 003)
+        $formattedNumEmp = sprintf('%03d', $newNumEmp);
+
+        // Valider la transaction
+        $db->commit();
+
+        return $formattedNumEmp; // Renvoie le numéro d'emprunt personnalisé généré
+    } catch (PDOException $e) {
+        // En cas d'erreur, annuler la transaction
+        $db->rollBack();
+        // Gérer l'erreur ou la journaliser
+        echo "Erreur : " . $e->getMessage();
+        return false; // Ou renvoyer une valeur par défaut
+    }
+}
 
 
 

@@ -3,22 +3,14 @@ if (isset($_SESSION["utilisateur_connecter_membre"])) {
 	header('location:' . PROJECT_DIR . 'membre/utilisateur/acceuil');
 }
 $title = "Réinitialisation de mot de passe";
-include './app/commun/index.php';
+include 'app/commun/header_membre.php';
 ?>
-<main>
+<main id="main" style="margin-left: 0px; padding: 3px;">
     <div class="container">
         <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
             <div class="container">
                 <div class="row justify-content-center">
                     <div class=" col-md-6 d-flex flex-column align-items-center justify-content-center">
-
-                        <div class="d-flex justify-content-center py-4">
-                            <a href="" class="logo d-flex align-items-center w-auto">
-                                <img src="../public/image/bliotheque.jpg" alt="bliotheque.jpg">
-                                <span class="d-none d-lg-block">Bibliothèque AKAITSUKI</span>
-                            </a>
-                        </div><!-- End Logo -->
-
                         <div class="card mb-3">
                         
                             <div class="card-body">
@@ -113,4 +105,5 @@ include './app/commun/index.php';
 </main>
 <?php
 unset($_SESSION['save_errors'], $_SESSION['errors']);
+include 'app/commun/footer_membre.php';
 ?>
