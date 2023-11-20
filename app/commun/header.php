@@ -5,9 +5,13 @@
 	<meta charset="utf-8">
 	<meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-	<title><?= $title?></title>
+	<title><?= $title ?></title>
 	<meta content="" name="description">
 	<meta content="" name="keywords">
+
+	<!-- Favicons -->
+	<link href="<?= PROJECT_DIR; ?>public/image/favicon.png" rel="icon">
+	<link href="<?= PROJECT_DIR; ?>public/image/apple-icon.png" rel="apple-touch-icon">
 
 
 	<!-- Google Fonts -->
@@ -25,12 +29,12 @@
 	<!-- Template Main CSS File -->
 	<link href="<?= PROJECT_DIR; ?>public/css/style.css" rel="stylesheet">
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<!-- Inclure la bibliothèque du select2 -->
+	<!-- Inclure la bibliothèque du select2 -->
 	<link rel="stylesheet" href="<?= PROJECT_DIR; ?>public/select2/css/select2.min.css">
-    <link rel="stylesheet" href="<?= PROJECT_DIR; ?>public/select2-bootstrap4/select2-bootstrap4.min.css">
+	<link rel="stylesheet" href="<?= PROJECT_DIR; ?>public/select2-bootstrap4/select2-bootstrap4.min.css">
 	<!-- =======================================================
 	======================================================== -->
-	
+
 </head>
 
 <body>
@@ -46,7 +50,7 @@
 			<i class="bi bi-list toggle-sidebar-btn"></i>
 		</div><!-- End Logo -->
 
-		
+
 
 		<nav class="header-nav ms-auto">
 			<ul class="d-flex align-items-center">
@@ -57,16 +61,16 @@
 					</a>
 				</li><!-- End Search Icon-->
 
-				
+
 
 
 
 				<li class="nav-item dropdown pe-3">
 
-				<a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-					<img src="<?= $_SESSION['utilisateur_connecter_bibliothecaire']['avatar'] == 'Non defini' ? PROJECT_DIR . 'public/image/user.png' : $_SESSION['utilisateur_connecter_bibliothecaire']['avatar'] ?>" style="width: 50px;" alt="Profile" class="rounded-circle">
-					<span class="d-none d-md-block dropdown-toggle ps-2"><?= $_SESSION['utilisateur_connecter_bibliothecaire']['nom'] ?> <?= $_SESSION['utilisateur_connecter_bibliothecaire']['prenom'] ?></span>
-				</a><!-- End Profile Iamge Icon -->
+					<a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+						<img src="<?= $_SESSION['utilisateur_connecter_bibliothecaire']['avatar'] == 'Non defini' ? PROJECT_DIR . 'public/image/user.png' : $_SESSION['utilisateur_connecter_bibliothecaire']['avatar'] ?>" style="width: 50px;" alt="Profile" class="rounded-circle">
+						<span class="d-none d-md-block dropdown-toggle ps-2"><?= $_SESSION['utilisateur_connecter_bibliothecaire']['nom'] ?> <?= $_SESSION['utilisateur_connecter_bibliothecaire']['prenom'] ?></span>
+					</a><!-- End Profile Iamge Icon -->
 
 					<ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
 						<li class="dropdown-header">
@@ -212,7 +216,7 @@
 							<i class="bi bi-circle"></i><span>Ajouter emprunts</span>
 						</a>
 					</li>
-					
+
 				</ul>
 			</li><!-- Fin menu emprunt -->
 
@@ -226,8 +230,8 @@
 							<i class="bi bi-circle"></i><span>Liste des membres</span>
 						</a>
 					</li>
-				</ul>	
-					
+				</ul>
+
 
 			<li class="nav-item">
 				<a class="nav-link collapsed" data-bs-target="#domaines-nav" data-bs-toggle="collapse" href="#">
@@ -247,7 +251,7 @@
 				</ul>
 			</li><!-- Fin  menu domaine -->
 
-		
+
 
 			<li class="nav-heading">Pages</li>
 

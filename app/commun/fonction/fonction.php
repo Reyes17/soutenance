@@ -1889,5 +1889,31 @@ function generateCustomEmpNumber() {
 }
 
 
+function getLanguesByOuvrageID($ouvrage_id) {
+    // Établir une connexion à la base de données
+    $db = connect_db();
+
+    // Requête SQL pour récupérer les langues liées à l'ouvrage
+    $query = "SELECT
+        langue.lib_lang AS langue
+    FROM
+        date_parution
+    INNER JOIN langue ON date_parution.cod_lang = langue.cod_lang
+    WHERE
+        date_parution.cod_ouv = :ouvrage_id";
+
+    // Préparation de la requête
+    $stmt = $db->prepare($query);
+    $stmt->bindParam(':ouvrage_id', $ouvrage_id);
+
+    // Exécution de la requête
+    $stmt->execute();
+
+    // Récupération des résultats sous forme de tableau associatif
+    $langues = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Retourner le tableau des langues associées à l'ouvrage
+    return $langues;
+}
 
 

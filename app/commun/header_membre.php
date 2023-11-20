@@ -9,6 +9,12 @@
 	<meta content="" name="description">
 	<meta content="" name="keywords">
 
+	<!-- Favicons -->
+	<link href="<?= PROJECT_DIR; ?>public/image/favicon.png" rel="icon">
+	<link href="<?= PROJECT_DIR; ?>public/image/apple-icon.png" rel="apple-touch-icon">
+
+
+
 
 	<!-- Google Fonts -->
 	<link href="https://fonts.gstatic.com" rel="preconnect">
@@ -55,19 +61,19 @@
 				<li class="nav-item">
 					<a class="nav-link nav-icon" href="<?= PROJECT_DIR; ?>membre/accueil"> Accueil </a>
 				</li>
-				
+
 				<li class="nav-item d-block d-lg-none">
 					<a class="nav-link nav-icon search-bar-toggle " href="#">
 						<i class="bi bi-search"></i>
 					</a>
 				</li><!-- End Search Icon-->
+
 				<?php if (isset($_SESSION["utilisateur_connecter_membre"])) { ?>
 					<a class="nav-link nav-icon" href="<?= PROJECT_DIR; ?>membre/emprunt/formulaire_emprunt">
 						<i class="bi bi-cart"></i>
 						<span class="badge bg-primary badge-number">4</span>
 					</a><!-- End Notification Icon -->
 				<?php } ?>
-
 
 				<li class="nav-item dropdown pe-3">
 					<?php

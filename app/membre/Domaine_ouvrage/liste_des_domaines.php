@@ -1,8 +1,5 @@
 <?php
 $title = 'Liste des domaines';
-if (!isset($_SESSION["utilisateur_connecter_membre"])) {
-    header('location:' . PROJECT_DIR . 'membre/connexion/index');
-}
 include 'app/commun/header_membre.php';
 
 // Utilisez la fonction pour obtenir la liste des domaines
@@ -40,7 +37,7 @@ $liste_domaines = get_liste_domaine();
                                     <h5><?= $domaine['nb_ouvrages'] ?> ouvrages</h5>
                                     <button type="button" class="btn btn-outline-primary">
                                         <a href="<?= PROJECT_DIR; ?>membre/domaine_ouvrage/index/<?= $domaine['cod_dom'] ?>">
-                                            Voir plus
+                                            Parcourir
                                         </a>
                                     </button>
                                 </div>
