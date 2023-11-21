@@ -21,7 +21,7 @@ if (isset($_SESSION['data']) && !empty($_SESSION['data'])) {
 
 					<div class="d-flex justify-content-center py-4">
 						<a href="" class="logo d-flex align-items-center w-auto">
-							<img src="<?= PROJECT_DIR; ?>public/image/bliotheque.jpg" alt="bliotheque.jpg">
+							<img src="<?= PROJECT_DIR; ?>public/image/logo.png" alt="logo.png">
 							<span class="d-none d-lg-block">Bibliothèque AKAITSUKI</span>
 						</a>
 					</div>

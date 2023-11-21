@@ -44,7 +44,7 @@
 
 		<div class="d-flex align-items-center justify-content-between">
 			<a href="#" class="logo d-flex align-items-center">
-				<img src="<?= PROJECT_DIR; ?>public/image/bliotheque.jpg" alt="bliotheque.jpg">
+				<img src="<?= PROJECT_DIR; ?>public/image/logo.png" alt="logo.png">
 				<span class="d-none d-lg-block">Bibliothèque AKAITSUKI</span>
 			</a>
 			<i class="bi bi-list toggle-sidebar-btn"></i>

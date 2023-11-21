@@ -82,7 +82,7 @@ if (!empty($_SESSION['data'])) {
 
                     <div class="col-md-12 mb-3">
                         <label for="periodicite-ouvrage" class="col-sm-2 col-form-label">Périodicité :</label>
-                        <select class="form-select <?= isset($_SESSION['ajout-ouvrage-errors']['periodicite-ouvrage']) ? 'is-invalid' : '' ?>" id="periodicite-ouvrage" name="periodicite-ouvrage">
+                        <select class="form-select select2bs4 <?= isset($_SESSION['ajout-ouvrage-errors']['periodicite-ouvrage']) ? 'is-invalid' : '' ?>" id="periodicite-ouvrage" name="periodicite-ouvrage">
                             <option value="0"></option>
                             <option>Quotidien</option>
                             <option>Hebdomadaire</option>

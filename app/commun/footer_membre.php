@@ -20,6 +20,20 @@
 
 <!-- Template Main JS File -->
 <script src="<?= PROJECT_DIR; ?>public/js/main.js"></script>
+<script src="<?= PROJECT_DIR; ?>public/select2/js/select2.full.js"></script>
+<script>
+    (function($) {
+    $(document).ready(function() {
+      //Initialize Select2 Elements
+      $('.select2').select2()
+
+      //Initialize Select2 Elements
+      $('.select2bs4').select2({
+        theme: 'bootstrap4'
+      })
+    });
+  }(jQuery));
+</script>
 
 </body>
 

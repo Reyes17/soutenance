@@ -1917,3 +1917,36 @@ function getLanguesByOuvrageID($ouvrage_id) {
 }
 
 
+/**
+ * Recherche les domaines par nom.
+ *
+ * Cette fonction effectue une recherche dans la base de données pour trouver
+ * les domaines dont le nom contient la chaîne spécifiée.
+ *
+ * @param PDO $pdo La connexion PDO à la base de données.
+ * @param string $nom Le nom à rechercher.
+ * @return array Un tableau associatif contenant les résultats de la recherche.
+ * Chaque élément du tableau représente un domaine avec ses propriétés, y compris le nombre d'ouvrages.
+ * Si aucun résultat n'est trouvé, un tableau vide est retourné.
+ *
+ * @throws PDOException En cas d'erreur lors de l'exécution de la requête SQL.
+ */
+function searchDomaineByNom($pdo, $nom) {
+    $sql = "SELECT domaine.*, COUNT(ouvrage.cod_ouv) AS nb_ouvrages 
+            FROM domaine 
+            LEFT JOIN domaine_ouvrage ON domaine.cod_dom = domaine_ouvrage.cod_dom
+            LEFT JOIN ouvrage ON domaine_ouvrage.cod_ouv = ouvrage.cod_ouv
+            WHERE domaine.lib_dom LIKE :nom 
+            GROUP BY domaine.cod_dom";
+    
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindValue(':nom', "%$nom%", PDO::PARAM_STR);
+    $stmt->execute();
+    
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+
+
+
+

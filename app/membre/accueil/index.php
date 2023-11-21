@@ -78,7 +78,8 @@ if (isset($_COOKIE['compte_supprime_message'])) {
 
   <main id="main" style="margin-left: 0px; padding: 30px;">
     <section class="section dashboard">
-      <h3 class="text-center" style="background-color: #ccc; padding: 10px;" id="domaines">Domaines</h3>
+      <!--<h3 class="text-center" style="background-color: #ccc; padding: 10px;" id="domaines">Domaines</h3>-->
+      <h1 class="font-weight-bold text-center card-header mb-3">Domaines</h1>
       <div class="row">
         <?php
         $liste_domaines = get_liste_domaine();
@@ -107,7 +108,7 @@ if (isset($_COOKIE['compte_supprime_message'])) {
 
         <!-- Bouton "Le reste des domaines" -->
         <div class="col-md-3">
-          <button type="button" class="btn btn-outline-primary mt-5 p-4"><a href="<?= PROJECT_DIR; ?>membre/domaine_ouvrage/liste_des_domaines">Le reste des domaines</a></button>
+           <a class="btn btn-outline-primary mt-5 p-4" href="<?= PROJECT_DIR; ?>membre/domaine_ouvrage/liste_des_domaines">Le reste des domaines</a>
         </div>
       </div>
     </section>

@@ -103,57 +103,12 @@ if (isset($params['3']) && is_numeric($params['3'])) {
                     }
                 } else {
                     // Gérez le cas où il n'y a pas d'ouvrages associés à ce domaine.
-                    echo 'AUCUN DOMAINE N\'EST DISPONIBLE .';
+                    echo  'AUCUN OUVRAGE N\'EST ENCORE DISPONIBLE POUR CE DOMAINE.';
                 }
                 ?>
             </div>
         </section>
     </main>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const ajouterAuPanier = document.getElementById('ajouter-au-panier');
-            const selectLangue = document.getElementById('langue');
-            const ouvrageIdInput = document.getElementById('ouvrage-id');
-
-            ajouterAuPanier.addEventListener('click', function() {
-                const selectedLangue = selectLangue.value;
-                const ouvrageId = ouvrageIdInput.value;
-
-                // Envoyer les données au panier (vous devrez implémenter cette fonctionnalité)
-                addToCart(ouvrageId, selectedLangue);
-
-                // Fermer le modal
-                const modal = new bootstrap.Modal(document.getElementById('ouvrage-emprunter-' + ouvrageId));
-                modal.hide();
-            });
-        });
-
-        function addToCart(ouvrageId, langue) {
-            // Vous devrez implémenter la logique pour ajouter l'ouvrage au panier
-            // Cela peut être fait en utilisant une requête AJAX vers un script PHP
-            // ou en utilisant une autre méthode pour stocker les ouvrages dans le panier.
-            // Une fois l'ouvrage ajouté avec la langue sélectionnée, vous pouvez mettre à jour l'affichage du panier.
-            // Assurez-vous d'adapter cette fonction à votre propre structure de données et de panier.
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const btnRetirerPanier = document.querySelectorAll('.btn-retirer-panier');
-
-            btnRetirerPanier.forEach(function(btn) {
-                btn.addEventListener('click', function() {
-                    const ouvrageId = btn.getAttribute('data-ouvrage');
-                    const langue = btn.getAttribute('data-langue');
-
-                    // Envoyez une requête au serveur pour retirer l'ouvrage du panier
-                    // Cette partie doit être implémentée côté serveur.
-
-                    // Ensuite, mettez à jour l'affichage du panier (par exemple, en rechargeant la page).
-                    location.reload();
-                });
-            });
-        });
-    </script>
-
     <?php
     include 'app/commun/footer_membre.php';
     ?>

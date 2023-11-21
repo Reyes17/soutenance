@@ -8,6 +8,8 @@ $default_ressource = "accueil";
 $default_action = "index";
 $default_action_folder = "app/" . $profile . "/" . $default_ressource . "/" . $default_action . ".php";
 
+$nombre_total_domaines = getNombreTotalDomaines();
+
 if (isset($_GET['p']) && !empty($_GET['p'])) {
 	$ressource = (isset($params[1]) && !empty($params[1])) ? $params[1] : $default_ressource;
 	$action = (isset($params[2]) && !empty($params[2])) ? $params[2] : $default_action;
