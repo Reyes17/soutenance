@@ -35,6 +35,10 @@
 	<!-- Inclure la bibliothèque du select2 -->
 	<link rel="stylesheet" href="<?= PROJECT_DIR; ?>public/select2/css/select2.min.css">
 	<link rel="stylesheet" href="<?= PROJECT_DIR; ?>public/select2-bootstrap4/select2-bootstrap4.min.css">
+
+	<!--- inclure toatify --->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.6.1/toastify.min.js" integrity="sha512-79j1YQOJuI8mLseq9icSQKT6bLlLtWknKwj1OpJZMdPt2pFBry3vQTt+NZuJw7NSd1pHhZlu0s12Ngqfa371EA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.6.1/toastify.min.css" integrity="sha512-UiKdzM5DL+I+2YFxK+7TDedVyVm7HMp/bN85NeWMJNYortoll+Nd6PU9ZDrZiaOsdarOyk9egQm6LOJZi36L2g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<!-- =======================================================
 	======================================================== -->
 </head>
@@ -54,7 +58,15 @@
 			<ul class="d-flex align-items-center">
 
 				<li class="nav-item">
-					<a class="nav-link nav-icon" href="<?= PROJECT_DIR; ?>membre/accueil"> Accueil </a>
+					<a class="nav-link nav-icon" href="<?= PROJECT_DIR; ?>membre/utilisateur/accueil"> Accueil </a>
+				</li>
+
+				<li class="nav-item">
+					<a class="nav-link nav-icon" href="<?= PROJECT_DIR; ?>membre/utilisateur/a_propos"> A propos </a>
+				</li>
+
+				<li class="nav-item">
+					<a class="nav-link nav-icon" href="<?= PROJECT_DIR; ?>membre/utilisateur/contact"> Conctez-nous </a>
 				</li>
 
 				<li class="nav-item d-block d-lg-none">
@@ -64,11 +76,12 @@
 				</li><!-- End Search Icon-->
 
 				<?php if (isset($_SESSION["utilisateur_connecter_membre"])) { ?>
-					<a class="nav-link nav-icon" href="<?= PROJECT_DIR; ?>membre/emprunt/formulaire_emprunt">
-						<i class="bi bi-cart"></i>
-						<span class="badge bg-primary badge-number">4</span>
-					</a><!-- End Notification Icon -->
-				<?php } ?>
+    <a class="nav-link nav-icon" href="<?= PROJECT_DIR; ?>membre/utilisateur/formulaire_emprunt">
+        <i class="bi bi-cart"></i>
+        <span id="cartItemCount" class="badge bg-primary badge-number"><?= count($_SESSION['panier'] ?? []); ?></span>
+    </a><!-- End Notification Icon -->
+<?php } ?>
+
 
 				<li class="nav-item dropdown pe-3">
 					<?php
@@ -112,7 +125,7 @@
 					</li>
 
 					<li>
-						<a class="dropdown-item d-flex align-items-center" href="<?= PROJECT_DIR; ?>membre/catalogue/index">
+						<a class="dropdown-item d-flex align-items-center" href="<?= PROJECT_DIR; ?>membre/utilisateur/catalogue">
 							<i class="bx bxl-c-plus-plus"></i>
 							<span>Catalogue</span>
 						</a>

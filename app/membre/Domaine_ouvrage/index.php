@@ -15,7 +15,7 @@ if (isset($params['3']) && is_numeric($params['3'])) {
             <h1>Ouvrages par domaine</h1>
             <nav>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="<?= PROJECT_DIR; ?>membre/accueil">Accueil</a></li>
+                    <li class="breadcrumb-item"><a href="<?= PROJECT_DIR; ?>membre/utilisateur/accueil">Accueil</a></li>
                     <li class="breadcrumb-item"><a href="<?= PROJECT_DIR; ?>membre/domaine_ouvrage/liste_des_domaines">Domaines</a></li>
                     <li class="breadcrumb-item active"><?= getDomaineNameByID($domaine_id) ?></li>
                 </ol>
@@ -77,7 +77,7 @@ if (isset($params['3']) && is_numeric($params['3'])) {
                                             <!-- Menu déroulant (select) pour choisir la langue -->
                                             <label for="langue" class="fw-bold">Choisir la langue :</label>
 
-                                            <select class="form-select select2bs4 mt-3" name="langue" id="langue">
+                                            <select class="form-select mt-3" name="langue" id="langue">
                                                 <?php
                                                 $langues = getLanguesByOuvrageID($ouvrage['cod_ouv']);
                                                 foreach ($langues as $langue) {

@@ -10,6 +10,10 @@ $default_action_folder = "app/" . $profile . "/" . $default_ressource . "/" . $d
 
 $nombre_total_domaines = getNombreTotalDomaines();
 
+$liste_ouvrages = get_liste_ouvrages();
+$nombre_ouvrage = count($liste_ouvrages);
+////////////////////////////////////////////////////////////
+
 if (isset($_GET['p']) && !empty($_GET['p'])) {
 	$ressource = (isset($params[1]) && !empty($params[1])) ? $params[1] : $default_ressource;
 	$action = (isset($params[2]) && !empty($params[2])) ? $params[2] : $default_action;

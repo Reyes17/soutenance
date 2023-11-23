@@ -78,8 +78,7 @@ if (isset($_COOKIE['compte_supprime_message'])) {
 
   <main id="main" style="margin-left: 0px; padding: 30px;">
     <section class="section dashboard">
-      <!--<h3 class="text-center" style="background-color: #ccc; padding: 10px;" id="domaines">Domaines</h3>-->
-      <h1 class="font-weight-bold text-center card-header mb-3">Domaines</h1>
+      <h3 class="text-center font-weight-bold mb-3" style="background-color: #ccc; padding:10px" id="domaines">Domaines</h3>
       <div class="row">
         <?php
         $liste_domaines = get_liste_domaine();

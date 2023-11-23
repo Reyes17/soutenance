@@ -25,7 +25,7 @@ if (isset($_POST['search']) && !empty($_POST['titre'])) {
             <h1>Liste des domaines</h1>
             <nav>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="<?= PROJECT_DIR; ?>membre/accueil">Accueil</a></li>
+                    <li class="breadcrumb-item"><a href="<?= PROJECT_DIR; ?>membre/utilisateur/accueil">Accueil</a></li>
                     <li class="breadcrumb-item active">Domaines</li>
                 </ol>
             </nav>

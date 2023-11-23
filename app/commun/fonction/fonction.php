@@ -1946,6 +1946,39 @@ function searchDomaineByNom($pdo, $nom) {
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
+/**
+ * getSuggestionsByTitre - Récupère des suggestions d'ouvrages basées sur un titre donné.
+ *
+ * @param string $query - Le titre à utiliser pour récupérer les suggestions.
+ *
+ * @return array - Un tableau associatif contenant les suggestions de titres d'ouvrages.
+ *                Chaque élément du tableau est un tableau associatif avec une clé 'titre'.
+ *                Retourne un tableau vide si aucune suggestion n'est trouvée.
+ */
+function getSuggestionsByTitre($query) {
+    try {
+        // Établir une connexion à la base de données
+        $db = connect_db();
+
+        // Effectuer la requête SQL pour récupérer les suggestions basées sur le titre
+        // Assurez-vous d'ajuster la requête en fonction de votre base de données
+        $sql = "SELECT titre FROM ouvrage WHERE titre LIKE :query LIMIT 5";
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':query', '%' . $query . '%', PDO::PARAM_STR);
+        $stmt->execute();
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Fermer la connexion à la base de données
+        $db = null;
+
+        return $result;
+    } catch (PDOException $e) {
+        // Gérer les erreurs de la base de données ici
+        // Vous pouvez enregistrer ces erreurs dans un fichier de journal, les afficher, etc.
+        error_log("Erreur PDO: " . $e->getMessage());
+        return [];
+    }
+}
 
 
 
