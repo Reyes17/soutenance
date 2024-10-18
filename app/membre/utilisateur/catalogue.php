@@ -186,7 +186,7 @@ $(document).on("click", "#ajouter-au-panier", function () {
             // Afficher une notification Toastify
             Toastify({
                 text: "L'ouvrage a été ajouté au panier.",
-                duration: 300,
+                duration: 1000,
                 close: true,
                 gravity: "top",
                 position: "center",
@@ -194,7 +194,7 @@ $(document).on("click", "#ajouter-au-panier", function () {
                     // Actualiser la page après un délai de 2000 millisecondes
                     setTimeout(function () {
                         location.reload();
-                    }, 500);
+                    }, 1500);
                 }
             }).showToast();
         }

@@ -1,5 +1,6 @@
 <?php
 $title = 'Accueil';
+$idMembreConnecte = null;
 include 'app/commun/header_membre.php';
 // Vérifier si le compte du membre a été supprimé ou désactivé par le bibliothécaire
 if (isset($_SESSION['utilisateur_membre_connecter'])) {
@@ -20,10 +21,7 @@ if (isset($_COOKIE['compte_supprime_message'])) {
   // Supprimer le cookie après l'avoir affiché
   setcookie("compte_supprime_message", "", time() - 3600, "/");
 }
-
 ?>
-
-
 
   <header>
 

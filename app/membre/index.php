@@ -1,5 +1,5 @@
 <?php
-session_start();
+// session_start();
 include 'app/commun/fonction/fonction.php';
 
 $params = explode('/', $_GET['p']);

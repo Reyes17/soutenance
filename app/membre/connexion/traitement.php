@@ -57,7 +57,7 @@ if (is_array(  $membre)) {
 		);
 	}
 
-	header('location:' . PROJECT_DIR . 'membre/utilisateur/accueil');
+	header('location:' . PROJECT_DIR . 'membre/accueil');
 	exit();
 } else {
 	$_SESSION['danger'] = "Nom d'utilisateur ou mot de passe incorrect. Veuillez vérifier";

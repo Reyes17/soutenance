@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : mer. 25 oct. 2023 à 18:31
+-- Généré le : sam. 10 fév. 2024 à 12:00
 -- Version du serveur :  5.7.31
 -- Version de PHP : 7.3.21
 
@@ -148,9 +148,10 @@ CREATE TABLE IF NOT EXISTS `emprunt_ouvrage` (
   `id_emp_ouvrage` int(11) NOT NULL AUTO_INCREMENT,
   `num_emp` int(11) NOT NULL,
   `cod_ouv` int(11) NOT NULL,
-  `id` int(11) NOT NULL,
+  `cod_lang` int(11) NOT NULL,
+  `dat_emp` datetime NOT NULL,
   `dat_ret` datetime DEFAULT NULL,
-  `etat` varchar(255) DEFAULT NULL,
+  `etat_ouvrage` varchar(255) DEFAULT NULL,
   `dat_butoir` datetime NOT NULL,
   `creer_le` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `est_supprime` int(11) NOT NULL DEFAULT '0',
@@ -159,7 +160,7 @@ CREATE TABLE IF NOT EXISTS `emprunt_ouvrage` (
   PRIMARY KEY (`id_emp_ouvrage`),
   KEY `emprunt_ouvrage_num_emp` (`num_emp`),
   KEY `emprunt_ouvrage_cod_ouv` (`cod_ouv`),
-  KEY `emprunt_ouvrage_utilsateur_id` (`id`)
+  KEY `emprunt_ouvrage_langue_cod_lang` (`cod_lang`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -200,19 +201,21 @@ CREATE TABLE IF NOT EXISTS `membre_indelicat` (
   `id_indelicat` int(11) NOT NULL AUTO_INCREMENT,
   `num_emp` int(11) NOT NULL,
   `cod_ouv` int(11) NOT NULL,
-  `id` int(11) NOT NULL,
+  `cod_lang` int(11) NOT NULL,
+  `dat_emp` datetime NOT NULL,
   `dat_ret` datetime NOT NULL,
+  `etat_ouvrage` varchar(255) NOT NULL,
   `dat_butoir` datetime NOT NULL,
   `numero_compte` varchar(255) NOT NULL,
   `banque` varchar(255) NOT NULL,
-  `creer_le` int(11) NOT NULL,
+  `creer_le` timestamp NOT NULL,
   `est_actif` int(11) NOT NULL,
   `est_supprimer` int(11) NOT NULL,
   `maj_le` timestamp NOT NULL,
   PRIMARY KEY (`id_indelicat`),
   KEY `num_emp` (`num_emp`),
   KEY `cod_ouv` (`cod_ouv`),
-  KEY `membre_indelicat_utilsateur_id` (`id`)
+  KEY `membre_indelicat_langue_cod_lang` (`cod_lang`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -321,16 +324,16 @@ ALTER TABLE `emprunt`
 --
 ALTER TABLE `emprunt_ouvrage`
   ADD CONSTRAINT `emprunt_ouvrage_cod_ouv` FOREIGN KEY (`cod_ouv`) REFERENCES `ouvrage` (`cod_ouv`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `emprunt_ouvrage_num_emp` FOREIGN KEY (`num_emp`) REFERENCES `emprunt` (`num_emp`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `emprunt_ouvrage_utilsateur_id` FOREIGN KEY (`id`) REFERENCES `utilisateur` (`id`);
+  ADD CONSTRAINT `emprunt_ouvrage_langue_cod_lang` FOREIGN KEY (`cod_lang`) REFERENCES `langue` (`cod_lang`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `emprunt_ouvrage_num_emp` FOREIGN KEY (`num_emp`) REFERENCES `emprunt` (`num_emp`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `membre_indelicat`
 --
 ALTER TABLE `membre_indelicat`
   ADD CONSTRAINT `membre_indelicat_emprunt_num_emp` FOREIGN KEY (`num_emp`) REFERENCES `emprunt` (`num_emp`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `membre_indelicat_ouvrage_cod_ouv` FOREIGN KEY (`cod_ouv`) REFERENCES `ouvrage` (`cod_ouv`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `membre_indelicat_utilsateur_id` FOREIGN KEY (`id`) REFERENCES `utilisateur` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `membre_indelicat_langue_cod_lang` FOREIGN KEY (`cod_lang`) REFERENCES `langue` (`cod_lang`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `membre_indelicat_ouvrage_cod_ouv` FOREIGN KEY (`cod_ouv`) REFERENCES `ouvrage` (`cod_ouv`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `ouvrage`

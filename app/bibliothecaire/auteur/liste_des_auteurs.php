@@ -12,23 +12,28 @@ $liste_auteur = get_liste_auteurs();
 <section class="section dashboard">
 	<main id="main" class="main">
 		<div class="row">
+			<!-- Message de succès global lors de la modification de l'auteur -->
 			<?php if (isset($_SESSION['modification_succès']) && !empty($_SESSION['modification_succès'])) { ?>
-				<div class="alert alert-success mt-3" style="text-align:center; border-radius: 15px; ">
+				<div class="alert alert-success mt-3" style="border-radius: 15px; text-align: center;">
 					<?= $_SESSION['modification_succès'] ?>
 				</div>
 			<?php } ?>
+			
+			<!-- Message de succès global lors de la suppression de l'auteur -->
 			<?php if (isset($_SESSION['suppression_succes']) && !empty($_SESSION['suppression_succes'])) { ?>
-				<div class="alert alert-success mt-3" style="border-radius: 15px; text-align:center;">
+				<div class="alert alert-success mt-3" style="border-radius: 15px; text-align: center;">
 					<?= $_SESSION['suppression_succes'] ?>
 				</div>
-			<?php unset($_SESSION['suppression_succes']);
-			} ?>
+			<?php unset($_SESSION['suppression_succes']); } ?>
+			
+			<!-- Message d'erreur global lors de la suppression de l'auteur -->
 			<?php if (isset($_SESSION['suppression_erreur']) && !empty($_SESSION['suppression_erreur'])) { ?>
 				<div class="alert alert-danger mt-3" style="border-radius: 15px; text-align: center;">
 					<?= $_SESSION['suppression_erreur'] ?>
 				</div>
-			<?php unset($_SESSION['suppression_erreur']);
-			} ?>
+			<?php unset($_SESSION['suppression_erreur']); } ?>
+			
+			<!-- Titre et bouton d'ajout -->
 			<div class="col-md-6">
 				<h1>Liste des auteurs</h1>
 			</div>
@@ -36,6 +41,8 @@ $liste_auteur = get_liste_auteurs();
 				<a href="<?= PROJECT_DIR; ?>bibliothecaire/auteur/ajouter_auteurs" class="btn btn-primary">Ajouter un auteur</a>
 			</div>
 		</div>
+
+		<!-- Tableau des auteurs -->
 		<div class="row mt-5">
 			<?php if (!empty($liste_auteur)) { ?>
 				<table class="table table-hover">
@@ -47,37 +54,18 @@ $liste_auteur = get_liste_auteurs();
 						</tr>
 					</thead>
 					<tbody>
-						<?php foreach ($liste_auteur as $key => $auteur) { ?>
+						<?php foreach ($liste_auteur as $auteur) { ?>
 							<tr>
 								<td><?= $auteur['nom_aut'] ?></td>
 								<td><?= $auteur['prenom_aut'] ?></td>
 								<td>
-								<a href="#" class="btn btn-primary mb-3 btn-details" data-bs-toggle="modal" data-bs-target="#modal-details-<?= $auteur['num_aut'] ?>" data-numaut="<?= $auteur['num_aut'] ?>" data-nomaut="<?= $auteur['nom_aut'] ?>" data-prenomaut="<?= $auteur['prenom_aut'] ?>">Détails</a>
-
 									<a href="<?= PROJECT_DIR; ?>bibliothecaire/auteur/modifier_auteur/<?= $auteur['num_aut'] ?>" class="btn btn-warning mb-3">Modifier</a>
+
 									<a href="#" class="btn btn-danger mb-3" data-bs-toggle="modal" data-bs-target="#modal-supprimer-<?= $auteur['num_aut'] ?>">Supprimer</a>
 								</td>
 							</tr>
-							<!-- Modal pour le bouton "Détails" -->
-							<div class="modal fade" id="modal-details-<?= $auteur['num_aut'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-								<div class="modal-dialog">
-									<div class="modal-content">
-										<div class="modal-header">
-											<h5 class="modal-title" id="exampleModalLabel">Détails sur l'auteur</h5>
-											<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-										</div>
-										<div class="modal-body">
-											<p>Nom: <span id="nom-aut-<?= $auteur['num_aut'] ?>"></span></p>
-											<p>Prénoms: <span id="prenom-aut-<?= $auteur['num_aut'] ?>"></span></p>
-											<!-- Ajoutez d'autres informations de l'auteur ici -->
-										</div>
-										<div class="modal-footer">
-											<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-										</div>
-									</div>
-								</div>
-							</div>
-							<!-- Modal pour le bouton "Supprimer" -->
+
+							<!-- Modal pour la suppression de l'auteur -->
 							<div class="modal fade" id="modal-supprimer-<?= $auteur['num_aut'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 								<div class="modal-dialog">
 									<div class="modal-content">
@@ -104,22 +92,6 @@ $liste_auteur = get_liste_auteurs();
 		</div>
 	</main>
 </section>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-	$(document).ready(function() {
-    $('.btn-details').on('click', function() {
-        var numAut = $(this).data('numaut');
-        var modal = $('#modal-details-' + numAut);
-        var nomAut = $(this).data('nomaut');
-        var prenomAut = $(this).data('prenomaut');
-
-        modal.find('#nom-aut-' + numAut).text(nomAut);
-        modal.find('#prenom-aut-' + numAut).text(prenomAut);
-    });
-});
-
-</script>
 
 <?php
 include './app/commun/footer.php';

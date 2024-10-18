@@ -58,7 +58,7 @@
 			<ul class="d-flex align-items-center">
 
 				<li class="nav-item">
-					<a class="nav-link nav-icon" href="<?= PROJECT_DIR; ?>membre/utilisateur/accueil"> Accueil </a>
+					<a class="nav-link nav-icon" href="<?= PROJECT_DIR; ?>membre/accueil"> Accueil </a>
 				</li>
 
 				<li class="nav-item">
@@ -76,7 +76,7 @@
 				</li><!-- End Search Icon-->
 
 				<?php if (isset($_SESSION["utilisateur_connecter_membre"])) { ?>
-    <a class="nav-link nav-icon" href="<?= PROJECT_DIR; ?>membre/utilisateur/formulaire_emprunt">
+    <a class="nav-link nav-icon" href="<?= PROJECT_DIR; ?>membre/emprunt/formulaire_emprunt">
         <i class="bi bi-cart"></i>
         <span id="cartItemCount" class="badge bg-primary badge-number"><?= count($_SESSION['panier'] ?? []); ?></span>
     </a><!-- End Notification Icon -->

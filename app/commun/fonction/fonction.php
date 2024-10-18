@@ -1895,7 +1895,7 @@ function getLanguesByOuvrageID($ouvrage_id) {
 
     // Requête SQL pour récupérer les langues liées à l'ouvrage
     $query = "SELECT
-        langue.lib_lang AS langue
+        langue.lib_lang AS langue, langue.cod_lang AS code_langue
     FROM
         date_parution
     INNER JOIN langue ON date_parution.cod_lang = langue.cod_lang
@@ -1980,6 +1980,80 @@ function getSuggestionsByTitre($query) {
     }
 }
 
+/**
+ * Cette fonction permet d'ajouter un emprunt pour un utilisateur donné.
+ *
+ * @param PDO $db La connexion à la base de données.
+ * @param int $userId L'identifiant de l'utilisateur.
+ * @return int|false Le numéro de l'emprunt ajouté ou false en cas d'erreur.
+ */
+function ajouterEmprunt(PDO $db, int $userId) {
+    try {
+        // Date actuelle
+        $currentDate = date("Y-m-d H:i:s");
+
+        // Requête d'insertion dans la table emprunt
+        $insertEmpruntQuery = "INSERT INTO emprunt (dat_emp, id, est_actif, est_supprimer, maj_le) 
+                               VALUES (:currentDate, :userId, 1, 0, :currentDate)";
+
+        // Préparation de la requête
+        $query = $db->prepare($insertEmpruntQuery);
+
+        // Liaison des paramètres
+        $query->bindParam(':currentDate', $currentDate, PDO::PARAM_STR);
+        $query->bindParam(':userId', $userId, PDO::PARAM_INT);
+
+        // Exécution de la requête
+        $query->execute();
+
+        // Récupération du numéro de l'emprunt que vous venez d'insérer
+        return $db->lastInsertId();
+    } catch (PDOException $e) {
+        // Gestion des erreurs - vous pouvez personnaliser cela en fonction de vos besoins
+        echo "Erreur lors de l'insertion dans la table emprunt : " . $e->getMessage();
+        return false;
+    }
+}
+
+
+/**
+ * Cette fonction permet d'associer un ouvrage à un emprunt.
+ *
+ * @param PDO $db La connexion à la base de données.
+ * @param int $numEmp Le numéro de l'emprunt.
+ * @param int $codOuv L'identifiant de l'ouvrage.
+ * @param int $codLang Le code de la langue.
+ * @return void
+ */
+function associerOuvrageEmprunt(PDO $db, int $numEmp, int $codOuv, int $codLang) {
+    try {
+        // Date actuelle
+        $currentDate = date("Y-m-d H:i:s");
+
+        // Date butoir (une semaine à partir de la date actuelle)
+        $datButoir = date("Y-m-d H:i:s", strtotime($currentDate . " +1 week"));
+
+        // Requête d'insertion dans la table emprunt_ouvrage
+        $insertEmpruntOuvrageQuery = "INSERT INTO emprunt_ouvrage (num_emp, cod_ouv, cod_lang, dat_emp, dat_butoir, est_actif) 
+                                     VALUES (:numEmp, :codOuv, :codLang, :currentDate, :datButoir, 0)";
+
+        // Préparation de la requête
+        $query = $db->prepare($insertEmpruntOuvrageQuery);
+
+        // Liaison des paramètres
+        $query->bindParam(':numEmp', $numEmp, PDO::PARAM_INT);
+        $query->bindParam(':codOuv', $codOuv, PDO::PARAM_INT);
+        $query->bindParam(':codLang', $codLang, PDO::PARAM_INT);
+        $query->bindParam(':currentDate', $currentDate, PDO::PARAM_STR);
+        $query->bindParam(':datButoir', $datButoir, PDO::PARAM_STR);
+
+        // Exécution de la requête
+        $query->execute();
+    } catch (PDOException $e) {
+        // Gestion des erreurs - vous pouvez personnaliser cela en fonction de vos besoins
+        echo "Erreur lors de l'insertion dans la table emprunt_ouvrage : " . $e->getMessage();
+    }
+}
 
 
 

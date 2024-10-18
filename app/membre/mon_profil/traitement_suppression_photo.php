@@ -18,12 +18,12 @@ if(isset($_POST['photo_suppression'])){
     }
     else{
         $_SESSION['photo-erreurs']="La suppression a échoué! Mot de passe incorrect!";
-        header('location:'. PROJECT_DIR . 'mon_profil/mon-profil');
+        header('location:' . PROJECT_DIR . 'membre/mon_profil/mon-profil');
         exit();
     }
 }
 else{
-    header('location:'. PROJECT_DIR . 'mon_profil/mon-profil');
+    header('location:' . PROJECT_DIR . 'membre/mon_profil/mon-profil');
     exit();
 }
 
