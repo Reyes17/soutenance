@@ -63,7 +63,7 @@ $liste_domaine = get_liste_domaine();
 					<thead>
 						<tr>
 
-							<th scope="coi">Domaine</th>
+							<th scope="col">Domaine</th>
 							<th scope="col">Actions</th>
 
 						</tr>
@@ -93,7 +93,7 @@ $liste_domaine = get_liste_domaine();
 											<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 										</div>
 										<div class="modal-body">
-											Etes vous sur de vouloir supprimer ce domaine ?
+											Êtes vous sûr de vouloir supprimer ce domaine ?
 										</div>
 										<div class="modal-footer">
 											<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Non</button>

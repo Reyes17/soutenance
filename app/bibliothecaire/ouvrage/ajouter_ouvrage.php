@@ -63,7 +63,7 @@ if (!empty($_SESSION['data'])) {
                             <option value="0"></option>
                             <?php
                             // Appeler la fonction pour récupérer la liste des auteurs
-                            $liste_auteurs = get_liste_auteurs();
+                            $liste_auteurs = get_listes_auteurs();
                             // Afficher les auteurs dans le menu déroulant
                             foreach ($liste_auteurs as $auteur) {
                                 $selected = $data['auteur-principal-ouvrage'] == $auteur['num_aut'] ? 'selected' : '';
@@ -106,7 +106,7 @@ if (!empty($_SESSION['data'])) {
                             <option value="0"></option>
                             <?php
                             // Appeler la fonction pour récupérer la liste des auteurs
-                            $liste_auteurs = get_liste_auteurs();
+                            $liste_auteurs = get_listes_auteurs();
                             // Afficher les auteurs dans le menu déroulant
                             foreach ($liste_auteurs as $auteur) {
                             ?>
